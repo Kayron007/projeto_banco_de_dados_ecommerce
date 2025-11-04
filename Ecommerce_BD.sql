@@ -3,13 +3,12 @@ CREATE DATABASE ECOM;
 USE ECOM;
 
 CREATE TABLE fornecedor (
-  ID_fornecedor int NOT NULL AUTO_INCREMENT,
+  ID_fornecedor int PRIMARY KEY,
   Nome varchar(80) NOT NULL,
   Tipo_de_material varchar(50) DEFAULT NULL,
   cnpj char(14) NOT NULL,
   cep char(8) DEFAULT NULL,
   Email varchar(100) DEFAULT NULL,
-  PRIMARY KEY (ID_fornecedor),
   UNIQUE KEY cnpj (cnpj),
   UNIQUE KEY Email (Email),
   CONSTRAINT chk_cep_num CHECK ((cep is null or regexp_like(cep,'^[0-9]{8}$'))),
@@ -17,10 +16,9 @@ CREATE TABLE fornecedor (
 );
 
 CREATE TABLE pagamento (
-  ID_pagamento int NOT NULL AUTO_INCREMENT,
+  ID_pagamento int PRIMARY KEY,
   Forma_de_pagamento varchar(50) DEFAULT NULL,
-  Status varchar(20) DEFAULT NULL,
-  PRIMARY KEY (ID_pagamento)
+  Status varchar(20) DEFAULT NULL
 );
 
 CREATE TABLE pessoa (
