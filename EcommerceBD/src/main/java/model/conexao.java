@@ -8,7 +8,7 @@ import java.sql.SQLException;
 public class conexao {
     private static final String url = "jdbc:mysql://localhost:3306/ECOM";
     private static final String user = "root";
-    private static final String senha = "26841379";
+    private static final String senha = "26841379"; // mudar user e/ou senha de acordo com o seu SQL 
     
     public static Connection conectar(){
         Connection conexao = null;

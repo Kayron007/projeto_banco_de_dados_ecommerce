@@ -6,6 +6,6 @@ public class EcommerceBD {
 
     public static void main(String[] args) {
         conexao con = new conexao();
-        con.conectar();
+        con.conectar(); //teste de conexao com o BD 
     }
 }
