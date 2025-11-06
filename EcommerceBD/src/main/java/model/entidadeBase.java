@@ -40,7 +40,7 @@ public abstract class entidadeBase {
 
         final int MAX_TENTATIVAS = 100;
 
-        String sql = "SELECT COUNT(*) FROM " + nomeTabela + "WHERE id = ?";
+        String sql = "SELECT COUNT(*) FROM " + nomeTabela + " WHERE id = ?";
         for (int i = 0; i < MAX_TENTATIVAS; i++) {
             int idCandidato = ThreadLocalRandom.current().nextInt(MIN_ID, MAX_ID + 1);
 
