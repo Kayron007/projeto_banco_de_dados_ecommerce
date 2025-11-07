@@ -8,17 +8,31 @@ package model;
  *
  * @author gustavo
  */
-public class pagamento extends entidadeBase{
+public class Pagamento extends EntidadeBase{
     private String formaDePagamento;
     private String status;
     
-    public pagamento(){
+    public Pagamento() {
+        super();
     }
     
-    public pagamento(int id, String formaDePagamento, String status){
+    public Pagamento(Long id, String formaDePagamento, String status){
         super(id);
         this.formaDePagamento = formaDePagamento;
         this.status = status;
+    }
+
+    @Override
+    protected String getTabela() {
+        return "pagamento";
+    }
+
+    /*
+     * Completar mais tarde
+     */
+    @Override
+    public String toString() {
+        return "";
     }
 
     /**

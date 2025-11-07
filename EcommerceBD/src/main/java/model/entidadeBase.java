@@ -6,32 +6,32 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-public abstract class entidadeBase {
-    protected int id;
+public abstract class EntidadeBase {
+    protected Long id;
 
     //Construtor sem arg
-    public entidadeBase() {}
+    public EntidadeBase() {}
 
     //Construtor principal
-    public entidadeBase(int id) {
+    public EntidadeBase(Long id) {
         this.id = id;
     }
 
     /**
      * @return the id
      */
-    public int getId() {
+    public Long getId() {
         return id;
     }
 
     /**
      * @param id the id to set
      */
-    public void setId(int id) {
+    public void setId(Long id) {
         this.id = id;
     }
 
-    public int gerarIdUnico(Connection conectar) throws SQLException {
+    public Long gerarIdUnico(Connection conectar) throws SQLException {
         
         String nomeTabela = getTabela();
 
@@ -42,7 +42,7 @@ public abstract class entidadeBase {
 
         String sql = "SELECT COUNT(*) FROM " + nomeTabela + " WHERE id = ?";
         for (int i = 0; i < MAX_TENTATIVAS; i++) {
-            int idCandidato = ThreadLocalRandom.current().nextInt(MIN_ID, MAX_ID + 1);
+            long idCandidato = ThreadLocalRandom.current().nextInt(MIN_ID, MAX_ID + 1);
 
             try (PreparedStatement stmt = conectar.prepareStatement(sql)) {
                 stmt.setLong(1, idCandidato);
@@ -64,4 +64,5 @@ public abstract class entidadeBase {
     }
 
     protected abstract String getTabela();
+    public abstract String toString();
 }

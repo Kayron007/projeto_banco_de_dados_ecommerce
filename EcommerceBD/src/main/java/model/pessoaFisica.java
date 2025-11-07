@@ -8,32 +8,46 @@ package model;
  *
  * @author gustavo
  */
-public class pessoaFisica extends entidadeBase{
-    private cliente id_cliente;
+public class PessoaFisica extends EntidadeBase{
+    private Cliente id_cliente;
     private String cpf;
     private String rg;
 
-    public pessoaFisica() {
+    public PessoaFisica() {
+        super();
     }
 
-    public pessoaFisica(cliente id_cliente, String cpf, String rg, int id) {
+    public PessoaFisica(Long id, Cliente id_cliente, String cpf, String rg) {
         super(id);
         this.id_cliente = id_cliente;
         this.cpf = cpf;
         this.rg = rg;
     }
 
+    @Override
+    protected String getTabela() {
+        return "pessoaFisica";
+    }
+
+    /*
+     * Completar mais tarde
+     */
+    @Override
+    public String toString() {
+        return "";
+    }
+
     /**
      * @return the id_cliente
      */
-    public cliente getId_cliente() {
+    public Cliente getId_cliente() {
         return id_cliente;
     }
 
     /**
      * @param id_cliente the id_cliente to set
      */
-    public void setId_cliente(cliente id_cliente) {
+    public void setId_cliente(Cliente id_cliente) {
         this.id_cliente = id_cliente;
     }
 

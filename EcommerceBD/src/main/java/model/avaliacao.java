@@ -8,21 +8,35 @@ package model;
  *
  * @author gustavo
  */
-public class avaliacao extends entidadeBase{
+public class Avaliacao extends EntidadeBase{
     private short nota;
     private String comentario;
-    private produto id_produto;
-    private cliente id_cliente;
+    private Produto id_produto;
+    private Cliente id_cliente;
 
-    public avaliacao() {
+    public Avaliacao() {
+        super();
     }
 
-    public avaliacao(short nota, String comentario, produto id_produto, cliente id_cliente, int id) {
+    public Avaliacao(Long id, short nota, String comentario, Produto id_produto, Cliente id_cliente) {
         super(id);
         this.nota = nota;
         this.comentario = comentario;
         this.id_produto = id_produto;
         this.id_cliente = id_cliente;
+    }
+
+    @Override
+    protected String getTabela() {
+        return "avaliacao";
+    }
+
+    /*
+     * Completar mais tarde
+     */
+    @Override
+    public String toString() {
+        return "";
     }
 
     /**
@@ -56,28 +70,28 @@ public class avaliacao extends entidadeBase{
     /**
      * @return the id_produto
      */
-    public produto getId_produto() {
+    public Produto getId_produto() {
         return id_produto;
     }
 
     /**
      * @param id_produto the id_produto to set
      */
-    public void setId_produto(produto id_produto) {
+    public void setId_produto(Produto id_produto) {
         this.id_produto = id_produto;
     }
 
     /**
      * @return the id_cliente
      */
-    public cliente getId_cliente() {
+    public Cliente getId_cliente() {
         return id_cliente;
     }
 
     /**
      * @param id_cliente the id_cliente to set
      */
-    public void setId_cliente(cliente id_cliente) {
+    public void setId_cliente(Cliente id_cliente) {
         this.id_cliente = id_cliente;
     }
 }

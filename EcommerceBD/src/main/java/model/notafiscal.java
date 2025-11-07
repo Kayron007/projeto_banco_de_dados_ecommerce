@@ -10,23 +10,37 @@ import java.time.LocalDate;
  *
  * @author gustavo
  */
-public class notafiscal extends entidadeBase{
+public class NotaFiscal extends EntidadeBase{
     private LocalDate dataDeEmissao;
     private int valorTotal;
     private int imposto;
     private String chaveDeAcesso;
-    private pedido id_pedido;
+    private Pedido id_pedido;
 
-    public notafiscal() {
+    public NotaFiscal() {
+        super();
     }
 
-    public notafiscal(LocalDate dataDeEmissao, int valorTotal, int imposto, String chaveDeAcesso, pedido id_pedido, int id) {
+    public NotaFiscal(Long id, LocalDate dataDeEmissao, int valorTotal, int imposto, String chaveDeAcesso, Pedido id_pedido) {
         super(id);
         this.dataDeEmissao = dataDeEmissao;
         this.valorTotal = valorTotal;
         this.imposto = imposto;
         this.chaveDeAcesso = chaveDeAcesso;
         this.id_pedido = id_pedido;
+    }
+
+    @Override
+    protected String getTabela(){
+        return "notafiscal";
+    }
+
+    /*
+     * Completar mais tarde
+     */
+    @Override
+    public String toString() {
+        return "";
     }
 
     /**
@@ -88,14 +102,14 @@ public class notafiscal extends entidadeBase{
     /**
      * @return the id_pedido
      */
-    public pedido getId_pedido() {
+    public Pedido getId_pedido() {
         return id_pedido;
     }
 
     /**
      * @param id_pedido the id_pedido to set
      */
-    public void setId_pedido(pedido id_pedido) {
+    public void setId_pedido(Pedido id_pedido) {
         this.id_pedido = id_pedido;
     }
     

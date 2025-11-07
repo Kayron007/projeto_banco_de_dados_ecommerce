@@ -1,23 +1,37 @@
 package model;
 
-public class fornecedor extends entidadeBase{  
+public class Fornecedor extends EntidadeBase{  
     private String nome;
     private String tipoMaterial;
     private String cnpj;
     private String cep;
     private String email;
     
-    public fornecedor(){ //construtor vazio 
-        
+    //construtor vazio 
+    public Fornecedor() {
+        super();
     }
     
-    public fornecedor(int id, String nome, String tipoMaterial, String cnpj, String cep, String email){
+    public Fornecedor(Long id, String nome, String tipoMaterial, String cnpj, String cep, String email){
         super(id);
         this.nome = nome;
         this.tipoMaterial = tipoMaterial;
         this.cnpj = cnpj;
         this.cep = cep;
         this.email = email;
+    }
+
+    @Override
+    protected String getTabela() {
+        return "fornecedor";
+    }
+
+    /*
+     * Completar mais tarde
+     */
+    @Override
+    public String toString() {
+        return "";
     }
     
     /**

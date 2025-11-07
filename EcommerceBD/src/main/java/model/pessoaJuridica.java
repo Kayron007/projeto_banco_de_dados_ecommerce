@@ -8,34 +8,46 @@ package model;
  *
  * @author gustavo
  */
-public class pessoaJuridica extends entidadeBase{
-    private cliente id_cliente;
+public class PessoaJuridica extends EntidadeBase{
+    private Cliente id_cliente;
     private String cnpj;
     private String IE;
 
-    public pessoaJuridica() {
+    public PessoaJuridica() {
+        super();
     }
 
-    public pessoaJuridica(cliente id_cliente, String cnpj, String IE, int id) {
+    public PessoaJuridica(Long id, Cliente id_cliente, String cnpj, String IE) {
         super(id);
         this.id_cliente = id_cliente;
         this.cnpj = cnpj;
         this.IE = IE;
     }
     
-    
+    @Override
+    protected String getTabela() {
+        return "pessoaJuridica";
+    }
+
+    /*
+     * Completar mais tarde
+     */
+    @Override
+    public String toString() {
+        return "";
+    }
 
     /**
      * @return the id_cliente
      */
-    public cliente getId_cliente() {
+    public Cliente getId_cliente() {
         return id_cliente;
     }
 
     /**
      * @param id_cliente the id_cliente to set
      */
-    public void setId_cliente(cliente id_cliente) {
+    public void setId_cliente(Cliente id_cliente) {
         this.id_cliente = id_cliente;
     }
 

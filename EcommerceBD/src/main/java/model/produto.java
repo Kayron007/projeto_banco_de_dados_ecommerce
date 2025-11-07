@@ -8,23 +8,37 @@ package model;
  *
  * @author gustavo
  */
-public class produto extends entidadeBase{
+public class Produto extends EntidadeBase{
     private String descricao;
     private String tamanho;
     private String categoria;
     private int preco;
     private int quantidade;
 
-    public produto() {
+    public Produto() {
+        super();
     }
 
-    public produto(String descricao, String tamanho, String categoria, int preco, int quantidade, int id) {
+    public Produto(Long id, String descricao, String tamanho, String categoria, int preco, int quantidade) {
         super(id);
         this.descricao = descricao;
         this.tamanho = tamanho;
         this.categoria = categoria;
         this.preco = preco;
         this.quantidade = quantidade;
+    }
+
+    @Override
+    protected String getTabela() {
+        return "produto";
+    }
+
+    /*
+     * Completar mais tarde
+     */
+    @Override
+    public String toString() {
+        return "";
     }
 
     /**
@@ -96,6 +110,4 @@ public class produto extends entidadeBase{
     public void setQuantidade(int quantidade) {
         this.quantidade = quantidade;
     }
-    
-    
 }

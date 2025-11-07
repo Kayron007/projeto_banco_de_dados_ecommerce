@@ -8,47 +8,62 @@ package model;
  *
  * @author gustavo
  */
-public class fornecedor_produto extends entidadeBase{
-    private fornecedor id_fornecedor;
-    private produto id_produto;
+public class FornecedorProduto extends EntidadeBase{
+    private Fornecedor id_fornecedor;
+    private Produto id_produto;
     private int precoFornecedor;
     private int prazo;
 
-    public fornecedor_produto() {
+    public FornecedorProduto() {
+        super();
     }
 
-    public fornecedor_produto(fornecedor id_fornecedor, produto id_produto, int precoFornecedor, int prazo, int id) {
+    public FornecedorProduto(Long id, Fornecedor id_fornecedor, Produto id_produto, int precoFornecedor, int prazo) {
         super(id);
         this.id_fornecedor = id_fornecedor;
         this.id_produto = id_produto;
         this.precoFornecedor = precoFornecedor;
         this.prazo = prazo;
     }
+
+    @Override
+    protected String getTabela(){
+        return "fornecedor_produto";
+    }
+
+    /*
+     * Completar mais tarde
+     */
+    @Override
+    public String toString() {
+        return "";
+    }
+
     /**
      * @return the id_fornecedor
      */
-    public fornecedor getId_fornecedor() {
+    public Fornecedor getId_fornecedor() {
         return id_fornecedor;
     }
 
     /**
      * @param id_fornecedor the id_fornecedor to set
      */
-    public void setId_fornecedor(fornecedor id_fornecedor) {
+    public void setId_fornecedor(Fornecedor id_fornecedor) {
         this.id_fornecedor = id_fornecedor;
     }
 
     /**
      * @return the id_produto
      */
-    public produto getId_produto() {
+    public Produto getId_produto() {
         return id_produto;
     }
 
     /**
      * @param id_produto the id_produto to set
      */
-    public void setId_produto(produto id_produto) {
+    public void setId_produto(Produto id_produto) {
         this.id_produto = id_produto;
     }
 

@@ -5,23 +5,37 @@
 package model;
 import java.time.LocalDate;
 
-public class pedido extends entidadeBase{
+public class Pedido extends EntidadeBase{
     private LocalDate data;
     private String status;
     private int valorTotal;
-    private cliente id_cliente;
-    private pagamento id_pagamento;
+    private Cliente id_cliente;
+    private Pagamento id_pagamento;
 
-    public pedido() {
+    public Pedido() {
+        super();
     }
 
-    public pedido(LocalDate data, String status, int valorTotal, cliente id_cliente, pagamento id_pagamento, int id) {
+    public Pedido(Long id, LocalDate data, String status, int valorTotal, Cliente id_cliente, Pagamento id_pagamento) {
         super(id);
         this.data = data;
         this.status = status;
         this.valorTotal = valorTotal;
         this.id_cliente = id_cliente;
         this.id_pagamento = id_pagamento;
+    }
+
+    @Override
+    protected String getTabela() {
+        return "pedido";
+    }
+
+    /*
+     * Completar mais tarde
+     */
+    @Override
+    public String toString() {
+        return "";
     }
 
     /**
@@ -69,28 +83,28 @@ public class pedido extends entidadeBase{
     /**
      * @return the id_cliente
      */
-    public cliente getId_cliente() {
+    public Cliente getId_cliente() {
         return id_cliente;
     }
 
     /**
      * @param id_cliente the id_cliente to set
      */
-    public void setId_cliente(cliente id_cliente) {
+    public void setId_cliente(Cliente id_cliente) {
         this.id_cliente = id_cliente;
     }
 
     /**
      * @return the id_pagamento
      */
-    public pagamento getId_pagamento() {
+    public Pagamento getId_pagamento() {
         return id_pagamento;
     }
 
     /**
      * @param id_pagamento the id_pagamento to set
      */
-    public void setId_pagamento(pagamento id_pagamento) {
+    public void setId_pagamento(Pagamento id_pagamento) {
         this.id_pagamento = id_pagamento;
     }
     

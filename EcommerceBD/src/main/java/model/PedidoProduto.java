@@ -8,16 +8,17 @@ package model;
  *
  * @author gustavo
  */
-public class pedido_produto extends entidadeBase{
-    private pedido id_pedido;
-    private produto id_produtp;
+public class PedidoProduto extends EntidadeBase{
+    private Pedido id_pedido;
+    private Produto id_produtp;
     private int quantidade;
     private int precoUnitario;
 
-    public pedido_produto() {
+    public PedidoProduto() {
+        super();
     }
 
-    public pedido_produto(pedido id_pedido, produto id_produtp, int quantidade, int precoUnitario, int id) {
+    public PedidoProduto(Long id, Pedido id_pedido, Produto id_produtp, int quantidade, int precoUnitario) {
         super(id);
         this.id_pedido = id_pedido;
         this.id_produtp = id_produtp;
@@ -25,31 +26,44 @@ public class pedido_produto extends entidadeBase{
         this.precoUnitario = precoUnitario;
     }
 
+    @Override
+    protected String getTabela() {
+        return "pedido_produto";
+    }
+
+    /*
+     * Completar mais tarde
+     */
+    @Override
+    public String toString() {
+        return "";
+    }
+
     /**
      * @return the id_pedido
      */
-    public pedido getId_pedido() {
+    public Pedido getId_pedido() {
         return id_pedido;
     }
 
     /**
      * @param id_pedido the id_pedido to set
      */
-    public void setId_pedido(pedido id_pedido) {
+    public void setId_pedido(Pedido id_pedido) {
         this.id_pedido = id_pedido;
     }
 
     /**
      * @return the id_produtp
      */
-    public produto getId_produtp() {
+    public Produto getId_produtp() {
         return id_produtp;
     }
 
     /**
      * @param id_produtp the id_produtp to set
      */
-    public void setId_produtp(produto id_produtp) {
+    public void setId_produtp(Produto id_produtp) {
         this.id_produtp = id_produtp;
     }
 
