@@ -9,7 +9,7 @@ package model;
  * @author gustavo
  */
 public class Cliente extends EntidadeBase{
-    private Pessoa id_pessoa;
+    private String tipo;
     private String nome;
     private String cep;
     private String logradouro;
@@ -32,10 +32,10 @@ public class Cliente extends EntidadeBase{
      * Utilizado para CADASTRAR um novo cliente
      * O ID será gerado automáticamente pelo método gerarIdUnico;
      */
-    public Cliente(Pessoa id_pessoa, String nome, String email, String senha, String cep, String logradouro, 
+    public Cliente(String tipo, String nome, String email, String senha, String cep, String logradouro, 
     String numero, String bairro, String estado) {
         super();
-        this.id_pessoa = id_pessoa;
+        this.tipo = tipo;
         this.nome = nome;
         this.email = email;
         this.senha = senha;
@@ -49,10 +49,10 @@ public class Cliente extends EntidadeBase{
     /*
      * Construtor completo para cliente já cadastrado;
      */
-    public Cliente(Long id, Pessoa id_pessoa, String nome, String email, String senha, String cep, String logradouro, 
+    public Cliente(Long id, String tipo, String nome, String email, String senha, String cep, String logradouro, 
     String numero, String bairro, String estado) {
         super(id);
-        this.id_pessoa = id_pessoa;
+        this.tipo = tipo;
         this.nome = nome;
         this.email = email;
         this.senha = senha;
@@ -84,7 +84,6 @@ public class Cliente extends EntidadeBase{
         validarCEP();
         validarEstado();
         validarEndereco();
-        validarPessoa();
     }
 
     /**
@@ -108,10 +107,10 @@ public class Cliente extends EntidadeBase{
             throw new IllegalArgumentException("Campo obrigatório não preenchido: Email");
         }
 
-        String regex = "^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}$";
-        if(!email.matches(regex)) {
-            throw new IllegalArgumentException("Email inválido!");
-        }
+        //String regex = "^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}$";
+        //if(!email.matches(regex)) {
+        //   throw new IllegalArgumentException("Email inválido!");
+        //}
     }
 
     /**
@@ -122,9 +121,9 @@ public class Cliente extends EntidadeBase{
             throw new IllegalArgumentException("Campo obrigatório não preenchido: Senha");
         }
 
-        if(senha.trim().length() < 6) {
-            throw new IllegalArgumentException("A senha deve conter um mínimo de seis caracteres!");
-        }
+//        if(senha.trim().length() < 6) {
+//            throw new IllegalArgumentException("A senha deve conter um mínimo de seis caracteres!");
+//        }
     }
 
     /**
@@ -136,10 +135,10 @@ public class Cliente extends EntidadeBase{
         }
 
         String cepLimpo = cep.replaceAll("[^0-9]", "");
-        if(cepLimpo.length() != 8) {
-            throw new IllegalArgumentException("O CEP deve conter apenas oito caracteres!");
-        }
-    }
+//        if(cepLimpo.length() != 7) {
+//            throw new IllegalArgumentException("O CEP deve conter apenas oito caracteres!");
+//        }
+   }
 
     /**
      * Valida o estado (UF);
@@ -149,9 +148,9 @@ public class Cliente extends EntidadeBase{
             throw new IllegalArgumentException("Campo obrigatório não preenchido: Estado");
         }
 
-        if(estado.trim().length() != 2) {
-            throw new IllegalArgumentException("Estado deve ter dois caracteres (UF)");
-        }
+//        if(estado.trim().length() != 2) {
+//            throw new IllegalArgumentException("Estado deve ter dois caracteres (UF)");
+//        }
     }
 
     /**
@@ -168,19 +167,6 @@ public class Cliente extends EntidadeBase{
 
         if(bairro == null || numero.trim().isEmpty()) {
             throw new IllegalArgumentException("Campo obrigatório não preenchido: Bairro");
-        }
-    }
-
-    /**
-     * Valida pessoa associada;
-     */
-    private void validarPessoa() {
-        if(id_pessoa == null) {
-            throw new IllegalArgumentException("O cliente deve estar associado a uma pessoa!");
-        }
-
-        if(id_pessoa.getId() == null) {
-            throw new IllegalArgumentException();
         }
     }
 
@@ -240,6 +226,10 @@ public class Cliente extends EntidadeBase{
         if(estado != null) {
             estado = estado.trim().toUpperCase();
         }
+        
+        if(tipo != null) {
+            setTipo(getTipo().trim().toUpperCase());
+        }
     }
 
     /* MÉTODOS UTILITÁRIOS */
@@ -266,25 +256,11 @@ public class Cliente extends EntidadeBase{
         return 
         "Cliente{" + 
         "ID: " + id +
-        "\nidPessoa: " + (id_pessoa != null ? id_pessoa.getId() : "null") +
+        "\nidPessoa: " + (getTipo() != null ? getTipo() : "null") +
         "\nNome: " + nome +
         "\nEmail: " + email +
         "\nEndereço: " + getEnderecoCompleto() + '\'' +
         '}';
-    }
-    
-    /**
-     * @return the id_pessoa
-     */
-    public Pessoa getId_pessoa() {
-        return id_pessoa;
-    }
-
-    /**
-     * @param id_pessoa the id_pessoa to set
-     */
-    public void setId_pessoa(Pessoa id_pessoa) {
-        this.id_pessoa = id_pessoa;
     }
 
     /**
@@ -399,5 +375,19 @@ public class Cliente extends EntidadeBase{
 
     public void setSenha(String senha) {
         this.senha = senha;
+    }
+
+    /**
+     * @return the tipo
+     */
+    public String getTipo() {
+        return tipo;
+    }
+
+    /**
+     * @param tipo the tipo to set
+     */
+    public void setTipo(String tipo) {
+        this.tipo = tipo;
     }
 }

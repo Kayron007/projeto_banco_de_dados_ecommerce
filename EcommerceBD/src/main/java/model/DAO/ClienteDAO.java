@@ -1,19 +1,21 @@
 package model.DAO;
 
 import model.Cliente;
-import model.Pessoa;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.List;
+import model.Conexao;
 
-public class ClienteDAO {
-    private Connection connection;
+public class ClienteDAO implements DAObase<Cliente>{
+    private Connection connection = Conexao.conectar();
 
     public ClienteDAO(Connection connection) {
         this.connection = connection;
     }
 
+    @Override
     public void inserir(Cliente cliente) throws SQLException {
         // PASSO 1: Normaliza dados
         cliente.normalizar();
@@ -35,13 +37,13 @@ public class ClienteDAO {
         System.out.println("[DAO] ID gerado: " + cliente.getId());
         
         // PASSO 5: Insere no banco
-        String sql = "INSERT INTO cliente (id, id_pessoa, nome, cep, logradouro, " +
+        String sql = "INSERT INTO cliente (ID_cliente, tipo, nome, cep, logradouro, " +
                      "numero, bairro, estado, email, senha) " +
                      "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
         
         try (PreparedStatement stmt = connection.prepareStatement(sql)) {
             stmt.setLong(1, cliente.getId());
-            stmt.setLong(2, cliente.getId_pessoa().getId());
+            stmt.setString(2, cliente.getTipo());
             stmt.setString(3, cliente.getNome());
             stmt.setString(4, cliente.getCep());
             stmt.setString(5, cliente.getLogradouro());
@@ -69,10 +71,10 @@ public class ClienteDAO {
      * @throws SQLException se houver erro no banco
      */
     public Cliente buscarPorId(Long id) throws SQLException {
-        String sql = "SELECT c.id, c.id_pessoa, c.nome, c.cep, c.logradouro, " +
+        String sql = "SELECT c.id, c.tipo, c.nome, c.cep, c.logradouro, " +
                      "c.numero, c.bairro, c.estado, c.email, c.senha " +
                      "FROM cliente c " +
-                     "WHERE c.id = ?";
+                     "WHERE c.ID_cliente = ?";
         
         try (PreparedStatement stmt = connection.prepareStatement(sql)) {
             stmt.setLong(1, id);
@@ -95,7 +97,7 @@ public class ClienteDAO {
      * @throws SQLException se houver erro no banco
      */
     public Cliente buscarPorEmail(String email) throws SQLException {
-        String sql = "SELECT c.id, c.id_pessoa, c.nome, c.cep, c.logradouro, " +
+        String sql = "SELECT c.id, c.tipo, c.nome, c.cep, c.logradouro, " +
                      "c.numero, c.bairro, c.estado, c.email, c.senha " +
                      "FROM cliente c " +
                      "WHERE c.email = ?";
@@ -131,8 +133,7 @@ public class ClienteDAO {
     private Cliente montarCliente(ResultSet rs) throws SQLException {
         // Cria objeto Pessoa apenas com ID (simplificado)
         // Em produção, você pode fazer JOIN e buscar dados completos da pessoa
-        Pessoa pessoa = new Pessoa();
-        pessoa.setId(rs.getLong("id_pessoa"));
+        String tipo = rs.getString("tipo");
         
         // Extrai os valores de cada atributo
         Long id = rs.getLong("id");
@@ -145,6 +146,32 @@ public class ClienteDAO {
         String bairro = rs.getString("Bairro");
         String estado = rs.getString("Estado");
 
-        return new Cliente(id, pessoa, nome, email, senha, cep, logradouro, numero, bairro, estado);
+        return new Cliente(id, tipo, nome, email, senha, cep, logradouro, numero, bairro, estado);
+    }
+
+    @Override
+    public void deletar(Cliente obj) {
+        String sql = "DELETE FROM cliente WHERE ID_cliente = ?";
+        try (PreparedStatement stmt = connection.prepareStatement(sql)) {
+
+            stmt.setLong(1, obj.getId());
+            stmt.executeUpdate();
+
+            System.out.println("Cliente deletado com sucesso!");
+
+        } catch (SQLException e) {
+            System.out.println("Erro ao deletar cliente: " + e.getMessage());
+        }    
+    }
+
+    @Override
+    public void alterar(Cliente obj) {
+        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+    }
+
+    @Override
+    public List listar(Cliente obj) {
+        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
     }
 }
+

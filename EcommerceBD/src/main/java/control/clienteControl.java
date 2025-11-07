@@ -10,7 +10,6 @@ import java.util.Scanner;
 
 import model.Cliente;
 import model.Conexao;
-import model.Pessoa;
 import model.DAO.ClienteDAO;
 
 /**
@@ -184,6 +183,9 @@ public class clienteControl {
         System.out.print("Email: ");
         String email = scan.nextLine();
         
+        System.out.print("Tipo(Físico/Jurídico): ");
+        String tipo = scan.nextLine();
+        
         System.out.print("Senha: ");
         String senha = scan.nextLine();
         
@@ -246,20 +248,11 @@ public class clienteControl {
         try {
             connection = Conexao.conectar();
             
-            // Exemplo simplificado: cria nova Pessoa
-            // Ajuste conforme sua regra de negócio
-            Pessoa pessoa = new Pessoa();
-            
-            // Se sua Pessoa precisa de ID gerado, faça:
-            pessoa.gerarIdUnico(connection);
-            
             // Ou se Pessoa tem outros dados obrigatórios:
             // pessoa.setNome(nome);
             // pessoa.setCpf(cpf); // você precisaria coletar o CPF
             // PessoaDAO pessoaDAO = new PessoaDAO(connection);
             // pessoaDAO.inserir(pessoa);
-            
-            System.out.println("\n[DEBUG] Pessoa criada com ID: " + pessoa.getId());
             
             // ================================================================
             // ETAPA 4: CRIAR OBJETO CLIENTE
@@ -269,7 +262,7 @@ public class clienteControl {
             // String senhaHash = BCrypt.hashpw(senha, BCrypt.gensalt());
             
             Cliente novoCliente = new Cliente(
-                pessoa,
+                tipo,
                 nome,
                 cep,
                 logradouro,
