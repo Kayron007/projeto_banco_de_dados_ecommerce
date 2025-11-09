@@ -37,21 +37,21 @@ public class ClienteDAO implements DAObase<Cliente>{
         System.out.println("[DAO] ID gerado: " + cliente.getId());
         
         // PASSO 5: Insere no banco
-        String sql = "INSERT INTO cliente (ID_cliente, tipo, nome, cep, logradouro, " +
-                     "numero, bairro, estado, email, senha) " +
-                     "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+        String sql = "INSERT INTO cliente (ID, Tipo, Nome, Email, Senha, CEP, Cidade, Logradouro, Numero, Bairro, Estado)" +
+                     "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
         
         try (PreparedStatement stmt = connection.prepareStatement(sql)) {
             stmt.setLong(1, cliente.getId());
             stmt.setString(2, cliente.getTipo());
             stmt.setString(3, cliente.getNome());
-            stmt.setString(4, cliente.getCep());
-            stmt.setString(5, cliente.getLogradouro());
-            stmt.setString(6, cliente.getNumero());
-            stmt.setString(7, cliente.getBairro());
-            stmt.setString(8, cliente.getEstado());
-            stmt.setString(9, cliente.getEmail());
-            stmt.setString(10, cliente.getSenha());
+            stmt.setString(4, cliente.getEmail());
+            stmt.setString(5, cliente.getSenha());
+            stmt.setString(6, cliente.getCep());
+            stmt.setString(7, cliente.getCidade());
+            stmt.setString(8, cliente.getLogradouro());
+            stmt.setString(9, cliente.getNumero());
+            stmt.setString(10, cliente.getBairro());
+            stmt.setString(11, cliente.getEstado());
             
             int linhasAfetadas = stmt.executeUpdate();
             
@@ -71,7 +71,7 @@ public class ClienteDAO implements DAObase<Cliente>{
      * @throws SQLException se houver erro no banco
      */
     public Cliente buscarPorId(Long id) throws SQLException {
-        String sql = "SELECT c.id, c.tipo, c.nome, c.cep, c.logradouro, " +
+        String sql = "SELECT c.id, c.tipo, c.nome, c.cep, c.cidade, c.logradouro, " +
                      "c.numero, c.bairro, c.estado, c.email, c.senha " +
                      "FROM cliente c " +
                      "WHERE c.ID_cliente = ?";
@@ -97,7 +97,7 @@ public class ClienteDAO implements DAObase<Cliente>{
      * @throws SQLException se houver erro no banco
      */
     public Cliente buscarPorEmail(String email) throws SQLException {
-        String sql = "SELECT c.id, c.tipo, c.nome, c.cep, c.logradouro, " +
+        String sql = "SELECT c.id, c.tipo, c.nome, c.cep, c.cidade, c.logradouro, " +
                      "c.numero, c.bairro, c.estado, c.email, c.senha " +
                      "FROM cliente c " +
                      "WHERE c.email = ?";
@@ -133,20 +133,21 @@ public class ClienteDAO implements DAObase<Cliente>{
     private Cliente montarCliente(ResultSet rs) throws SQLException {
         // Cria objeto Pessoa apenas com ID (simplificado)
         // Em produção, você pode fazer JOIN e buscar dados completos da pessoa
-        String tipo = rs.getString("tipo");
+        String tipo = rs.getString("Tipo");
         
         // Extrai os valores de cada atributo
-        Long id = rs.getLong("id");
+        Long id = rs.getLong("ID");
         String nome = rs.getString("Nome");
         String email = rs.getString("Email");
         String senha = rs.getString("Senha");
-        String cep = rs.getString("cep");
+        String cep = rs.getString("CEP");
+        String cidade = rs.getString("Cidade");
         String logradouro = rs.getString("Logradouro");
         String numero = rs.getString("Numero");
         String bairro = rs.getString("Bairro");
         String estado = rs.getString("Estado");
 
-        return new Cliente(id, tipo, nome, email, senha, cep, logradouro, numero, bairro, estado);
+        return new Cliente(id, tipo, nome, email, senha, cep, cidade, logradouro, numero, bairro, estado);
     }
 
     @Override

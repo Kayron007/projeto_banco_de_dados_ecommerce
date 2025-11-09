@@ -196,6 +196,9 @@ public class clienteControl {
         
         System.out.print("CEP: ");
         String cep = scan.nextLine();
+
+        System.out.print("Cidade: ");
+        String cidade = scan.nextLine();
         
         System.out.print("Logradouro (Rua/Avenida): ");
         String logradouro = scan.nextLine();
@@ -219,18 +222,6 @@ public class clienteControl {
             System.out.println("║  ✗ AS SENHAS NÃO CONFEREM!            ║");
             System.out.println("╚════════════════════════════════════════╝");
             return; // Interrompe o cadastro
-        }
-        
-        // Valida campos obrigatórios
-        if (nome.trim().isEmpty() || email.trim().isEmpty() || senha.trim().isEmpty()) {
-            System.out.println("\n✗ Nome, email e senha são obrigatórios!");
-            return;
-        }
-        
-        if (cep.trim().isEmpty() || logradouro.trim().isEmpty() || 
-            numero.trim().isEmpty() || bairro.trim().isEmpty() || estado.trim().isEmpty()) {
-            System.out.println("\n✗ Todos os campos de endereço são obrigatórios!");
-            return;
         }
         
         // ====================================================================
@@ -258,19 +249,17 @@ public class clienteControl {
             // ETAPA 4: CRIAR OBJETO CLIENTE
             // ================================================================
             
-            // IMPORTANTE: Em produção, criptografe a senha!
-            // String senhaHash = BCrypt.hashpw(senha, BCrypt.gensalt());
-            
             Cliente novoCliente = new Cliente(
                 tipo,
                 nome,
+                email,
+                senha,
                 cep,
+                cidade,
                 logradouro,
                 numero,
                 bairro,
-                estado,
-                email,
-                senha  // Em produção: use senhaHash
+                estado
             );
             
             System.out.println("\n[DEBUG] Cliente criado na memória");

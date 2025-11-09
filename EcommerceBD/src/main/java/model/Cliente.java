@@ -4,11 +4,15 @@
  */
 package model;
 
+import java.sql.SQLException;
+import java.sql.Connection;
+
 /**
  *
  * @author gustavo
  */
-public class Cliente extends EntidadeBase{
+public class Cliente extends EntidadeBase {
+    private Long idCliente;
     private String tipo;
     private String nome;
     private String cep;
@@ -18,6 +22,7 @@ public class Cliente extends EntidadeBase{
     private String estado;
     private String email;
     private String senha;
+    private String cidade;
 
     /*Construtor padrão
     * Utilizado para criar um cliente vazio que será populado depois
@@ -25,6 +30,7 @@ public class Cliente extends EntidadeBase{
     */
     public Cliente() {
         super();
+        getTabela();
     }
 
     /**
@@ -32,7 +38,7 @@ public class Cliente extends EntidadeBase{
      * Utilizado para CADASTRAR um novo cliente
      * O ID será gerado automáticamente pelo método gerarIdUnico;
      */
-    public Cliente(String tipo, String nome, String email, String senha, String cep, String logradouro, 
+    public Cliente(String tipo, String nome, String email, String senha, String cep, String cidade, String logradouro, 
     String numero, String bairro, String estado) {
         super();
         this.tipo = tipo;
@@ -40,6 +46,7 @@ public class Cliente extends EntidadeBase{
         this.email = email;
         this.senha = senha;
         this.cep = cep;
+        this.cidade = cidade;
         this.logradouro = logradouro;
         this.numero = numero;
         this.bairro = bairro;
@@ -49,7 +56,7 @@ public class Cliente extends EntidadeBase{
     /*
      * Construtor completo para cliente já cadastrado;
      */
-    public Cliente(Long id, String tipo, String nome, String email, String senha, String cep, String logradouro, 
+    public Cliente(Long id, String tipo, String nome, String email, String senha, String cep, String cidade, String logradouro, 
     String numero, String bairro, String estado) {
         super(id);
         this.tipo = tipo;
@@ -57,6 +64,7 @@ public class Cliente extends EntidadeBase{
         this.email = email;
         this.senha = senha;
         this.cep = cep;
+        this.cidade = cidade;
         this.logradouro = logradouro;
         this.numero = numero;
         this.bairro = bairro;
@@ -69,6 +77,11 @@ public class Cliente extends EntidadeBase{
     @Override
     protected String getTabela() {
         return "cliente";
+    }
+
+    public void gerarId(Connection conectar) throws SQLException {
+        Long id = gerarIdUnico(conectar);
+        this.idCliente = id;
     }
 
     /* MÉTODOS DE VALIDAÇÃO */
@@ -107,10 +120,10 @@ public class Cliente extends EntidadeBase{
             throw new IllegalArgumentException("Campo obrigatório não preenchido: Email");
         }
 
-        //String regex = "^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}$";
-        //if(!email.matches(regex)) {
-        //   throw new IllegalArgumentException("Email inválido!");
-        //}
+        String regex = "^[a-zA-Z0-9._%+-]+@([a-zA-Z0-9]+(-[a-zA-Z0-9]+)*\\.)[a-zA-Z]{2,}$";
+        if(!email.matches(regex)) {
+           throw new IllegalArgumentException("Email inválido!");
+        }
     }
 
     /**
@@ -121,9 +134,9 @@ public class Cliente extends EntidadeBase{
             throw new IllegalArgumentException("Campo obrigatório não preenchido: Senha");
         }
 
-//        if(senha.trim().length() < 6) {
-//            throw new IllegalArgumentException("A senha deve conter um mínimo de seis caracteres!");
-//        }
+        if(senha.trim().length() < 6) {
+            throw new IllegalArgumentException("A senha deve conter um mínimo de seis caracteres!");
+        }
     }
 
     /**
@@ -135,9 +148,9 @@ public class Cliente extends EntidadeBase{
         }
 
         String cepLimpo = cep.replaceAll("[^0-9]", "");
-//        if(cepLimpo.length() != 7) {
-//            throw new IllegalArgumentException("O CEP deve conter apenas oito caracteres!");
-//        }
+        if(cepLimpo.length() != 8) {
+            throw new IllegalArgumentException("O CEP deve conter apenas oito caracteres!");
+        }
    }
 
     /**
@@ -148,15 +161,19 @@ public class Cliente extends EntidadeBase{
             throw new IllegalArgumentException("Campo obrigatório não preenchido: Estado");
         }
 
-//        if(estado.trim().length() != 2) {
-//            throw new IllegalArgumentException("Estado deve ter dois caracteres (UF)");
-//        }
+        if(estado.trim().length() != 2) {
+            throw new IllegalArgumentException("Estado deve ter dois caracteres (UF)");
+        }
     }
 
     /**
      * Valida os campos de endereço;
      */
     private void validarEndereco() {
+        if(cidade == null || cidade.trim().isEmpty()) {
+            throw new IllegalArgumentException("Campo obrigatório não preenchido: Cidade");
+        }
+
         if(logradouro == null || logradouro.trim().isEmpty()) {
             throw new IllegalArgumentException("Campo obrigatório não preenchido: Logradouro");
         }
@@ -197,6 +214,13 @@ public class Cliente extends EntidadeBase{
          */
         if(cep!= null) {
             cep = cep.replaceAll("[^0-9]", "");
+        }
+
+        /*
+         * Remove todos os espaços extras na Cidade;
+         */
+        if(cidade != null) {
+            cidade = cidade.trim();
         }
 
         /*
@@ -245,7 +269,7 @@ public class Cliente extends EntidadeBase{
      * Retorna o endereço completo formatado
      */
     public String getEnderecoCompleto() {
-        return String.format("%s, %s - %s, %s - CEP: %s", logradouro, numero, bairro, estado, formatarCEP());
+        return String.format("%s, %s, %s - %s, %s - CEP: %s", cidade, logradouro, numero, bairro, estado, formatarCEP());
     }
 
     /*
@@ -261,6 +285,20 @@ public class Cliente extends EntidadeBase{
         "\nEmail: " + email +
         "\nEndereço: " + getEnderecoCompleto() + '\'' +
         '}';
+    }
+
+    /**
+     * @return the idCliente
+     */
+    public Long getIdCliente() {
+        return idCliente;
+    }
+
+    /**
+     * @param idCliente the idCliente to set
+     */
+    public void setIdCliente(Long idCliente) {
+        this.idCliente = idCliente;
     }
 
     /**
@@ -289,6 +327,20 @@ public class Cliente extends EntidadeBase{
      */
     public void setCep(String cep) {
         this.cep = cep;
+    }
+
+    /**
+     * @return the cidade
+     */
+    public String getCidade() {
+        return cidade;
+    }
+
+    /**
+     * @param cidade the cidade to set
+     */
+    public void setCidade(String cidade) {
+        this.cidade = cidade;
     }
 
     /**
