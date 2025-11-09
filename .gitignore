@@ -1,2 +1,3 @@
 /EcommerceBD/target
-/EcommerceBD/pom.xml
+EcommerceBD/pom.xml
+EcommerceBD/src/main/java/model/Conexao.java
