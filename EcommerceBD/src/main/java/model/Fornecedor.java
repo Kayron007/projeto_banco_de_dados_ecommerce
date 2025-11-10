@@ -7,13 +7,21 @@ public class Fornecedor extends EntidadeBase{
     private String cep;
     private String email;
     
-    //construtor vazio 
+    /* Construtor padrão
+     * Utilizado para criar um fornecedor vazio que será populado depois
+     * O ID será gerado posteriormente pelo gerarIdUnico;
+    */
     public Fornecedor() {
         super();
     }
-    
-    public Fornecedor(Long id, String nome, String tipoMaterial, String cnpj, String cep, String email){
-        super(id);
+
+    /*
+     * Construtor completo para fornecedor sem cadastro
+     * Utilizado para CADASTRAR um fornecedor
+     * O ID será gerado automáticamente pelo método gerarIdUnico;
+     */
+    public Fornecedor(String nome, String tipoMaterial, String cnpj, String cep, String email) {
+        super();
         this.nome = nome;
         this.tipoMaterial = tipoMaterial;
         this.cnpj = cnpj;
@@ -22,11 +30,139 @@ public class Fornecedor extends EntidadeBase{
     }
     
     /*
-     * Completar mais tarde
+     * Construtor completo para fornecedor já cadastrado;
+     *  
+     */
+    public Fornecedor(Long id, String nome, String tipoMaterial, String cnpj, String cep, String email){
+        super(id);
+        this.nome = nome;
+        this.tipoMaterial = tipoMaterial;
+        this.cnpj = cnpj;
+        this.cep = cep;
+        this.email = email;
+    }
+
+    /* MÉTODOS DE VALIDAÇÃO */
+
+    /**
+     * Valida todos os dados do fornecedor
+     * Lança exceções com mensagens específicas para cada erro;
+     */
+    public void validar() {
+        validarNome(nome);
+        validarTipoMaterial();
+        validarCNPJ(cnpj);
+        validarCEP(cep);
+        validarEmail(email);
+    }
+
+    /*
+     * Chama a classe Validador para validar o nome do fornecedor;
+     */
+    private void validarNome(String nome) {
+        Validador.nomeValido(nome);
+        this.nome = nome;
+    }
+
+    /*
+     * Valida o tipoMaterial
+     */
+    private void validarTipoMaterial() {
+        if(tipoMaterial == null || tipoMaterial.trim().isEmpty()) {
+            throw new IllegalArgumentException("Campo obrigatório não preenchido: Tipo de Material");
+        }
+    }
+
+    /*
+     * Chama a classe Validador para validar o CNPJ do fornecedor;
+     */
+    private void validarCNPJ(String cnpj) {
+        Validador.cnpjValido(cnpj);
+        this.cnpj = cnpj;
+    }
+
+    /*
+     * Chama a classe Validador para validar o CEP do fornecedor;
+     */
+    private void validarCEP(String cep) {
+        Validador.cepValido(cep);
+        this.cep = cep;
+    }
+
+    /*
+     * Chama a classe Validador para validar o email do fornecedor;
+     */
+    private void validarEmail(String email) {
+        Validador.emailValido(email);
+        this.email = email;
+    }
+
+    /* MÉTODO DE NORMALIZAÇÃO DE DADOS */
+
+    /**
+     * Normaliza os dados do fornecedor (formata, remove espaços, converte para letras maiúsculas/minúsculas)
+     * Chamado antes de salvar no banco;
+     */
+    public void normalizar() {
+
+        /*
+         * Remove os espaços extras no nome;
+         */
+        if(nome !=  null) {
+            nome = nome.trim();
+        }
+
+        /*
+         * Remove os espaços extras no tipoMaterial;
+         */
+        if(tipoMaterial != null) {
+            tipoMaterial = tipoMaterial.trim();
+        }
+
+        /*
+         * Remove a máscara do CNPJ;
+         */
+        if(cnpj != null) {
+            cnpj = cnpj.replaceAll("[^0-9]", "");
+        }
+
+        /*
+         * Remove a máscara do CEP;
+         */
+        if(cep != null) {
+            cep = cep.replaceAll("[^0-9]", "");
+        }
+
+        /*
+         * Remove os espaços extras no email e converte a String para letras minúsculas;
+         */
+        if(email != null) {
+            email = email.trim().toLowerCase();
+        }
+    }
+
+    /* MÉTODOS UTILITÁRIOS */
+
+    /*
+     * Retorna o CEP formatado;
+     */
+    public String formataCEP() {
+        return Validador.utilCEP(this.cep);
+    }
+    
+    /*
+     * Exibe as informações do fornecedor;
      */
     @Override
     public String toString() {
-        return "";
+        return "Fornecedor{" +
+        "ID: " + id +
+        "Nome: " + nome +
+        "Tipo de material: " + tipoMaterial +
+        "CNPJ: " + cnpj +
+        "CEP: " + cep +
+        "Email: " + email + '\'' +
+        "}";
     }
     
     /**
@@ -97,7 +233,5 @@ public class Fornecedor extends EntidadeBase{
      */
     public void setEmail(String email) {
         this.email = email;
-    }
-    
-    
+    } 
 }
