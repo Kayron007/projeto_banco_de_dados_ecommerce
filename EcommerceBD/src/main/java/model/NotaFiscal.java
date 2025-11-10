@@ -30,11 +30,6 @@ public class NotaFiscal extends EntidadeBase{
         this.id_pedido = id_pedido;
     }
 
-    @Override
-    protected String getTabela(){
-        return "notafiscal";
-    }
-
     /*
      * Completar mais tarde
      */

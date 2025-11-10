@@ -26,11 +26,6 @@ public class PedidoProduto extends EntidadeBase{
         this.precoUnitario = precoUnitario;
     }
 
-    @Override
-    protected String getTabela() {
-        return "pedido_produto";
-    }
-
     /*
      * Completar mais tarde
      */

@@ -28,11 +28,6 @@ public class Produto extends EntidadeBase{
         this.quantidade = quantidade;
     }
 
-    @Override
-    protected String getTabela() {
-        return "produto";
-    }
-
     /*
      * Completar mais tarde
      */

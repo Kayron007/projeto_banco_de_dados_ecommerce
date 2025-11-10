@@ -23,11 +23,6 @@ public class PessoaJuridica extends EntidadeBase{
         this.cnpj = cnpj;
         this.IE = IE;
     }
-    
-    @Override
-    protected String getTabela() {
-        return "pessoaJuridica";
-    }
 
     /*
      * Completar mais tarde

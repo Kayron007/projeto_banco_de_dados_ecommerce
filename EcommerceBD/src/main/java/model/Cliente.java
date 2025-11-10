@@ -4,15 +4,11 @@
  */
 package model;
 
-import java.sql.SQLException;
-import java.sql.Connection;
-
 /**
  *
  * @author gustavo
  */
 public class Cliente extends EntidadeBase {
-    private Long idCliente;
     private String tipo;
     private String nome;
     private String cep;
@@ -30,7 +26,6 @@ public class Cliente extends EntidadeBase {
     */
     public Cliente() {
         super();
-        getTabela();
     }
 
     /**
@@ -69,19 +64,6 @@ public class Cliente extends EntidadeBase {
         this.numero = numero;
         this.bairro = bairro;
         this.estado = estado;
-    }
-
-    /*
-     * Acessa a tabela no banco de dados através do nome exato;
-     */
-    @Override
-    protected String getTabela() {
-        return "cliente";
-    }
-
-    public void gerarId(Connection conectar) throws SQLException {
-        Long id = gerarIdUnico(conectar);
-        this.idCliente = id;
     }
 
     /* MÉTODOS DE VALIDAÇÃO */
@@ -285,20 +267,6 @@ public class Cliente extends EntidadeBase {
         "\nEmail: " + email +
         "\nEndereço: " + getEnderecoCompleto() + '\'' +
         '}';
-    }
-
-    /**
-     * @return the idCliente
-     */
-    public Long getIdCliente() {
-        return idCliente;
-    }
-
-    /**
-     * @param idCliente the idCliente to set
-     */
-    public void setIdCliente(Long idCliente) {
-        this.idCliente = idCliente;
     }
 
     /**

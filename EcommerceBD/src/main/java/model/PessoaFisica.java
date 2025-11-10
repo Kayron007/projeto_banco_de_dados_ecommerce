@@ -24,11 +24,6 @@ public class PessoaFisica extends EntidadeBase{
         this.rg = rg;
     }
 
-    @Override
-    protected String getTabela() {
-        return "pessoaFisica";
-    }
-
     /*
      * Completar mais tarde
      */

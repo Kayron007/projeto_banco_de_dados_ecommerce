@@ -22,11 +22,6 @@ public class Pagamento extends EntidadeBase{
         this.status = status;
     }
 
-    @Override
-    protected String getTabela() {
-        return "pagamento";
-    }
-
     /*
      * Completar mais tarde
      */

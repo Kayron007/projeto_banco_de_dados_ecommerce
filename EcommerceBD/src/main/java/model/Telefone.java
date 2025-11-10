@@ -13,12 +13,7 @@ public class Telefone extends EntidadeBase{
     private String tipo;
     private Fornecedor id_fornecedor;
     private Cliente id_cliente;
-
-    @Override
-    protected String getTabela() {
-        return "telefone";
-    }
-
+    
     /*
      * Completar mais tarde
      */

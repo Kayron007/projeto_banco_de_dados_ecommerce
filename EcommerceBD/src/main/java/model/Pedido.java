@@ -25,11 +25,6 @@ public class Pedido extends EntidadeBase{
         this.id_pagamento = id_pagamento;
     }
 
-    @Override
-    protected String getTabela() {
-        return "pedido";
-    }
-
     /*
      * Completar mais tarde
      */

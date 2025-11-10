@@ -26,11 +26,6 @@ public class FornecedorProduto extends EntidadeBase{
         this.prazo = prazo;
     }
 
-    @Override
-    protected String getTabela(){
-        return "fornecedor_produto";
-    }
-
     /*
      * Completar mais tarde
      */

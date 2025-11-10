@@ -20,12 +20,7 @@ public class Fornecedor extends EntidadeBase{
         this.cep = cep;
         this.email = email;
     }
-
-    @Override
-    protected String getTabela() {
-        return "fornecedor";
-    }
-
+    
     /*
      * Completar mais tarde
      */

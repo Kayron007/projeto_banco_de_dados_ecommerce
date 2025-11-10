@@ -26,11 +26,6 @@ public class Avaliacao extends EntidadeBase{
         this.id_cliente = id_cliente;
     }
 
-    @Override
-    protected String getTabela() {
-        return "avaliacao";
-    }
-
     /*
      * Completar mais tarde
      */
