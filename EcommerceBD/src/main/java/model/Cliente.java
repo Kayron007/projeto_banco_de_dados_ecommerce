@@ -73,45 +73,34 @@ public class Cliente extends EntidadeBase {
      * Lança exceções com mensagens específicas para cada erro;
      */
     public void validar() {
-        validarNome();
-        validarEmail();
+        validarNome(nome);
+        validarEmail(email);
         validarSenha();
-        validarCEP();
+        validarCEP(cep);
         validarEstado();
         validarEndereco();
     }
 
-    /**
-     * Valida o nome do cliente;
+    /*
+     * Chama a classe Validador para validar o nome do cliente;
      */
-    private void validarNome() {
-        if(nome == null || nome.trim().isEmpty()) {
-            throw new IllegalArgumentException("Nome do cliente é obrigatório!");
-        }
-
-        if(nome.trim().length() < 3) {
-            throw new IllegalArgumentException("O nome deve ter um mínimo de três caracteres!");
-        }
+    private void validarNome(String nome) {
+        Validador.nomeValido(nome);
+        this.nome = nome;
     }
 
-    /**
-     * Valida o email do cliente;
+    /*
+     * Chama a classe Validador para validar o email do cliente;
      */
-    private void validarEmail() {
-        if(email == null || email.trim().isEmpty()) {
-            throw new IllegalArgumentException("Campo obrigatório não preenchido: Email");
-        }
-
-        String regex = "^[a-zA-Z0-9._%+-]+@([a-zA-Z0-9]+(-[a-zA-Z0-9]+)*\\.)[a-zA-Z]{2,}$";
-        if(!email.matches(regex)) {
-           throw new IllegalArgumentException("Email inválido!");
-        }
+    private void validarEmail(String email) {
+        Validador.emailValido(email);
+        this.email = email;
     }
 
-    /**
+    /*
      * Valida a senha do usuário;
      */
-    public void validarSenha() {
+    private void validarSenha() {
         if(senha == null || senha.trim().isEmpty()) {
             throw new IllegalArgumentException("Campo obrigatório não preenchido: Senha");
         }
@@ -121,21 +110,15 @@ public class Cliente extends EntidadeBase {
         }
     }
 
-    /**
-     * Valida o CEP do cliente;
+    /*
+     * Chama a classe Validador para validar o CEP do cliente;
      */
-    private void validarCEP() {
-        if(cep == null || cep.trim().isEmpty()) {
-            throw new IllegalArgumentException("Campo obrigatório não preenchido: CEP");
-        }
+    private void validarCEP(String cep) {
+        Validador.cepValido(cep);
+        this.cep = cep;
+    }
 
-        String cepLimpo = cep.replaceAll("[^0-9]", "");
-        if(cepLimpo.length() != 8) {
-            throw new IllegalArgumentException("O CEP deve conter apenas oito caracteres!");
-        }
-   }
-
-    /**
+    /*
      * Valida o estado (UF);
      */
     private void validarEstado() {
@@ -148,7 +131,7 @@ public class Cliente extends EntidadeBase {
         }
     }
 
-    /**
+    /*
      * Valida os campos de endereço;
      */
     private void validarEndereco() {
@@ -169,10 +152,10 @@ public class Cliente extends EntidadeBase {
         }
     }
 
-    /* MÉTODOS DE NORMALIZAÇÃO DE DADOS */
+    /* MÉTODO DE NORMALIZAÇÃO DE DADOS */
 
     /**
-     * Normaliza os dados dos clientes (formata, remove espaços, etc)
+     * Normaliza os dados dos clientes (formata, remove espaços e converte para letras maiúsculas/minúsculas)
      * Chamado antes de salvar no banco;
      */
     public void normalizar() {
@@ -185,14 +168,14 @@ public class Cliente extends EntidadeBase {
         }
 
         /*
-         * Remove os espaços no email e converte a String para letras minúsculas;
+         * Remove os espaços extras no email e converte a String para letras minúsculas;
          */
         if(email != null) {
             email = email.trim().toLowerCase();
         }
 
         /*
-         * Remove qualquer caractere do CEP que não seja número (mantém apenas dígitos);
+         * Remove a máscara do CEP;
          */
         if(cep!= null) {
             cep = cep.replaceAll("[^0-9]", "");
@@ -240,11 +223,11 @@ public class Cliente extends EntidadeBase {
 
     /* MÉTODOS UTILITÁRIOS */
 
+    /**
+     * Retorna o CEP formatado (xxxxx-xxx);
+     */
     public String formatarCEP() {
-        if(cep == null || cep.length() != 8) {
-            return cep;
-        }
-        return cep.substring(0, 5) + "-" + cep.substring(5);
+        return Validador.utilCEP(this.cep);
     }
 
     /*
@@ -259,14 +242,13 @@ public class Cliente extends EntidadeBase {
      */
     @Override
     public String toString() {
-        return 
-        "Cliente{" + 
+        return "Cliente{" + 
         "ID: " + id +
         "\nidPessoa: " + (getTipo() != null ? getTipo() : "null") +
         "\nNome: " + nome +
         "\nEmail: " + email +
         "\nEndereço: " + getEnderecoCompleto() + '\'' +
-        '}';
+        "}";
     }
 
     /**
