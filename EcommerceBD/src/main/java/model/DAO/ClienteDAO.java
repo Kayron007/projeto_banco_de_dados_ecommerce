@@ -6,10 +6,9 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.List;
-import model.Conexao;
 
-public class ClienteDAO implements DAObase<Cliente>{
-    private Connection connection = Conexao.conectar();
+public class ClienteDAO extends EntidadeBaseDAO<Cliente>{
+    private Connection connection;
 
     public ClienteDAO(Connection connection) {
         this.connection = connection;
@@ -22,9 +21,6 @@ public class ClienteDAO implements DAObase<Cliente>{
         
         // PASSO 2: Valida dados
         cliente.validar();
-        if (cliente.getSenha() != null) {
-            cliente.validarSenha();
-        }
         
         // PASSO 3: Verifica se email já existe
         if (emailExistente(cliente.getEmail())) {
@@ -32,7 +28,12 @@ public class ClienteDAO implements DAObase<Cliente>{
         }
         
         // PASSO 4: Gera ID único (método herdado de EntidadeBase)
-        cliente.gerarIdUnico(connection);
+        try {
+            Long novoId = gerarIdUnico("cliente", "id");
+            cliente.setId(novoId);
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
         
         System.out.println("[DAO] ID gerado: " + cliente.getId());
         
@@ -115,7 +116,7 @@ public class ClienteDAO implements DAObase<Cliente>{
         return null;
     }
     
-    private boolean emailExistente(String email) throws SQLException {
+    public boolean emailExistente(String email) throws SQLException {
         String sql = "SELECT COUNT(*) FROM cliente WHERE email = ?";
         
         try (PreparedStatement stmt = connection.prepareStatement(sql)) {
@@ -131,8 +132,6 @@ public class ClienteDAO implements DAObase<Cliente>{
     }
 
     private Cliente montarCliente(ResultSet rs) throws SQLException {
-        // Cria objeto Pessoa apenas com ID (simplificado)
-        // Em produção, você pode fazer JOIN e buscar dados completos da pessoa
         String tipo = rs.getString("Tipo");
         
         // Extrai os valores de cada atributo
