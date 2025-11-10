@@ -16,11 +16,11 @@ import model.DAO.ClienteDAO;
  *
  * @author gustavo
  */
-public class clienteControl {
-    private Scanner scan;
-    
-    public clienteControl(Scanner scan) {
-        this.scan = scan;
+public class ClienteControl {
+    private ClienteDAO clienteDAO;
+
+    public ClienteControl(Connection conn) {
+        this.clienteDAO = new ClienteDAO(conn);
     }
 
     public void menu(Scanner scan) {
@@ -228,22 +228,10 @@ public class clienteControl {
         // ETAPA 3: CRIAR OBJETO PESSOA
         // ====================================================================
         
-        // IMPORTANTE: Aqui você precisa ajustar conforme sua implementação
-        // de Pessoa. Este é apenas um exemplo simplificado.
-        
-        // Opção 1: Se Pessoa já existe no banco, busque pelo CPF ou crie
-        // Opção 2: Se está criando nova Pessoa junto com Cliente
-        
         Connection connection = null;
         
         try {
             connection = Conexao.conectar();
-            
-            // Ou se Pessoa tem outros dados obrigatórios:
-            // pessoa.setNome(nome);
-            // pessoa.setCpf(cpf); // você precisaria coletar o CPF
-            // PessoaDAO pessoaDAO = new PessoaDAO(connection);
-            // pessoaDAO.inserir(pessoa);
             
             // ================================================================
             // ETAPA 4: CRIAR OBJETO CLIENTE
@@ -321,8 +309,8 @@ public class clienteControl {
                 System.err.println("\nErro: " + e.getMessage());
             }
             
-            System.err.println("\n[DEBUG] Detalhes técnicos:");
-            e.printStackTrace();
+            /*System.err.println("\n[DEBUG] Detalhes técnicos:");
+            e.printStackTrace();*/
             
         } catch (IllegalStateException e) {
             // Erro na geração de ID único
@@ -354,6 +342,15 @@ public class clienteControl {
                     System.err.println("Erro ao fechar conexão: " + e.getMessage());
                 }
             }
+        }
+    }
+
+    public boolean emailCadastrado(String email) {
+        try {
+            return clienteDAO.emailExistente(email);
+        } catch (SQLException e) {
+            System.out.println("Erro ao verificar email: " + e.getMessage());
+            return false;
         }
     }
 }
