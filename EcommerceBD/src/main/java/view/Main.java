@@ -5,7 +5,9 @@
 package view;
 
 import java.util.Scanner;
+import java.sql.Connection;
 import control.*;
+import model.Conexao;
 
 /**
  *
@@ -19,10 +21,17 @@ public class Main {
         System.out.println("║   SISTEMA DE E-COMMERCE                ║");
         System.out.println("╚════════════════════════════════════════╝");
         
-        clienteControl clienteControl = new clienteControl(scan);
-        clienteControl.menu(scan);
+        try {
+            Connection conn = Conexao.conectar();
+            ClienteControl clienteControl = new ClienteControl(conn);
+            clienteControl.menu(scan);
+            conn.close();
+        } catch (Exception e) {
+            System.err.println("Erro ao conectar ao banco: " + e.getMessage());
+        } finally {
+            scan.close();
+        }
         
         System.out.println("\nSistema encerrado.");
-        scan.close();
     }
 }
