@@ -4,14 +4,14 @@
  */
 package model;
 
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 /**
  *
  * @author gustavo
  */
 public class NotaFiscal extends EntidadeBase{
-    private LocalDate dataDeEmissao;
+    private LocalDateTime dataDeEmissao;
     private int valorTotal;
     private int imposto;
     private String chaveDeAcesso;
@@ -21,7 +21,7 @@ public class NotaFiscal extends EntidadeBase{
         super();
     }
 
-    public NotaFiscal(Long id, LocalDate dataDeEmissao, int valorTotal, int imposto, String chaveDeAcesso, Pedido id_pedido) {
+    public NotaFiscal(Long id, LocalDateTime dataDeEmissao, int valorTotal, int imposto, String chaveDeAcesso, Pedido id_pedido) {
         super(id);
         this.dataDeEmissao = dataDeEmissao;
         this.valorTotal = valorTotal;
@@ -41,14 +41,14 @@ public class NotaFiscal extends EntidadeBase{
     /**
      * @return the dataDeEmissao
      */
-    public LocalDate getDataDeEmissao() {
+    public LocalDateTime getDataDeEmissao() {
         return dataDeEmissao;
     }
 
     /**
      * @param dataDeEmissao the dataDeEmissao to set
      */
-    public void setDataDeEmissao(LocalDate dataDeEmissao) {
+    public void setDataDeEmissao(LocalDateTime dataDeEmissao) {
         this.dataDeEmissao = dataDeEmissao;
     }
 

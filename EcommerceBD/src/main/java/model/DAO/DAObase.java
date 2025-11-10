@@ -14,7 +14,7 @@ public interface DAObase <T> {
     
     public void alterar(T obj);
     
-    public List listar(T obj);
+    public List <T> listar();
     
     T buscarPorId(Long id) throws SQLException ;
 }

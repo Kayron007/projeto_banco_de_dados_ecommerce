@@ -1,43 +1,145 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 package model.DAO;
 
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
+import java.util.ArrayList;
 import java.util.List;
+import model.Fornecedor;
 import model.FornecedorProduto;
+import model.Produto;
 
-/**
- *
- * @author gustavo
- */
-public class FornecedorProdutoDAO implements DAObase<FornecedorProduto>{
+public class FornecedorProdutoDAO extends EntidadeBaseDAO<FornecedorProduto> {
+
+    private Connection connection;
 
     @Override
-    public void inserir(FornecedorProduto obj) throws SQLException {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+    public void inserir(FornecedorProduto fp) throws SQLException {
+        try {
+            Long novoId = gerarIdUnico("cliente", "id");
+            fp.setId(novoId);
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+        String sql = "INSERT INTO fornecedor_produto (fk_Fornecedor_ID_fornecedor, fk_Produto_ID_produto, preco_fornecedor, prazo_entrega) "
+                + "VALUES (?, ?, ?, ?)";
+
+        try (PreparedStatement stmt = connection.prepareStatement(sql)) {
+            stmt.setLong(1, fp.getId_fornecedor().getId());
+            stmt.setLong(2, fp.getId_produto().getId());
+            stmt.setFloat(3, fp.getPrecoFornecedor());
+            stmt.setInt(4, fp.getPrazo());
+
+            int linhasAfetadas = stmt.executeUpdate();
+            if (linhasAfetadas == 0) {
+                throw new SQLException("Falha ao inserir fornecedor_produto, nenhuma linha afetada.");
+            }
+
+            System.out.println("[DAO] Registro fornecedor_produto inserido com sucesso!");
+        }
     }
 
     @Override
-    public void deletar(FornecedorProduto obj) {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+    public void deletar(FornecedorProduto fp) {
+        String sql = "DELETE FROM fornecedor_produto WHERE fk_Fornecedor_ID_fornecedor = ? AND fk_Produto_ID_produto = ?";
+
+        try (PreparedStatement stmt = connection.prepareStatement(sql)) {
+            stmt.setLong(1, fp.getId_fornecedor().getId());
+            stmt.setLong(2, fp.getId_produto().getId());
+            stmt.executeUpdate();
+            System.out.println("[DAO] Registro fornecedor_produto deletado com sucesso!");
+        } catch (Exception e) {
+            System.out.println("Erro ao deletar fornecedor_produto: " + e.getMessage());
+        }
     }
 
     @Override
-    public void alterar(FornecedorProduto obj) {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+    public void alterar(FornecedorProduto fp) {
+        String sql = "UPDATE fornecedor_produto SET preco_fornecedor = ?, prazo_entrega = ? "
+                + "WHERE fk_Fornecedor_ID_fornecedor = ? AND fk_Produto_ID_produto = ?";
+
+        try (PreparedStatement stmt = connection.prepareStatement(sql)) {
+            stmt.setFloat(1, fp.getPrecoFornecedor());
+            stmt.setInt(2, fp.getPrecoFornecedor());
+            stmt.setLong(3, fp.getId_fornecedor().getId());
+            stmt.setLong(4, fp.getId_produto().getId());
+
+            stmt.executeUpdate();
+            System.out.println("[DAO] Registro fornecedor_produto alterado com sucesso!");
+        } catch (Exception e) {
+            System.out.println("Erro ao alterar fornecedor_produto: " + e.getMessage());
+        }
     }
 
-    @Override
-    public List listar(FornecedorProduto obj) {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+    private FornecedorProduto montarFornecedorProduto(ResultSet rs) throws SQLException {
+        Long FornecedorId = rs.getLong("fk_Fornecedor_ID_fornecedor");
+        FornecedorDAO fpd = new FornecedorDAO();
+        Fornecedor f = fpd.buscarPorId(FornecedorId);
+
+        Long fkProdutoId = rs.getLong("fk_Produto_ID_produto");
+        ProdutoDAO pd = new ProdutoDAO();
+        Produto p = pd.buscarPorId(fkProdutoId);
+
+        int precoFornecedor = rs.getInt("preco_fornecedor");
+        int prazoEntrega = rs.getInt("prazo_entrega");
+
+        return new FornecedorProduto(f, p, precoFornecedor, prazoEntrega);
     }
 
     @Override
     public FornecedorProduto buscarPorId(Long id) throws SQLException {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+        throw new UnsupportedOperationException("Use buscarPorChaves(fornecedorId, produtoId) para buscar nessa tabela.");
     }
 
-    
+    public FornecedorProduto buscarPorChaves(Long fornecedorId, Long produtoId) throws SQLException {
+        String sql = "SELECT * FROM fornecedor_produto WHERE fk_Fornecedor_ID_fornecedor = ? AND fk_Produto_ID_produto = ?";
+
+        try (PreparedStatement stmt = connection.prepareStatement(sql)) {
+            stmt.setLong(1, fornecedorId);
+            stmt.setLong(2, produtoId);
+
+            try (ResultSet rs = stmt.executeQuery()) {
+                if (rs.next()) {
+                    return montarFornecedorProduto(rs);
+                }
+            }
+        }
+
+        return null;
+    }
+
+    @Override
+    public List<FornecedorProduto> listar() {
+        List<FornecedorProduto> lista = new ArrayList<>();
+
+        String sql = "SELECT * FROM fornecedor_produto";
+
+        try (Statement st = connection.createStatement(); ResultSet rs = st.executeQuery(sql)) {
+
+            while (rs.next()) {
+                FornecedorProduto fp = new FornecedorProduto();
+
+                Long FornecedorId = rs.getLong("fk_Fornecedor_ID_fornecedor");
+                FornecedorDAO fpd = new FornecedorDAO();
+                Fornecedor f = fpd.buscarPorId(FornecedorId);
+                fp.setId_fornecedor(f);
+
+                Long fkProdutoId = rs.getLong("fk_Produto_ID_produto");
+                ProdutoDAO pd = new ProdutoDAO();
+                Produto p = pd.buscarPorId(fkProdutoId);
+                fp.setId_produto(p);
+                
+                fp.setPrecoFornecedor(rs.getInt("preco_fornecedor"));
+                fp.setPrazo(rs.getInt("prazo_entrega"));
+                lista.add(fp);
+            }
+
+        } catch (Exception e) {
+            System.out.println("Erro ao listar fornecedor_produto: " + e.getMessage());
+        }
+
+        return lista;
+    }
 }

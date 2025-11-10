@@ -5,7 +5,9 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.List;
+import java.util.ArrayList;
 
 public class ClienteDAO extends EntidadeBaseDAO<Cliente>{
     private Connection connection;
@@ -165,13 +167,60 @@ public class ClienteDAO extends EntidadeBaseDAO<Cliente>{
     }
 
     @Override
-    public void alterar(Cliente obj) {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
-    }
+    public void alterar(Cliente cliente) {
+        String sql = "UPDATE cliente SET Tipo = ?, Nome = ?, Email = ?, Senha = ?, CEP = ?, Cidade = ?,"
+                + " Logradouro = ?, Numero = ?, Bairro = ?, Estado = ? WHERE ID = ?";
+        
+        try (PreparedStatement stmt = connection.prepareStatement(sql)){
+            
+            stmt.setString(1, cliente.getTipo());
+            stmt.setString(2, cliente.getNome());
+            stmt.setString(3, cliente.getEmail());
+            stmt.setString(4, cliente.getSenha());
+            stmt.setString(5, cliente.getCep());
+            stmt.setString(6, cliente.getCidade());
+            stmt.setString(7, cliente.getLogradouro());
+            stmt.setString(8, cliente.getNumero());
+            stmt.setString(9, cliente.getBairro());
+            stmt.setString(10, cliente.getEstado());
+            stmt.setLong(11, cliente.getIdCliente());
+            
+        } catch (Exception e) {
+            System.out.println("Erro ao alterar cliente: " + e.getMessage());
 
+        }
+    }
+    
     @Override
-    public List listar(Cliente obj) {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+    public List<Cliente> listar () {
+        List<Cliente> cliente = new ArrayList<>();
+        
+        String sql = "SELECT * FROM cliente";
+        
+        try (Statement st = connection.createStatement();
+            ResultSet rs = st.executeQuery(sql)){
+            
+            while (rs.next()) {
+                Cliente c = new Cliente();
+                c.setIdCliente(rs.getLong("ID"));
+                c.setNome(rs.getString("Nome"));
+                c.setTipo(rs.getString("Tipo"));
+                c.setEmail(rs.getString("Email"));
+                c.setSenha(rs.getString("Senha"));
+                c.setNumero(rs.getString("Numero"));
+                c.setCep(rs.getString("CEP"));
+                c.setLogradouro(rs.getString("Logradouro"));
+                c.setBairo(rs.getString("Bairro"));
+                c.setEstado(rs.getString("Estado"));
+                c.setCidade(rs.getString("Cidade"));
+                
+                cliente.add(c);
+            }
+            
+        } catch (Exception e) {
+            System.out.println("Erro ao listar alunos: " + e.getMessage());
+        }
+        return cliente;
     }
 }
 

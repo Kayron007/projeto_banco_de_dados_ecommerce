@@ -15,7 +15,7 @@ import model.Conexao;
  *
  * @author gustavo
  */
-public class AvaliacaoDAO implements DAObase<Avaliacao>{
+public class AvaliacaoDAO extends EntidadeBaseDAO<Avaliacao>{
 
     @Override
     public void inserir(Avaliacao obj) throws SQLException {
@@ -33,7 +33,7 @@ public class AvaliacaoDAO implements DAObase<Avaliacao>{
     }
 
     @Override
-    public List listar(Avaliacao obj) {
+    public List<Avaliacao > listar() {
         throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
     }
 
@@ -41,7 +41,6 @@ public class AvaliacaoDAO implements DAObase<Avaliacao>{
     public Avaliacao buscarPorId(Long id) throws SQLException {
         throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
     }
-
     
 }
 
