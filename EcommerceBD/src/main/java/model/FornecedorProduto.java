@@ -18,12 +18,15 @@ public class FornecedorProduto extends EntidadeBase{
         super();
     }
 
-    public FornecedorProduto(Long id, Fornecedor id_fornecedor, Produto id_produto, int precoFornecedor, int prazo) {
-        super(id);
+    public FornecedorProduto(Fornecedor id_fornecedor, Produto id_produto, int precoFornecedor, int prazo) {
         this.id_fornecedor = id_fornecedor;
         this.id_produto = id_produto;
         this.precoFornecedor = precoFornecedor;
         this.prazo = prazo;
+    }
+    
+    protected String getTabela(){
+        return "fornecedor_produto";
     }
 
     /*

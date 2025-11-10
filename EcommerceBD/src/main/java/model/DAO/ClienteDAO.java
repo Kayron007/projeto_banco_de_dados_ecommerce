@@ -183,7 +183,7 @@ public class ClienteDAO extends EntidadeBaseDAO<Cliente>{
             stmt.setString(8, cliente.getNumero());
             stmt.setString(9, cliente.getBairro());
             stmt.setString(10, cliente.getEstado());
-            stmt.setLong(11, cliente.getIdCliente());
+            stmt.setLong(11, cliente.getId());
             
         } catch (Exception e) {
             System.out.println("Erro ao alterar cliente: " + e.getMessage());
@@ -202,7 +202,7 @@ public class ClienteDAO extends EntidadeBaseDAO<Cliente>{
             
             while (rs.next()) {
                 Cliente c = new Cliente();
-                c.setIdCliente(rs.getLong("ID"));
+                c.setId(rs.getLong("ID"));
                 c.setNome(rs.getString("Nome"));
                 c.setTipo(rs.getString("Tipo"));
                 c.setEmail(rs.getString("Email"));
