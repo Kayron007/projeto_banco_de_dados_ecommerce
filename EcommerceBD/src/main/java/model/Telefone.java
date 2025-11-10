@@ -13,6 +13,16 @@ public class Telefone extends EntidadeBase{
     private String tipo;
     private Fornecedor id_fornecedor;
     private Cliente id_cliente;
+
+    public Telefone(String numero, String tipo, Fornecedor id_fornecedor, Cliente id_cliente, Long id) {
+        super(id);
+        this.numero = numero;
+        this.tipo = tipo;
+        this.id_fornecedor = id_fornecedor;
+        this.id_cliente = id_cliente;
+    }
+    
+    
     
     /*
      * Completar mais tarde

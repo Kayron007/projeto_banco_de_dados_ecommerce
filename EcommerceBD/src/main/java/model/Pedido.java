@@ -3,10 +3,10 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
 package model;
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 public class Pedido extends EntidadeBase{
-    private LocalDate data;
+    private LocalDateTime data;
     private String status;
     private int valorTotal;
     private Cliente id_cliente;
@@ -16,7 +16,7 @@ public class Pedido extends EntidadeBase{
         super();
     }
 
-    public Pedido(Long id, LocalDate data, String status, int valorTotal, Cliente id_cliente, Pagamento id_pagamento) {
+    public Pedido(Long id, LocalDateTime data, String status, int valorTotal, Cliente id_cliente, Pagamento id_pagamento) {
         super(id);
         this.data = data;
         this.status = status;
@@ -36,14 +36,14 @@ public class Pedido extends EntidadeBase{
     /**
      * @return the data
      */
-    public LocalDate getData() {
+    public LocalDateTime getData() {
         return data;
     }
 
     /**
      * @param data the data to set
      */
-    public void setData(LocalDate data) {
+    public void setData(LocalDateTime data) {
         this.data = data;
     }
 
