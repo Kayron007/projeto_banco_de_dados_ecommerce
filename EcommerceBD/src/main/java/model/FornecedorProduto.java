@@ -4,6 +4,7 @@
  */
 package model;
 
+import java.math.BigDecimal;
 /**
  *
  * @author gustavo
@@ -11,84 +12,112 @@ package model;
 public class FornecedorProduto extends EntidadeBase{
     private Fornecedor id_fornecedor;
     private Produto id_produto;
-    private int precoFornecedor;
-    private int prazo;
+    private BigDecimal precoFornecedor;
+    private Integer prazo;
 
-    public FornecedorProduto() {
-        super();
-    }
+    /**
+     * Construtor padrão
+     * Usado quando o objeto for preenchido posteriormente pelos setters;
+     */
+    public FornecedorProduto() {}
 
-    public FornecedorProduto(Long id, Fornecedor id_fornecedor, Produto id_produto, int precoFornecedor, int prazo) {
-        super(id);
-        this.id_fornecedor = id_fornecedor;
-        this.id_produto = id_produto;
-        this.precoFornecedor = precoFornecedor;
-        this.prazo = prazo;
+    /**
+     * Construtor completo
+     * Utilizado para criar a relação com os dados já definidos;
+     */
+    public FornecedorProduto(Fornecedor id_fornecedor, Produto id_produto, BigDecimal precoFornecedor, int prazo) {
+        setIdFornecedor(id_fornecedor);
+        setIdProduto(id_produto);
+        setPrecoFornecedor(precoFornecedor);
+        setPrazo(prazo);
     }
 
     /*
-     * Completar mais tarde
+     * Exibe os dados da entidade associativa FornecedorProduto
      */
     @Override
     public String toString() {
-        return "";
+        return "FornecedorProduto{" +
+        "\nFornecedor: " + id_fornecedor.getNome() +
+        "\nProduto: " + id_produto.getNome() +
+        "\nPreço do Fornecedor: R$" + precoFornecedor +
+        "\nPrazo: " + prazo + "dias" +
+        "}";
     }
 
     /**
      * @return the id_fornecedor
      */
-    public Fornecedor getId_fornecedor() {
+    public Fornecedor getIdFornecedor() {
         return id_fornecedor;
     }
 
     /**
-     * @param id_fornecedor the id_fornecedor to set
+     * Define o fornecedor associado ao produto
+     * Deve existir fornecedor válido (não pode ser nulo)
+     * @param id_fornecedor the id_fornecedor to set;
      */
-    public void setId_fornecedor(Fornecedor id_fornecedor) {
+    public void setIdFornecedor(Fornecedor id_fornecedor) {
+        if(id_fornecedor == null) {
+            throw new IllegalArgumentException("Campo obrigatório não preenchido: Fornecedor");
+        }
         this.id_fornecedor = id_fornecedor;
     }
 
     /**
      * @return the id_produto
      */
-    public Produto getId_produto() {
+    public Produto getIdProduto() {
         return id_produto;
     }
 
     /**
-     * @param id_produto the id_produto to set
+     * Define o produto associado ao fornecedor
+     * Deve existir produto válido (não pode ser nulo)
+     * @param id_produto the id_produto to set;
      */
-    public void setId_produto(Produto id_produto) {
+    public void setIdProduto(Produto id_produto) {
+        if(id_produto == null) {
+            throw new IllegalArgumentException("Campo obrigatório não preenchido: Produto");
+        }
         this.id_produto = id_produto;
     }
 
     /**
      * @return the precoFornecedor
      */
-    public int getPrecoFornecedor() {
+    public BigDecimal getPrecoFornecedor() {
         return precoFornecedor;
     }
 
     /**
-     * @param precoFornecedor the precoFornecedor to set
+     * Define o preço negocioado com o fornecedor
+     * O preço não pode ser nulo e deve ser maior que zero
+     * @param precoFornecedor the precoFornecedor to set;
      */
-    public void setPrecoFornecedor(int precoFornecedor) {
+    public void setPrecoFornecedor(BigDecimal precoFornecedor) {
+        if(precoFornecedor == null || precoFornecedor.compareTo(BigDecimal.ZERO) <= 0) {
+            throw new IllegalArgumentException("O preço do fornecedor deve ser maior que zero.");
+        }
         this.precoFornecedor = precoFornecedor;
     }
 
     /**
      * @return the prazo
      */
-    public int getPrazo() {
+    public Integer getPrazo() {
         return prazo;
     }
 
     /**
+     * Define o prazo de entrega para o fornecedor desse produto
+     * O prazo não pode ser nulo e deve ser maior que um (dia);
      * @param prazo the prazo to set
      */
-    public void setPrazo(int prazo) {
+    public void setPrazo(Integer prazo) {
+        if(prazo == null || prazo < 1) {
+            throw new IllegalArgumentException("O prazo deve ser no mínimo 1 dia.");
+        }
         this.prazo = prazo;
     }
-    
-    
 }
