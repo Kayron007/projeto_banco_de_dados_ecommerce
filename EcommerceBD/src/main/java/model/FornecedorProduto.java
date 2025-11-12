@@ -43,7 +43,7 @@ public class FornecedorProduto extends EntidadeBase{
     public String toString() {
         return "FornecedorProduto{" +
         "\nFornecedor: " + id_fornecedor.getNome() +
-        "\nProduto: " + id_produto.getNome() +
+        "\nProduto: " + id_produto.getDescricao()+
         "\nPreço do Fornecedor: R$" + precoFornecedor +
         "\nPrazo: " + prazo + "dias" +
         "}";

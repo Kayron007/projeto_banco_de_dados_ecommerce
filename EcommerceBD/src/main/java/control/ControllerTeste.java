@@ -1,0 +1,20 @@
+/*
+ * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
+ * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
+ */
+package control;
+
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.GetMapping;
+
+@Controller 
+public class ControllerTeste {
+    
+    @GetMapping("/")
+    public String index(Model model){
+        System.out.println("Metodo index foi chamado");
+        model.addAttribute("mensagem", "Bem-vindo ao E-commerce!");
+        return "index";
+    }
+}
