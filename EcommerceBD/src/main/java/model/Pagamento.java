@@ -10,7 +10,7 @@ package model;
  */
 public class Pagamento extends EntidadeBase{
     private String formaDePagamento;
-    private boolean status = false;
+    private String status;
     
     /*
      * Construtor padrão
@@ -25,7 +25,7 @@ public class Pagamento extends EntidadeBase{
      * Utilizado para gerar um novo Pagamento
      * O ID será gerado automáticamente pelo método gerarIdUnico;
      */
-    public Pagamento(String formaDePagamento, boolean status) {
+    public Pagamento(String formaDePagamento, String status) {
         super();
         this.formaDePagamento = formaDePagamento;
         this.status = status;
@@ -34,7 +34,7 @@ public class Pagamento extends EntidadeBase{
     /*
      * Construtor completo para Pagamento já existente;
      */
-    public Pagamento(Long id, String formaDePagamento, boolean status){
+    public Pagamento(Long id, String formaDePagamento, String status){
         super(id);
         this.formaDePagamento = formaDePagamento;
         this.status = status;
@@ -47,8 +47,6 @@ public class Pagamento extends EntidadeBase{
     private void validarFormaDePagamento() {
         if(formaDePagamento != null || formaDePagamento.trim().isEmpty()) {
             throw new IllegalArgumentException("Selecione uma forma de pagamento!");
-        } else {
-            status = true;
         }
     }
 
@@ -59,7 +57,7 @@ public class Pagamento extends EntidadeBase{
     public String toString() {
         return "Pagamento {" +
         "\nForma de pagamento: " + formaDePagamento +
-        "\nStatus do pagamento: " + (isStatus() ? "Pago" : "Não pago") +
+        "\nStatus do pagamento: " + status +
         " }";
     }
 
@@ -80,14 +78,14 @@ public class Pagamento extends EntidadeBase{
     /**
      * @return the status
      */
-    public boolean isStatus() {
+    public String getStatus() {
         return status;
     }
 
     /**
      * @param status the status to set
      */
-    public void setStatus(boolean status) {
+    public void setStatus(String status) {
         this.status = status;
     } 
 }

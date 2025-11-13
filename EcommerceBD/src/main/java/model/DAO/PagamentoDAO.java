@@ -28,7 +28,7 @@ public class PagamentoDAO extends EntidadeBaseDAO<Pagamento> {
         try (PreparedStatement stmt = connection.prepareStatement(sql)) {
             stmt.setLong(1, pagamento.getId());
             stmt.setString(2, pagamento.getFormaDePagamento());
-            stmt.setBoolean(3, pagamento.isStatus());
+            stmt.setString(3, pagamento.getStatus());
 
             int linhasAfetadas = stmt.executeUpdate();
 
@@ -60,7 +60,7 @@ public class PagamentoDAO extends EntidadeBaseDAO<Pagamento> {
 
         try (PreparedStatement stmt = connection.prepareStatement(sql)) {
             stmt.setString(1, pagamento.getFormaDePagamento());
-            stmt.setBoolean(2, pagamento.isStatus());
+            stmt.setString(2, pagamento.getStatus());
             stmt.setLong(3, pagamento.getId());
 
             stmt.executeUpdate();
@@ -73,7 +73,7 @@ public class PagamentoDAO extends EntidadeBaseDAO<Pagamento> {
     private Pagamento montarPagamento(ResultSet rs) throws SQLException {
         Long id = rs.getLong("ID_pagamento");
         String formaDePagamento = rs.getString("Forma_de_pagamento");
-        boolean status = rs.getBoolean("Status");
+        String status = rs.getString("Status");
 
         return new Pagamento(id, formaDePagamento, status);
     }
@@ -108,7 +108,7 @@ public class PagamentoDAO extends EntidadeBaseDAO<Pagamento> {
                 Pagamento p = new Pagamento();
                 p.setId(rs.getLong("ID_pagamento"));
                 p.setFormaDePagamento(rs.getString("Forma_de_pagamento"));
-                p.setStatus(rs.getBoolean("Status"));
+                p.setStatus(rs.getString("Status"));
                 pagamentos.add(p);
             }
 
