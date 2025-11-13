@@ -1,5 +1,6 @@
 package model.DAO;
 
+import java.math.BigDecimal;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -32,6 +33,9 @@ public class FornecedorProdutoDAO extends EntidadeBaseDAO<FornecedorProduto> {
             stmt.setLong(1, fp.getIdFornecedor().getId());
             stmt.setLong(2, fp.getIdProduto().getId());
             stmt.setBigDecimal(3, fp.getPrecoFornecedor());
+            stmt.setLong(1, fp.getIdFornecedor().getId());
+            stmt.setLong(2, fp.getIdProduto().getId());
+            stmt.setBigDecimal(3, fp.getPrecoFornecedor());
             stmt.setInt(4, fp.getPrazo());
 
             int linhasAfetadas = stmt.executeUpdate();
@@ -50,6 +54,8 @@ public class FornecedorProdutoDAO extends EntidadeBaseDAO<FornecedorProduto> {
         try (PreparedStatement stmt = connection.prepareStatement(sql)) {
             stmt.setLong(1, fp.getIdFornecedor().getId());
             stmt.setLong(2, fp.getIdProduto().getId());
+            stmt.setLong(1, fp.getIdFornecedor().getId());
+            stmt.setLong(2, fp.getIdProduto().getId());
             stmt.executeUpdate();
             System.out.println("[DAO] Registro fornecedor_produto deletado com sucesso!");
         } catch (Exception e) {
@@ -63,6 +69,10 @@ public class FornecedorProdutoDAO extends EntidadeBaseDAO<FornecedorProduto> {
                 + "WHERE fk_Fornecedor_ID_fornecedor = ? AND fk_Produto_ID_produto = ?";
 
         try (PreparedStatement stmt = connection.prepareStatement(sql)) {
+            stmt.setBigDecimal(1, fp.getPrecoFornecedor());
+            stmt.setBigDecimal(2, fp.getPrecoFornecedor());
+            stmt.setLong(3, fp.getIdFornecedor().getId());
+            stmt.setLong(4, fp.getIdProduto().getId());
             stmt.setBigDecimal(1, fp.getPrecoFornecedor());
             stmt.setBigDecimal(2, fp.getPrecoFornecedor());
             stmt.setLong(3, fp.getIdFornecedor().getId());
@@ -127,12 +137,15 @@ public class FornecedorProdutoDAO extends EntidadeBaseDAO<FornecedorProduto> {
                 FornecedorDAO fpd = new FornecedorDAO();
                 Fornecedor f = fpd.buscarPorId(FornecedorId);
                 fp.setIdFornecedor(f);
+                fp.setIdFornecedor(f);
 
                 Long fkProdutoId = rs.getLong("fk_Produto_ID_produto");
                 ProdutoDAO pd = new ProdutoDAO();
                 Produto p = pd.buscarPorId(fkProdutoId);
                 fp.setIdProduto(p);
+                fp.setIdProduto(p);
                 
+                fp.setPrecoFornecedor(rs.getBigDecimal("preco_fornecedor"));
                 fp.setPrecoFornecedor(rs.getBigDecimal("preco_fornecedor"));
                 fp.setPrazo(rs.getInt("prazo_entrega"));
                 lista.add(fp);
