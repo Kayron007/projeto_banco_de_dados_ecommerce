@@ -5,6 +5,40 @@
     <title>Página Inicial</title>
 </head>
 <body>
-    <h1 th:text="${mensagem}">Texto padrão</h1>
+    <div>
+        <form action="/enviar" method="post">
+        <label>nome:</label>
+        <input type="text" name="nome">
+
+        <label>email:</label>
+        <input type="text" name="email">
+
+        <label>tipo:</label>
+        <input type="text" name="tipo">
+
+        <label>senha:</label>
+        <input type="text" name="senha">
+
+        <label>CEP:</label>
+        <input type="text" name="CEP">
+
+        <label>cidade:</label>
+        <input type="text" name="cidade">
+
+        <label>logradouro:</label>
+        <input type="text" name="logradouro">
+
+        <label>numero:</label>
+        <input type="text" name="numero">
+
+        <label>bairro:</label>
+        <input type="text" name="bairro">
+
+        <label>UF:</label>
+        <input type="text" name="UF">
+
+        <button type="submit">Enviar</button>
+        </form>
+    </div>
 </body>
 </html>
