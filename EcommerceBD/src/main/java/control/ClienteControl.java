@@ -12,15 +12,21 @@ import model.Cliente;
 import model.Conexao;
 import model.DAO.ClienteDAO;
 
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+
 /**
  *
  * @author gustavo
  */
+@Controller 
 public class ClienteControl {
     private ClienteDAO clienteDAO;
 
-    public ClienteControl(Connection conn) {
-        this.clienteDAO = new ClienteDAO(conn);
+    public ClienteControl() {
     }
 
     public void menu(Scanner scan) {
@@ -43,7 +49,7 @@ public class ClienteControl {
                     loginCliente(scan);
                     break;
                 case 2:
-                    cadastroCliente(scan);
+//                    cadastroCliente(scan);
                     break;
                 case 0:
                     System.out.println("\nVoltando...");
@@ -166,69 +172,16 @@ public class ClienteControl {
      *    - Insere no banco
      * 7. Exibe sucesso com ID gerado
      */
-    public void cadastroCliente(Scanner scan) {
-        System.out.println("\n╔════════════════════════════════════════╗");
-        System.out.println("║    CADASTRO DE CLIENTE                 ║");
-        System.out.println("╚════════════════════════════════════════╝");
-        
-        // ====================================================================
-        // ETAPA 1: COLETA DE DADOS
-        // ====================================================================
-        
-        System.out.println("\n--- DADOS PESSOAIS ---");
-        
-        System.out.print("Nome completo: ");
-        String nome = scan.nextLine();
-        
-        System.out.print("Email: ");
-        String email = scan.nextLine();
-        
-        System.out.print("Tipo(Físico/Jurídico): ");
-        String tipo = scan.nextLine();
-        
-        System.out.print("Senha: ");
-        String senha = scan.nextLine();
-        
-        System.out.print("Confirme a senha: ");
-        String senhaConfirmacao = scan.nextLine();
-        
-        System.out.println("\n--- ENDEREÇO ---");
-        
-        System.out.print("CEP: ");
-        String cep = scan.nextLine();
-
-        System.out.print("Cidade: ");
-        String cidade = scan.nextLine();
-        
-        System.out.print("Logradouro (Rua/Avenida): ");
-        String logradouro = scan.nextLine();
-        
-        System.out.print("Número: ");
-        String numero = scan.nextLine();
-        
-        System.out.print("Bairro: ");
-        String bairro = scan.nextLine();
-        
-        System.out.print("Estado (UF): ");
-        String estado = scan.nextLine();
-        
-        // ====================================================================
-        // ETAPA 2: VALIDAÇÕES BÁSICAS
-        // ====================================================================
-        
-        // Valida se as senhas conferem
-        if (!senha.equals(senhaConfirmacao)) {
-            System.out.println("\n╔════════════════════════════════════════╗");
-            System.out.println("║  ✗ AS SENHAS NÃO CONFEREM!            ║");
-            System.out.println("╚════════════════════════════════════════╝");
-            return; // Interrompe o cadastro
-        }
-        
-        // ====================================================================
-        // ETAPA 3: CRIAR OBJETO PESSOA
-        // ====================================================================
-        
+    @PostMapping("/enviar")
+    public String cadastroCliente(@RequestParam("nome") String nome,
+            @RequestParam("tipo") String tipo, @RequestParam("email") String email,
+            @RequestParam("senha") String senha,@RequestParam("CEP") String CEP,
+            @RequestParam("cidade") String cidade,@RequestParam("Logradouro") String logradouro,
+            @RequestParam("numero") String numero,@RequestParam("bairro") String bairro,
+            @RequestParam("UF") String UF) {
         Connection connection = null;
+        
+        
         
         try {
             connection = Conexao.conectar();
@@ -242,12 +195,12 @@ public class ClienteControl {
                 nome,
                 email,
                 senha,
-                cep,
+                CEP,
                 cidade,
                 logradouro,
                 numero,
                 bairro,
-                estado
+                UF
             );
             
             System.out.println("\n[DEBUG] Cliente criado na memória");
@@ -285,8 +238,6 @@ public class ClienteControl {
             System.out.println("Endereço: " + novoCliente.getEnderecoCompleto());
             
             System.out.println("\n✓ Você já pode fazer login no sistema!");
-            System.out.println("Pressione ENTER para continuar...");
-            scan.nextLine();
             
         } catch (IllegalArgumentException e) {
             // Erros de validação (do método validar() do Cliente)
@@ -343,6 +294,7 @@ public class ClienteControl {
                 }
             }
         }
+        return "resultado";
     }
 
     public boolean emailCadastrado(String email) {
