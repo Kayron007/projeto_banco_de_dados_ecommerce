@@ -12,10 +12,19 @@ public class Pedido extends EntidadeBase{
     private Cliente id_cliente;
     private Pagamento id_pagamento;
 
+    /*
+     * Construtor padrão
+     * Utilizado para criar um Pedido vazio que será populado mais tarde;
+     */
     public Pedido() {
         super();
     }
 
+    /*
+     * Construtor completo para gerar um novo Pedido
+     * Utilizado para gerar um novo Pedido
+     * O ID será gerado automáticamente pelo método gerarIdUnico;
+     */
     public Pedido(LocalDateTime data, String status, int valorTotal, Cliente id_cliente, Pagamento id_pagamento) {
         super();
         this.data = data;
@@ -25,6 +34,9 @@ public class Pedido extends EntidadeBase{
         this.id_pagamento = id_pagamento;
     }
 
+    /*
+     * Construtor completo para pedido já existente;
+     */
     public Pedido(Long id, LocalDateTime data, String status, int valorTotal, Cliente id_cliente, Pagamento id_pagamento) {
         super(id);
         this.data = data;
@@ -48,30 +60,45 @@ public class Pedido extends EntidadeBase{
         validarIdPagamento();
     }
 
+    /*
+     * Valida se a data do pedido foi gerada corretamente;
+     */
     private void validarData() {
         if(data == null) {
             throw new IllegalArgumentException("ERRO: Data do pedido não pode ser definida! Tente novamente mais tarde");
         }
     }
 
+    /*
+     * Valida se o status do pedido foi gerado corretamente;
+     */
     private void validarStatus() {
         if(status == null || status.trim().isEmpty()) {
             throw new IllegalArgumentException("ERRO: Não foi possível definir o status do pedido! Tente novamente mais tarde");
         }
     }
 
+    /*
+     * Valida se o valorTotal do pedido é zero ou negativo;
+     */
     private void validarValorTotal() {
         if(valorTotal <= 0) {
             throw new IllegalArgumentException("ERRO: Não foi possível calcular o valor total do pedido. Tente novamente mais tarde.");
         }
     }
 
+    /*
+     * Valida se o id do cliente existe;
+     */
     private void validarIdCliente() {
         if(id_cliente == null) {
             throw new IllegalArgumentException("ERRO: ID do cliente não encontrado!");
         }
     }
 
+    /*
+     * Valida se o id do pagamento existe;
+     */
     private void validarIdPagamento() {
         if(id_pagamento == null) {
             throw new IllegalArgumentException("ERRO: ID do pagamento não encontrado!");
@@ -79,7 +106,7 @@ public class Pedido extends EntidadeBase{
     }
 
     /*
-     * Completar mais tarde
+     * Exibe os dados do Pedido;
      */
     @Override
     public String toString() {
