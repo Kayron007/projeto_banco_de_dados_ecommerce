@@ -28,7 +28,7 @@ public class PedidoProdutoDAO extends EntidadeBaseDAO<PedidoProduto> {
 
         try (PreparedStatement stmt = connection.prepareStatement(sql)) {
             stmt.setLong(1, pedidoProduto.getId_pedido().getId());
-            stmt.setLong(2, pedidoProduto.getId_produtp().getId());
+            stmt.setLong(2, pedidoProduto.getId_produto().getId());
             stmt.setInt(3, pedidoProduto.getQuantidade());
             stmt.setDouble(4, pedidoProduto.getPrecoUnitario());
 
@@ -48,7 +48,7 @@ public class PedidoProdutoDAO extends EntidadeBaseDAO<PedidoProduto> {
 
         try (PreparedStatement stmt = connection.prepareStatement(sql)) {
             stmt.setLong(1, pedidoProduto.getId_pedido().getId());
-            stmt.setLong(2, pedidoProduto.getId_produtp().getId());
+            stmt.setLong(2, pedidoProduto.getId_produto().getId());
             stmt.executeUpdate();
             System.out.println("[DAO] PedidoProduto deletado com sucesso!");
         } catch (Exception e) {
@@ -64,7 +64,7 @@ public class PedidoProdutoDAO extends EntidadeBaseDAO<PedidoProduto> {
             stmt.setInt(1, pedidoProduto.getQuantidade());
             stmt.setDouble(2, pedidoProduto.getPrecoUnitario());
             stmt.setLong(3, pedidoProduto.getId_pedido().getId());
-            stmt.setLong(4, pedidoProduto.getId_produtp().getId());
+            stmt.setLong(4, pedidoProduto.getId_produto().getId());
             stmt.executeUpdate();
 
             System.out.println("[DAO] PedidoProduto alterado com sucesso!");

@@ -10,7 +10,7 @@ package model;
  */
 public class PedidoProduto extends EntidadeBase{
     private Pedido id_pedido;
-    private Produto id_produtp;
+    private Produto id_produto;
     private int quantidade;
     private int precoUnitario;
 
@@ -18,10 +18,10 @@ public class PedidoProduto extends EntidadeBase{
         super();
     }
 
-    public PedidoProduto(Long id, Pedido id_pedido, Produto id_produtp, int quantidade, int precoUnitario) {
+    public PedidoProduto(Long id, Pedido id_pedido, Produto id_produto, int quantidade, int precoUnitario) {
         super(id);
         this.id_pedido = id_pedido;
-        this.id_produtp = id_produtp;
+        this.id_produto = id_produto;
         this.quantidade = quantidade;
         this.precoUnitario = precoUnitario;
     }
@@ -51,15 +51,15 @@ public class PedidoProduto extends EntidadeBase{
     /**
      * @return the id_produtp
      */
-    public Produto getId_produtp() {
-        return id_produtp;
+    public Produto getId_produto() {
+        return id_produto;
     }
 
     /**
      * @param id_produtp the id_produtp to set
      */
     public void setId_produtp(Produto id_produtp) {
-        this.id_produtp = id_produtp;
+        this.id_produto = id_produtp;
     }
 
     /**

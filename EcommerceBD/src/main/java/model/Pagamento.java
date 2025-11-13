@@ -42,11 +42,18 @@ public class Pagamento extends EntidadeBase{
 
     public void validar() {
         validarFormaDePagamento();
+        validarStatus();
     }
 
     private void validarFormaDePagamento() {
-        if(formaDePagamento != null || formaDePagamento.trim().isEmpty()) {
+        if(formaDePagamento == null || formaDePagamento.trim().isEmpty()) {
             throw new IllegalArgumentException("Selecione uma forma de pagamento!");
+        }
+    }
+
+    private void validarStatus() {
+        if(formaDePagamento != null && status == null || formaDePagamento != null && status.trim().isEmpty()) {
+            throw new IllegalArgumentException("ERRO: Não foi possível definir o status do pagamento!");
         }
     }
 

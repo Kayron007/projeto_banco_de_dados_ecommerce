@@ -16,6 +16,15 @@ public class Pedido extends EntidadeBase{
         super();
     }
 
+    public Pedido(LocalDateTime data, String status, int valorTotal, Cliente id_cliente, Pagamento id_pagamento) {
+        super();
+        this.data = data;
+        this.status = status;
+        this.valorTotal = valorTotal;
+        this.id_cliente = id_cliente;
+        this.id_pagamento = id_pagamento;
+    }
+
     public Pedido(Long id, LocalDateTime data, String status, int valorTotal, Cliente id_cliente, Pagamento id_pagamento) {
         super(id);
         this.data = data;
@@ -25,12 +34,63 @@ public class Pedido extends EntidadeBase{
         this.id_pagamento = id_pagamento;
     }
 
+    /* MÉTODOS DE VALIDAÇÃO */
+
+    /*
+     * Valida todos os dados do Produto
+     * Lança exceções com mensagens específicas para cada erro;
+     */
+    public void validar() {
+        validarData();
+        validarStatus();
+        validarValorTotal();
+        validarIdCliente();
+        validarIdPagamento();
+    }
+
+    private void validarData() {
+        if(data == null) {
+            throw new IllegalArgumentException("ERRO: Data do pedido não pode ser definida! Tente novamente mais tarde");
+        }
+    }
+
+    private void validarStatus() {
+        if(status == null || status.trim().isEmpty()) {
+            throw new IllegalArgumentException("ERRO: Não foi possível definir o status do pedido! Tente novamente mais tarde");
+        }
+    }
+
+    private void validarValorTotal() {
+        if(valorTotal <= 0) {
+            throw new IllegalArgumentException("ERRO: Não foi possível calcular o valor total do pedido. Tente novamente mais tarde.");
+        }
+    }
+
+    private void validarIdCliente() {
+        if(id_cliente == null) {
+            throw new IllegalArgumentException("ERRO: ID do cliente não encontrado!");
+        }
+    }
+
+    private void validarIdPagamento() {
+        if(id_pagamento == null) {
+            throw new IllegalArgumentException("ERRO: ID do pagamento não encontrado!");
+        }
+    }
+
     /*
      * Completar mais tarde
      */
     @Override
     public String toString() {
-        return "";
+        return "Pedido {" +
+        "\nID do pedido: " + id +
+        "\nID do cliente: " + id_cliente +
+        "\nID do pagamento: " + id_pagamento +
+        "\nData do pedido: " + data +
+        "\nStatus: " + status +
+        "\nValor total: " + valorTotal +
+        "\n }";
     }
 
     /**

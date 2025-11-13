@@ -68,14 +68,14 @@ public class Avaliacao extends EntidadeBase{
     }
 
     private void validarIdProduto() {
-        if(id_produto == null) {
-            throw new IllegalArgumentException("Campo obrigatório não preenchido: Produto");
+        if(nota != null && id_produto == null) {
+            throw new IllegalArgumentException("ERRO: ID do produto não encontrado!");
         }
     }
 
     private void validarIdCliente() {
-        if(id_cliente == null) {
-            throw new IllegalArgumentException("Campo obrigatório não preenchido: Cliente");
+        if(nota != null && id_cliente == null) {
+            throw new IllegalArgumentException("ERRO: ID do cliente não encontrado!");
         }
     }
 
