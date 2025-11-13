@@ -15,6 +15,9 @@ public class ProdutoDAO extends EntidadeBaseDAO<Produto> {
 
     @Override
     public void inserir(Produto produto) throws SQLException {
+        produto.normalizar();
+        produto.validar();
+
         try {
             Long idnovo = gerarIdUnico("produto", "ID_produto");
             produto.setId(idnovo);
@@ -60,16 +63,21 @@ public class ProdutoDAO extends EntidadeBaseDAO<Produto> {
         String sql = "UPDATE produto SET Descricao = ?, Quantidade = ?, Tamanho = ?, Preco = ?, Categoria = ? "
                    + "WHERE ID_produto = ?";
 
-        try (PreparedStatement stmt = connection.prepareStatement(sql)) {
-            stmt.setString(1, produto.getDescricao());
-            stmt.setInt(2, produto.getQuantidade());
-            stmt.setString(3, produto.getTamanho());
-            stmt.setDouble(4, produto.getPreco());
-            stmt.setString(5, produto.getCategoria());
-            stmt.setLong(6, produto.getId());
+        try {
+            produto.normalizar();
+            produto.validar();
 
-            stmt.executeUpdate();
-            System.out.println("[DAO] Produto alterado com sucesso!");
+            try (PreparedStatement stmt = connection.prepareStatement(sql)) {
+                stmt.setString(1, produto.getDescricao());
+                stmt.setInt(2, produto.getQuantidade());
+                stmt.setString(3, produto.getTamanho());
+                stmt.setDouble(4, produto.getPreco());
+                stmt.setString(5, produto.getCategoria());
+                stmt.setLong(6, produto.getId());
+
+                stmt.executeUpdate();
+                System.out.println("[DAO] Produto alterado com sucesso!");
+            } 
         } catch (Exception e) {
             System.out.println("Erro ao alterar produto: " + e.getMessage());
         }
@@ -118,7 +126,7 @@ public class ProdutoDAO extends EntidadeBaseDAO<Produto> {
                 p.setId(rs.getLong("ID_produto"));
                 p.setDescricao(rs.getString("Descricao"));
                 int qtd = rs.getInt("Quantidade");
-                p.setQuantidade(rs.wasNull() ? null : qtd);
+                p.setQuantidade(rs.wasNull() ? 0 : qtd);
                 p.setTamanho(rs.getString("Tamanho"));
                 p.setPreco(rs.getDouble("Preço"));
                 p.setCategoria(rs.getString("Categoria"));

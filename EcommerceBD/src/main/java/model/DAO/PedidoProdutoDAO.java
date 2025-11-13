@@ -85,7 +85,7 @@ public class PedidoProdutoDAO extends EntidadeBaseDAO<PedidoProduto> {
         Pedido pedido = pedidoDAO.buscarPorId(idPedido);
         Produto produto = produtoDAO.buscarPorId(idProduto);
 
-        return new PedidoProduto(idPedido, pedido, produto, quantidade, quantidade);
+        return new PedidoProduto(idPedido, pedido, produto, quantidade, precoUnitario);
     }
 
     @Override

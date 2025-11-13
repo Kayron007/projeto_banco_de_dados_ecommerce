@@ -12,13 +12,13 @@ public class PedidoProduto extends EntidadeBase{
     private Pedido id_pedido;
     private Produto id_produto;
     private int quantidade;
-    private int precoUnitario;
+    private double precoUnitario;
 
     public PedidoProduto() {
         super();
     }
 
-    public PedidoProduto(Long id, Pedido id_pedido, Produto id_produto, int quantidade, int precoUnitario) {
+    public PedidoProduto(Long id, Pedido id_pedido, Produto id_produto, int quantidade, double precoUnitario) {
         super(id);
         this.id_pedido = id_pedido;
         this.id_produto = id_produto;
@@ -79,14 +79,14 @@ public class PedidoProduto extends EntidadeBase{
     /**
      * @return the precoUnitario
      */
-    public int getPrecoUnitario() {
+    public double getPrecoUnitario() {
         return precoUnitario;
     }
 
     /**
      * @param precoUnitario the precoUnitario to set
      */
-    public void setPrecoUnitario(int precoUnitario) {
+    public void setPrecoUnitario(double precoUnitario) {
         this.precoUnitario = precoUnitario;
     }
     

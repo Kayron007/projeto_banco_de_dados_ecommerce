@@ -171,23 +171,26 @@ public class ClienteDAO extends EntidadeBaseDAO<Cliente>{
         String sql = "UPDATE cliente SET Tipo = ?, Nome = ?, Email = ?, Senha = ?, CEP = ?, Cidade = ?,"
                 + " Logradouro = ?, Numero = ?, Bairro = ?, Estado = ? WHERE ID = ?";
         
-        try (PreparedStatement stmt = connection.prepareStatement(sql)){
-            
-            stmt.setString(1, cliente.getTipo());
-            stmt.setString(2, cliente.getNome());
-            stmt.setString(3, cliente.getEmail());
-            stmt.setString(4, cliente.getSenha());
-            stmt.setString(5, cliente.getCep());
-            stmt.setString(6, cliente.getCidade());
-            stmt.setString(7, cliente.getLogradouro());
-            stmt.setString(8, cliente.getNumero());
-            stmt.setString(9, cliente.getBairro());
-            stmt.setString(10, cliente.getEstado());
-            stmt.setLong(11, cliente.getId());
-            
+        try {
+            cliente.normalizar();
+            cliente.validar();
+
+            try (PreparedStatement stmt = connection.prepareStatement(sql)){
+                
+                stmt.setString(1, cliente.getTipo());
+                stmt.setString(2, cliente.getNome());
+                stmt.setString(3, cliente.getEmail());
+                stmt.setString(4, cliente.getSenha());
+                stmt.setString(5, cliente.getCep());
+                stmt.setString(6, cliente.getCidade());
+                stmt.setString(7, cliente.getLogradouro());
+                stmt.setString(8, cliente.getNumero());
+                stmt.setString(9, cliente.getBairro());
+                stmt.setString(10, cliente.getEstado());
+                stmt.setLong(11, cliente.getId());
+            }
         } catch (Exception e) {
             System.out.println("Erro ao alterar cliente: " + e.getMessage());
-
         }
     }
     

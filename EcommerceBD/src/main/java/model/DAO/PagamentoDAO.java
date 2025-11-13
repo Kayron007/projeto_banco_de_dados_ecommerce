@@ -15,6 +15,8 @@ public class PagamentoDAO extends EntidadeBaseDAO<Pagamento> {
 
     @Override
     public void inserir(Pagamento pagamento) throws SQLException {
+        pagamento.validar();
+        
         try {
             Long idnovo = gerarIdUnico("pagamento", "ID_pagamento");
             pagamento.setId(idnovo);
@@ -58,13 +60,17 @@ public class PagamentoDAO extends EntidadeBaseDAO<Pagamento> {
         String sql = "UPDATE pagamento SET Forma_de_pagamento = ?, Status = ? "
                    + "WHERE ID_pagamento = ?";
 
-        try (PreparedStatement stmt = connection.prepareStatement(sql)) {
-            stmt.setString(1, pagamento.getFormaDePagamento());
-            stmt.setString(2, pagamento.getStatus());
-            stmt.setLong(3, pagamento.getId());
+        try {
+            pagamento.validar();
 
-            stmt.executeUpdate();
-            System.out.println("[DAO] Pagamento alterado com sucesso!");
+            try (PreparedStatement stmt = connection.prepareStatement(sql)) {
+                stmt.setString(1, pagamento.getFormaDePagamento());
+                stmt.setString(2, pagamento.getStatus());
+                stmt.setLong(3, pagamento.getId());
+
+                stmt.executeUpdate();
+                System.out.println("[DAO] Pagamento alterado com sucesso!");
+            }
         } catch (Exception e) {
             System.out.println("Erro ao alterar pagamento: " + e.getMessage());
         }

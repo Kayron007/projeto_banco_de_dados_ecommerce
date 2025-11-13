@@ -15,6 +15,9 @@ public class FornecedorDAO extends EntidadeBaseDAO<Fornecedor> {
 
     @Override
     public void inserir(Fornecedor fornecedor) throws SQLException {
+        fornecedor.normalizar();
+        fornecedor.validar();
+
         try {
             Long idnovo = gerarIdUnico("fornecedor", "ID_fornecedor");
             fornecedor.setId(idnovo);
@@ -62,18 +65,21 @@ public class FornecedorDAO extends EntidadeBaseDAO<Fornecedor> {
         String sql = "UPDATE fornecedor SET Nome = ?, Tipo_de_material = ?"
                 + "cnpj = ?, cep = ?, Email = ? WHERE ID = ?";
 
-        try (PreparedStatement stmt = connection.prepareStatement(sql)) {
+        try {
+            fornecedor.normalizar();
+            fornecedor.validar();
 
-            stmt.setString(1, fornecedor.getNome());
-            stmt.setString(2, fornecedor.getTipoMaterial());
-            stmt.setString(3, fornecedor.getCnpj());
-            stmt.setString(4, fornecedor.getCep());
-            stmt.setString(5, fornecedor.getEmail());
-            stmt.setLong(6, fornecedor.getId());
+            try (PreparedStatement stmt = connection.prepareStatement(sql)) {
 
+                stmt.setString(1, fornecedor.getNome());
+                stmt.setString(2, fornecedor.getTipoMaterial());
+                stmt.setString(3, fornecedor.getCnpj());
+                stmt.setString(4, fornecedor.getCep());
+                stmt.setString(5, fornecedor.getEmail());
+                stmt.setLong(6, fornecedor.getId());
+            }
         } catch (Exception e) {
             System.out.println("Erro ao alterar cliente: " + e.getMessage());
-
         }
     }
 

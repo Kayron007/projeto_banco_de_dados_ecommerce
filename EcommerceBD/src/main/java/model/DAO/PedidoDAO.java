@@ -19,6 +19,8 @@ public class PedidoDAO extends EntidadeBaseDAO<Pedido> {
 
     @Override
     public void inserir(Pedido pedido) throws SQLException {
+        pedido.validar();
+
         try {
             Long idnovo = gerarIdUnico("pedido", "ID_pedido");
             pedido.setId(idnovo);
@@ -65,17 +67,21 @@ public class PedidoDAO extends EntidadeBaseDAO<Pedido> {
         String sql = "UPDATE pedido SET Data_do_pedido = ?,Status = ?, Valor_total = ?, "
                 + "fk_Cliente_id = ?, fk_Pagamento_ID_pagamento = ? "
                 + "WHERE ID_pedido = ?";
+        
+        try {
+            pedido.validar();
 
-        try (PreparedStatement stmt = connection.prepareStatement(sql)) {
-            stmt.setTimestamp(1, Timestamp.valueOf(pedido.getData()));
-            stmt.setString(2, pedido.getStatus());
-            stmt.setLong(3, pedido.getValorTotal());
-            stmt.setLong(4, pedido.getId_cliente().getId());
-            stmt.setLong(5, pedido.getId_pagamento().getId());
-            stmt.setLong(6, pedido.getId());
-            stmt.executeUpdate();
+            try (PreparedStatement stmt = connection.prepareStatement(sql)) {
+                stmt.setTimestamp(1, Timestamp.valueOf(pedido.getData()));
+                stmt.setString(2, pedido.getStatus());
+                stmt.setLong(3, pedido.getValorTotal());
+                stmt.setLong(4, pedido.getId_cliente().getId());
+                stmt.setLong(5, pedido.getId_pagamento().getId());
+                stmt.setLong(6, pedido.getId());
 
-            System.out.println("[DAO] Pedido alterado com sucesso!");
+                stmt.executeUpdate();
+                System.out.println("[DAO] Pedido alterado com sucesso!");
+            }
         } catch (Exception e) {
             System.out.println("Erro ao alterar pedido: " + e.getMessage());
         }

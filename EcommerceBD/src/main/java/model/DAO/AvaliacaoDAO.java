@@ -19,6 +19,9 @@ public class AvaliacaoDAO extends EntidadeBaseDAO<Avaliacao>{
 
     @Override
     public void inserir(Avaliacao obj) throws SQLException {
+        obj.normalizar();
+        obj.validar();
+        
         throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
     }
 
