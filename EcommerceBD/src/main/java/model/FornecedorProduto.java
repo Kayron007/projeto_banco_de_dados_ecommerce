@@ -38,11 +38,11 @@ public class FornecedorProduto extends EntidadeBase{
     @Override
     public String toString() {
         return "FornecedorProduto{" +
-        "\nFornecedor: " + id_fornecedor.getNome() +
-        "\nProduto: " + id_produto.getDescricao()+
+        "\nFornecedor: " + (id_fornecedor != null ? id_fornecedor.getNome() : "N/D") +
+        "\nProduto: " + (id_produto != null ? id_produto.getDescricao() : "N/D") +
         "\nPreço do Fornecedor: R$" + precoFornecedor +
         "\nPrazo: " + prazo + "dias" +
-        "}";
+        "\n }";
     }
 
     /**

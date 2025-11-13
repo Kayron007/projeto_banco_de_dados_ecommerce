@@ -65,7 +65,7 @@ public class Pagamento extends EntidadeBase{
         return "Pagamento {" +
         "\nForma de pagamento: " + formaDePagamento +
         "\nStatus do pagamento: " + status +
-        " }";
+        "\n }";
     }
 
     /**
