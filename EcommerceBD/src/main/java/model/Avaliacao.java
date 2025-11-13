@@ -27,7 +27,7 @@ public class Avaliacao extends EntidadeBase{
      * Utilizado para gerar uma nova avaliação do serviço
      * O ID da avaliação será gerado automáticamente pelo método gerarIdUnico;
      */
-    public Avaliacao(short nota, String comentario, Produto id_produto, Cliente id_cliente) {
+    public Avaliacao(Short nota, String comentario, Produto id_produto, Cliente id_cliente) {
         super();
         this.nota = nota;
         this.comentario = comentario;
@@ -38,7 +38,7 @@ public class Avaliacao extends EntidadeBase{
     /* 
      * Construtor completo para retornar avaliação já existente;
      */
-    public Avaliacao(Long id, short nota, String comentario, Produto id_produto, Cliente id_cliente) {
+    public Avaliacao(Long id, Short nota, String comentario, Produto id_produto, Cliente id_cliente) {
         super(id);
         this.nota = nota;
         this.comentario = comentario;
