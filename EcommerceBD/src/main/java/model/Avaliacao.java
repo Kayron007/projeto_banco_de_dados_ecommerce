@@ -54,6 +54,8 @@ public class Avaliacao extends EntidadeBase{
 
     public void validar() {
         validarComentario();
+        validarIdProduto();
+        validarIdCliente();
     }
 
     /*
@@ -62,6 +64,18 @@ public class Avaliacao extends EntidadeBase{
     private void validarComentario() {
         if(comentario != null && comentario.trim().length() > 500) {
             throw new IllegalArgumentException("O limite de caracteres é 500!");
+        }
+    }
+
+    private void validarIdProduto() {
+        if(id_produto == null) {
+            throw new IllegalArgumentException("Campo obrigatório não preenchido: Produto");
+        }
+    }
+
+    private void validarIdCliente() {
+        if(id_cliente == null) {
+            throw new IllegalArgumentException("Campo obrigatório não preenchido: Cliente");
         }
     }
 
