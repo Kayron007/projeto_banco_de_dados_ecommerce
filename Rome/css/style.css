@@ -1,0 +1,170 @@
+/* =============================== */
+/* RESET BÁSICO */
+/* =============================== */
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: Arial, Helvetica, sans-serif;
+    background: #f4f4f4;
+    color: #222;
+}
+
+/* =============================== */
+/* HEADER */
+/* =============================== */
+
+header {
+    background: #111;
+    color: #fff;
+    padding: 15px;
+    text-align: center;
+}
+
+.logo {
+    margin-bottom: 10px;
+}
+
+nav a {
+    color: #fff;
+    margin: 0 8px;
+    text-decoration: none;
+}
+
+nav a:hover {
+    text-decoration: underline;
+}
+
+/* =============================== */
+/* BANNER */
+/* =============================== */
+
+.banner {
+    background-image: url("../Imagens/banner_principal.png");
+    background-size: cover;
+    background-position: center;
+    padding: 200px 200px;
+    color: #fff;
+    text-align: center;
+}
+
+
+
+/* =============================== */
+/* TÍTULOS */
+/* =============================== */
+
+.titulo {
+    text-align: center;
+    margin: 25px 0;
+}
+
+/* =============================== */
+/* PRODUTOS */
+/* =============================== */
+
+.produtos {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+    justify-content: center;
+    padding: 10px;
+}
+
+.item {
+    background: #fff;
+    padding: 15px;
+    border-radius: 8px;
+    width: 220px;
+    text-align: center;
+    box-shadow: 0 0 5px rgba(0,0,0,0.2);
+}
+
+.item img {
+    width: 100%;
+    border-radius: 5px;
+}
+
+.preco {
+    color: #0a7;
+    font-weight: bold;
+    margin: 5px 0;
+}
+
+button {
+    background: #6C63FF;
+    color: #fff;
+    padding: 8px 12px;
+    margin-top: 8px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+button:hover {
+    background: #5149d1;
+}
+
+/* =============================== */
+/* LOGIN */
+/* =============================== */
+
+.login-form {
+    max-width: 350px;
+    margin: 0 auto;
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.login-form input {
+    padding: 10px;
+}
+
+/* =============================== */
+/* CARRINHO */
+/* =============================== */
+
+.carrinho {
+    max-width: 600px;
+    margin: 0 auto;
+}
+
+.carrinho-item {
+    background: #fff;
+    padding: 15px;
+    border-radius: 8px;
+    margin-bottom: 15px;
+    box-shadow: 0 0 5px rgba(0,0,0,0.2);
+}
+
+.botao-comprar {
+    display: block;
+    width: max-content;
+    padding: 10px 20px;
+    margin: 20px auto;
+    background: #6C63FF;
+    color: #fff;
+    border-radius: 5px;
+    text-decoration: none;
+}
+
+.botao-comprar:hover {
+    background: #5149d1;
+}
+
+/* =============================== */
+/* FOOTER */
+/* =============================== */
+
+footer {
+    background: #111;
+    color: #fff;
+    text-align: center;
+    padding: 10px;
+    margin-top: 40px;
+}
