@@ -5,7 +5,6 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
-import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 import model.Produto;
@@ -31,7 +30,7 @@ public class ProdutoDAO extends EntidadeBaseDAO<Produto> {
             stmt.setString(2, produto.getDescricao());
             stmt.setInt(3, produto.getQuantidade());
             stmt.setString(4, produto.getTamanho());
-            stmt.setInt(5, produto.getPreco());
+            stmt.setDouble(5, produto.getPreco());
             stmt.setString(6, produto.getCategoria());
 
             int linhasAfetadas = stmt.executeUpdate();
@@ -65,7 +64,7 @@ public class ProdutoDAO extends EntidadeBaseDAO<Produto> {
             stmt.setString(1, produto.getDescricao());
             stmt.setInt(2, produto.getQuantidade());
             stmt.setString(3, produto.getTamanho());
-            stmt.setInt(4, produto.getPreco());
+            stmt.setDouble(4, produto.getPreco());
             stmt.setString(5, produto.getCategoria());
             stmt.setLong(6, produto.getId());
 
@@ -78,13 +77,14 @@ public class ProdutoDAO extends EntidadeBaseDAO<Produto> {
 
     private Produto montarProduto(ResultSet rs) throws SQLException {
         Long id = rs.getLong("ID_produto");
+        String nome = rs.getString("Nome");
         String descricao = rs.getString("Descricao");
-        Integer quantidade = rs.getInt("Quantidade");
         String tamanho = rs.getString("Tamanho");
-        int preco = rs.getInt("Preco");
         String categoria = rs.getString("Categoria");
+        Double preco = rs.getDouble("Preco");
+        Integer quantidade = rs.getInt("Quantidade");
 
-        return new Produto(id, descricao, tamanho, categoria, preco, quantidade);
+        return new Produto(id, nome, descricao, tamanho, categoria, preco, quantidade);
     }
 
     @Override
@@ -120,7 +120,7 @@ public class ProdutoDAO extends EntidadeBaseDAO<Produto> {
                 int qtd = rs.getInt("Quantidade");
                 p.setQuantidade(rs.wasNull() ? null : qtd);
                 p.setTamanho(rs.getString("Tamanho"));
-                p.setPreco(rs.getInt("Preco"));
+                p.setPreco(rs.getDouble("Preço"));
                 p.setCategoria(rs.getString("Categoria"));
                 produtos.add(p);
             }

@@ -111,7 +111,7 @@ public class Cliente extends EntidadeBase {
     }
 
     /*
-     * Chama a classe Validador para validar o CEP do cliente;
+     * Chama o método Validador para validar o CEP do cliente;
      */
     private void validarCEP(String cep) {
         Validador.cepValido(cep);
