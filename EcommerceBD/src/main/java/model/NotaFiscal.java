@@ -21,6 +21,15 @@ public class NotaFiscal extends EntidadeBase{
         super();
     }
 
+    public NotaFiscal(LocalDateTime dataDeEmissao, int valorTotal, int imposto, String chaveDeAcesso, Pedido id_pedido) {
+        super();
+        this.dataDeEmissao = dataDeEmissao;
+        this.valorTotal = valorTotal;
+        this.imposto = imposto;
+        this.chaveDeAcesso = chaveDeAcesso;
+        this.id_pedido = id_pedido;
+    }
+
     public NotaFiscal(Long id, LocalDateTime dataDeEmissao, int valorTotal, int imposto, String chaveDeAcesso, Pedido id_pedido) {
         super(id);
         this.dataDeEmissao = dataDeEmissao;
@@ -30,12 +39,97 @@ public class NotaFiscal extends EntidadeBase{
         this.id_pedido = id_pedido;
     }
 
+    /* MÉTODOS VERIFICADORES */
+
     /*
-     * Completar mais tarde
+     * Valida todos os dados do Produto
+     * Lança exceções com mensagens específicas para cada erro;
+     */
+    public void verificar() {
+        verificarDataDeEmissao();
+        verificarValorTotal();
+        verificarImposto();
+        verificarChaveDeAcesso();
+        verificarIdPedido();
+    }
+
+    /*
+     * Valida a data de emissão
+     * Retorna uma exceção caso o LocalDateTime não tenha sido gerado corretamente;
+     */
+    private void verificarDataDeEmissao() {
+        if(dataDeEmissao == null) {
+            throw new IllegalArgumentException("ERRO: Não foi possível gerar a data de emissão da nota fiscal!");
+        }
+    }
+
+    /*
+     * Valida o valor total da Nota Fiscal
+     * Verifica se o resultado do cálculo é menor que zero (refletindo o requisito banco de dados);
+     */
+    private void verificarValorTotal() {
+        if(valorTotal < 0) {
+            throw new IllegalArgumentException("ERRO: Não foi possível gerar o valor total do pedido!");
+        }
+    }
+
+    /*
+     * Valida o valor do imposto da Nota Fiscal
+     * Verifica se o resultado do cálculo é menor que zero (refletindo o requisito no banco de dados);
+     */
+    private void verificarImposto() {
+        if(imposto < 0) {
+            throw new IllegalArgumentException("ERRO: Não foi possível gerar o valor do imposto!");
+        }
+    }
+
+    /*
+     * Valida a chave de acesso
+     * Retorna uma exceção caso a String não tenha sido gerada corretamente;
+     */
+    private void verificarChaveDeAcesso() {
+        if(chaveDeAcesso == null || chaveDeAcesso.trim().isEmpty()) {
+            throw new IllegalArgumentException("ERRO: Não foi possível gerar a chave de acesso do pedido!");
+        }
+    }
+
+    /*
+     * Valida o id_pedido
+     * Retorna uma exceção caso o id_pedido não exista/não foi gerado corretamente;
+     */
+    private void verificarIdPedido() {
+        if(id_pedido == null) {
+            throw new IllegalArgumentException("ERRO: ID do pedido não encontrado!");
+        }
+    }
+
+    /* MÉTODO DE NORMALIZAÇÃO DE DADOS */
+
+    /**
+     * Normaliza os dados dos clientes (formata, remove espaços e converte para letras maiúsculas/minúsculas)
+     * Chamado antes de salvar no banco;
+     */
+    public void normalizar() {
+        /*
+         * Remove os espaços extras na chave de acesso;
+         */
+        if(chaveDeAcesso != null) {
+            chaveDeAcesso = chaveDeAcesso.trim();
+        }
+    }
+
+    /*
+     * Exibe os dados da Nota Fiscal;
      */
     @Override
     public String toString() {
-        return "";
+        return "Nota Fiscal {" +
+        "\nID do pedido: " + id_pedido +
+        "\nData de emissão: " + dataDeEmissao +
+        "\nImposto: " + imposto +
+        "\nValor total: " + valorTotal +
+        "\nChave de acesso: " + chaveDeAcesso +
+        "\n }";
     }
 
     /**
@@ -106,7 +200,5 @@ public class NotaFiscal extends EntidadeBase{
      */
     public void setId_pedido(Pedido id_pedido) {
         this.id_pedido = id_pedido;
-    }
-    
-    
+    }   
 }

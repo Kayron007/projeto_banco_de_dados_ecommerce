@@ -9,7 +9,7 @@ import java.sql.Timestamp;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
-import model.Cliente;
+
 import model.NotaFiscal;
 import model.Pedido;
 
@@ -18,6 +18,8 @@ public class NotaFiscalDAO extends EntidadeBaseDAO<NotaFiscal> {
     private Connection connection;
     @Override
     public void inserir(NotaFiscal notaFiscal) throws SQLException {
+        notaFiscal.normalizar();
+        notaFiscal.verificar();
         
         try {
             Long novoId = gerarIdUnico("NotaFiscal", "id");
