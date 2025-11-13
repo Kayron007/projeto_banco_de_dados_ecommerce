@@ -32,10 +32,6 @@ public class FornecedorProduto extends EntidadeBase{
         setPrazo(prazo);
     }
     
-    protected String getTabela(){
-        return "fornecedor_produto";
-    }
-
     /*
      * Exibe os dados da entidade associativa FornecedorProduto
      */
