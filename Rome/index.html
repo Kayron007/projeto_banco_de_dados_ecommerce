@@ -3,67 +3,215 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Minha Loja</title>
+    <title>UrbanWear - Moda Masculina e Feminina</title>
     <link rel="stylesheet" href="css/style.css">
 </head>
 
 <body>
 
-<header>
-    <h1 class="logo">ROME</h1>
-    <nav>
-        <a href="index.html">Página Inicial</a>
-        <a href="produtos.html">Produtos</a>
-        <a href="carrinho.html">Carrinho</a>
-        <a href="login.html">Login</a>
-    </nav>
+<!-- HEADER -->
+<header class="header">
+    <div class="container header__content">
+        <div class="logo">
+            <a href="index.html">ROME</a>
+        </div>
+
+        <nav class="nav">
+            <a href="index.html">Home</a>
+            <a href="produtos.html">Masculino</a>
+            <a href="produtos.html">Feminino</a>
+            <a href="produtos.html">Acessórios</a>
+            <a href="produtos.html">Promoções</a>
+        </nav>
+
+        <div class="header__actions">
+            <a href="login.html" class="link">Minha Conta</a>
+            <a href="carrinho.html" class="btn-small">Carrinho</a>
+        </div>
+    </div>
 </header>
 
 <main>
+
+    <!-- BANNER PRINCIPAL -->
     <section class="banner">
-    
-</section>
+        <div class="container banner__content">
+            <div class="banner__text">
+                <p class="banner__tag">Coleção Verão 2025</p>
+                <h1>Moda confortável, estilo que acompanha você.</h1>
+                <p class="banner__subtitle">
+                    Roupas masculinas e femininas para o dia a dia, trabalho e rolê.
+                    Encontre peças leves, versáteis e com o melhor custo-benefício.
+                </p>
+                <div class="banner__buttons">
+                    <a href="produtos.html" class="btn-primary">Ver novidades</a>
+                    <a href="produtos.html" class="btn-outline">Ver todos os produtos</a>
+                </div>
+                <p class="banner__info">Frete grátis acima de R$ 199 • Primeira troca grátis</p>
+            </div>
 
+            <div class="banner__image">
+                <!-- Quando tiver imagem, troca a URL aqui -->
+                <div class="banner__image-box"></div>
+            </div>
+        </div>
+    </section>
 
-    <h2 class="titulo">Destaques</h2>
+    <!-- FAIXA DE BENEFÍCIOS -->
+    <section class="benefits">
+        <div class="container benefits__grid">
+            <div class="benefit">
+                <h3>Frete grátis</h3>
+                <p>Para compras acima de R$ 199,00.</p>
+            </div>
+            <div class="benefit">
+                <h3>Troca fácil</h3>
+                <p>Primeira troca grátis em até 30 dias.</p>
+            </div>
+            <div class="benefit">
+                <h3>Até 6x sem juros</h3>
+                <p>Parcele no cartão em pagamentos recorrentes.</p>
+            </div>
+            <div class="benefit">
+                <h3>Estilo e conforto</h3>
+                <p>Peças pensadas para o dia a dia.</p>
+            </div>
+        </div>
+    </section>
 
-    <section class="produtos">
+    <!-- CATEGORIAS -->
+    <section class="section">
+        <div class="container">
+            <div class="section__header">
+                <h2>Categorias em destaque</h2>
+                <a href="produtos.html" class="link">Ver todas as categorias</a>
+            </div>
 
-        <div class="item">
-            <img src="https://via.placeholder.com/200" alt="Produto">
-            <h3>Produto 1</h3>
-            <p class="preco">R$ 99,90</p>
-            <form action="/carrinho/adicionar" method="post">
-                <input type="hidden" name="produtoId" value="1">
-                <button type="submit">Adicionar</button>
+            <div class="categories">
+                <a href="produtos.html" class="category-card">
+                    <div class="category-card__image category-card__image--masc"></div>
+                    <h3>Masculino</h3>
+                    <p>Camisetas, calças, bermudas e jaquetas.</p>
+                </a>
+
+                <a href="produtos.html" class="category-card">
+                    <div class="category-card__image category-card__image--fem"></div>
+                    <h3>Feminino</h3>
+                    <p>Blusas, vestidos, saias e conjuntos.</p>
+                </a>
+
+                <a href="produtos.html" class="category-card">
+                    <div class="category-card__image category-card__image--acc"></div>
+                    <h3>Acessórios</h3>
+                    <p>Bonés, cintos, bolsas e mais.</p>
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- PRODUTOS EM DESTAQUE -->
+    <section class="section section--gray">
+        <div class="container">
+            <div class="section__header">
+                <h2>Novidades da semana</h2>
+                <a href="produtos.html" class="link">Ver todos os produtos</a>
+            </div>
+
+            <div class="products-grid">
+
+                <!-- Produto 1 -->
+                <article class="product-card">
+                    <div class="product-card__image"></div>
+                    <h3>Camiseta básica masculina</h3>
+                    <p class="product-card__category">Masculino • Algodão</p>
+                    <p class="product-card__price">R$ 69,90</p>
+                    <form action="carrinho.html" method="get" class="product-card__form">
+                        <input type="hidden" name="produtoId" value="1">
+                        <button type="submit" class="btn-primary">Adicionar ao carrinho</button>
+                    </form>
+                </article>
+
+                <!-- Produto 2 -->
+                <article class="product-card">
+                    <div class="product-card__image"></div>
+                    <h3>Vestido midi floral</h3>
+                    <p class="product-card__category">Feminino • Leve</p>
+                    <p class="product-card__price">R$ 149,90</p>
+                    <form action="carrinho.html" method="get" class="product-card__form">
+                        <input type="hidden" name="produtoId" value="2">
+                        <button type="submit" class="btn-primary">Adicionar ao carrinho</button>
+                    </form>
+                </article>
+
+                <!-- Produto 3 -->
+                <article class="product-card">
+                    <div class="product-card__image"></div>
+                    <h3>Calça jogger unissex</h3>
+                    <p class="product-card__category">Casual • Conforto</p>
+                    <p class="product-card__price">R$ 129,90</p>
+                    <form action="carrinho.html" method="get" class="product-card__form">
+                        <input type="hidden" name="produtoId" value="3">
+                        <button type="submit" class="btn-primary">Adicionar ao carrinho</button>
+                    </form>
+                </article>
+
+                <!-- Produto 4 -->
+                <article class="product-card">
+                    <div class="product-card__image"></div>
+                    <h3>Jaqueta jeans oversize</h3>
+                    <p class="product-card__category">Unissex • Jeans</p>
+                    <p class="product-card__price">R$ 199,90</p>
+                    <form action="carrinho.html" method="get" class="product-card__form">
+                        <input type="hidden" name="produtoId" value="4">
+                        <button type="submit" class="btn-primary">Adicionar ao carrinho</button>
+                    </form>
+                </article>
+
+            </div>
+        </div>
+    </section>
+
+    <!-- NEWSLETTER -->
+    <section class="section">
+        <div class="container newsletter">
+            <div class="newsletter__text">
+                <h2>Receba ofertas exclusivas</h2>
+                <p>Cadastre-se para receber novidades, lançamentos e cupons de desconto.</p>
+            </div>
+            <form class="newsletter__form" action="/newsletter" method="post">
+                <input type="email" name="email" placeholder="Seu e-mail" required>
+                <button type="submit" class="btn-primary">Cadastrar</button>
             </form>
         </div>
+    </section>
 
-        <div class="item">
-            <img src="https://via.placeholder.com/200" alt="Produto">
-            <h3>Produto 2</h3>
-            <p class="preco">R$ 149,90</p>
-            <form action="/carrinho/adicionar" method="post">
-                <input type="hidden" name="produtoId" value="2">
-                <button type="submit">Adicionar</button>
-            </form>
-        </div>
-
-        <div class="item">
-            <img src="https://via.placeholder.com/200" alt="Produto">
-            <h3>Produto 3</h3>
-            <p class="preco">R$ 79,90</p>
-            <form action="/carrinho/adicionar" method="post">
-                <input type="hidden" name="produtoId" value="3">
-                <button type="submit">Adicionar</button>
-            </form>
-        </div>
-
-    </div>
 </main>
 
-<footer>
-    <p>© 2025 — ROME</p>
+<!-- FOOTER -->
+<footer class="footer">
+    <div class="container footer__content">
+        <div class="footer__col">
+            <h4>UrbanWear</h4>
+            <p>Moda casual para quem vive em movimento.</p>
+        </div>
+
+        <div class="footer__col">
+            <h4>Institucional</h4>
+            <a href="#">Quem somos</a>
+            <a href="#">Política de privacidade</a>
+            <a href="#">Trocas e devoluções</a>
+        </div>
+
+        <div class="footer__col">
+            <h4>Atendimento</h4>
+            <p>WhatsApp: (00) 00000-0000</p>
+            <p>E-mail: contato@urbanwear.com.br</p>
+        </div>
+    </div>
+
+    <div class="footer__bottom">
+        <p>© 2025 ROME - Todos os direitos reservados.</p>
+    </div>
 </footer>
 
 </body>
