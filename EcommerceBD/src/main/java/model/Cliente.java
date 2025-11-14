@@ -85,16 +85,14 @@ public class Cliente extends EntidadeBase {
      * Chama a classe Validador para validar o nome do cliente;
      */
     private void validarNome(String nome) {
-        Validador.nomeValido(nome);
-        this.nome = nome;
+        this.nome = Validador.nomeValido(nome);
     }
 
     /*
      * Chama a classe Validador para validar o email do cliente;
      */
     private void validarEmail(String email) {
-        Validador.emailValido(email);
-        this.email = email;
+        this.email = Validador.emailValido(email);
     }
 
     /*
@@ -114,8 +112,7 @@ public class Cliente extends EntidadeBase {
      * Chama o método Validador para validar o CEP do cliente;
      */
     private void validarCEP(String cep) {
-        Validador.cepValido(cep);
-        this.cep = cep;
+        this.cep = Validador.cepValido(cep);
     }
 
     /*
@@ -244,7 +241,7 @@ public class Cliente extends EntidadeBase {
     public String toString() {
         return "Cliente{" + 
         "ID: " + id +
-        "\nidPessoa: " + (getTipo() != null ? getTipo() : "null") +
+        "\nTipo: " + (getTipo() != null ? getTipo() : "null") +
         "\nNome: " + nome +
         "\nEmail: " + email +
         "\nEndereço: " + getEnderecoCompleto() + '\'' +

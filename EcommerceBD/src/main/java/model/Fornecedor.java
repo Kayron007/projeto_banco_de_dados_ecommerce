@@ -60,8 +60,7 @@ public class Fornecedor extends EntidadeBase{
      * Chama a classe Validador para validar o nome do fornecedor;
      */
     private void validarNome(String nome) {
-        Validador.nomeValido(nome);
-        this.nome = nome;
+        this.nome = Validador.nomeValido(nome);
     }
 
     /*
@@ -77,24 +76,21 @@ public class Fornecedor extends EntidadeBase{
      * Chama a classe Validador para validar o CNPJ do fornecedor;
      */
     private void validarCNPJ(String cnpj) {
-        Validador.cnpjValido(cnpj);
-        this.cnpj = cnpj;
+        this.cnpj = Validador.cnpjValido(cnpj);
     }
 
     /*
      * Chama a classe Validador para validar o CEP do fornecedor;
      */
     private void validarCEP(String cep) {
-        Validador.cepValido(cep);
-        this.cep = cep;
+        this.cep = Validador.cepValido(cep);
     }
 
     /*
      * Chama a classe Validador para validar o email do fornecedor;
      */
     private void validarEmail(String email) {
-        Validador.emailValido(email);
-        this.email = email;
+        this.email = Validador.emailValido(email);
     }
 
     /* MÉTODO DE NORMALIZAÇÃO DE DADOS */

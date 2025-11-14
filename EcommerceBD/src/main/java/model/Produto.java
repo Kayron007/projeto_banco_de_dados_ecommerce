@@ -40,7 +40,7 @@ public class Produto extends EntidadeBase{
     }
 
     /*
-     * Construtor completo para Produto já cadastrado
+     * Construtor completo para Produto já cadastrado;
      */
     public Produto(Long id, String nome, String descricao, String tamanho, String categoria, Double preco, int quantidade) {
         super(id);
@@ -68,11 +68,10 @@ public class Produto extends EntidadeBase{
     }
 
     /*
-     * Chama o método Validador para validar o nome do Produto;
+     * Chama a classe Validador para validar o nome do Produto;
      */
     private void validarNome(String nome) {
-        Validador.nomeValido(nome);
-        this.nome = nome;
+        this.nome = Validador.nomeValido(nome);
     }
 
     /*
