@@ -172,10 +172,10 @@ public class Cliente extends EntidadeBase {
         }
 
         /*
-         * Remove a máscara do CEP;
+         * Remove os espaços extras e a máscara do CEP;
          */
         if(cep!= null) {
-            cep = cep.replaceAll("[^0-9]", "");
+            cep = cep.trim().replaceAll("[^0-9]", "");
         }
 
         /*

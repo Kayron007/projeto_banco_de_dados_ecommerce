@@ -77,7 +77,7 @@ public class TelefoneDAO extends EntidadeBaseDAO<Telefone> {
         ClienteDAO cd = new ClienteDAO(connection);
         Cliente cliente = cd.buscarPorId(idCliente);
 
-        return new Telefone(numero, tipo, fornecedor, cliente, idTel);
+        return new Telefone(idTel, numero, tipo, fornecedor, cliente);
     }
 
     @Override
