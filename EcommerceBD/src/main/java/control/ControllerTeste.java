@@ -17,7 +17,6 @@ public class ControllerTeste {
         Cliente cliente = new Cliente("fisico", "nome", "email", "senha", "11111111", "cidade", "logradouro", "numero", "bairro", "estado");
         System.out.println("Metodo index foi chamado");
         model.addAttribute("mensagem", "Bem-vindo ao E-commerce!");
-        model.addAttribute("mensagem2", cliente.getEnderecoCompleto());
         return "index";
     }
 }
