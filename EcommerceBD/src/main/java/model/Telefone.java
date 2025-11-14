@@ -70,11 +70,15 @@ public class Telefone extends EntidadeBase{
     }
 
     /*
-     * Verifica se o número existe ou foi preenchido;
+     * Verifica se o número existe ou foi preenchido e se contém mais/menos que 11 caracteres;
      */
     private void validarNumero() {
         if(numero == null || numero.trim().isEmpty()) {
             throw new IllegalArgumentException("ERRO: O campo 'Número' é obrigatório!");
+        }
+
+        if(numero.length() != 11) {
+            throw new IllegalArgumentException("ERRO: O número de telefone deve conter 11 caracteres!");
         }
     }
 
