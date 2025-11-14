@@ -59,7 +59,7 @@ public class FornecedorProduto extends EntidadeBase{
      */
     public void setIdFornecedor(Fornecedor id_fornecedor) {
         if(id_fornecedor == null) {
-            throw new IllegalArgumentException("Campo obrigatório não preenchido: Fornecedor");
+            throw new IllegalArgumentException("ERRO: ID do fornecedor não foi encontrado!");
         }
         this.id_fornecedor = id_fornecedor;
     }
@@ -78,7 +78,7 @@ public class FornecedorProduto extends EntidadeBase{
      */
     public void setIdProduto(Produto id_produto) {
         if(id_produto == null) {
-            throw new IllegalArgumentException("Campo obrigatório não preenchido: Produto");
+            throw new IllegalArgumentException("ERRO: ID do produto não foi encontrado!");
         }
         this.id_produto = id_produto;
     }
