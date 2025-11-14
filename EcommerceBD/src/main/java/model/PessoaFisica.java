@@ -79,6 +79,11 @@ public class PessoaFisica extends EntidadeBase{
     }
 
     /* MÉTODO DE NORMALIZAÇÃO */
+
+    /*
+     * Normaliza os dados da PessoaFisica
+     * Chamado antes da validação;
+     */
     public void normalizar() {
         /*
          * Remove os espaços extras do CPF;

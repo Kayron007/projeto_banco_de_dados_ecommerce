@@ -243,4 +243,43 @@ public final class Validador {
 
         return limpo;
     }
+
+    /*
+     * Retorna a IE limpa
+     * OBS: Cada estado tem uma regra própria; esta é uma validação genérica,
+     * similar ao que é feito no rg;
+     */
+    public static String utilIE(String ie) {
+        if (ie == null || ie.trim().isEmpty()) {
+            throw new IllegalArgumentException("ERRO: O campo 'Inscrição Estadual' é obrigatório!");
+        }
+
+        /*
+        * Remove tudo que não for número ou X
+        */
+        String limpo = ie.replaceAll("[^0-9Xx]", "").toUpperCase();
+
+        /*
+        * Tamanho mínimo e máximo da IE no Brasil (8 a 14 dígitos)
+        */
+        if (limpo.length() < 8 || limpo.length() > 14) {
+            throw new IllegalArgumentException("ERRO: Tamanho da IE inválido!");
+        }
+
+        /*
+        * Sequências repetidas não são válidas
+        */
+        if (limpo.matches("(\\d)\\1+")) {
+            throw new IllegalArgumentException("ERRO: IE inválida!");
+        }
+
+        /*
+        * X só pode aparecer no último dígito, quando existir
+        */
+        if (limpo.contains("X") && !limpo.endsWith("X")) {
+            throw new IllegalArgumentException("ERRO: O dígito 'X' só é permitido no final da IE!");
+        }
+
+        return limpo;
+    }
 }
