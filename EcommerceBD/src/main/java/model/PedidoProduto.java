@@ -4,62 +4,84 @@
  */
 package model;
 
+import java.math.BigDecimal;
+
 /**
  *
  * @author gustavo
  */
 public class PedidoProduto extends EntidadeBase{
-    private Pedido id_pedido;
-    private Produto id_produto;
+    private Pedido pedido;
+    private Produto produto;
     private int quantidade;
-    private double precoUnitario;
+    private BigDecimal precoUnitario;
 
-    public PedidoProduto() {
-        super();
-    }
+    /*
+     * Construtor padrão
+     * Usado para quando os dados forem preenchidos posteriormente pelos setters;
+     */
+    public PedidoProduto() {}
 
-    public PedidoProduto(Long id, Pedido id_pedido, Produto id_produto, int quantidade, double precoUnitario) {
-        super(id);
-        this.id_pedido = id_pedido;
-        this.id_produto = id_produto;
-        this.quantidade = quantidade;
-        this.precoUnitario = precoUnitario;
+    /*
+     * Construtor completo
+     * Utilizado para criar a relação com os dados já definidos
+     */
+    public PedidoProduto(Pedido pedido, Produto produto, int quantidade, BigDecimal precoUnitario) {
+        setPedido(pedido);
+        setProduto(produto);
+        setQuantidade(quantidade);
+        setPrecoUnitario(precoUnitario);
     }
 
     /*
-     * Completar mais tarde
+     * Exibe os dados do PedidoProduto/Carrinho;
      */
     @Override
     public String toString() {
-        return "";
+        return "Carrinho: {" +
+        "\nPedido: " + (pedido != null ? pedido.getId() : "N/D") +
+        "\nProduto: " + (produto != null ? produto.getNome() : "N/D") +
+        "\nQuantidade: " + quantidade +
+        "\nPreço unitário: " + precoUnitario +
+        "\n}";
     }
 
     /**
-     * @return the id_pedido
+     * @return the pedido
      */
-    public Pedido getId_pedido() {
-        return id_pedido;
+    public Pedido getPedido() {
+        return pedido;
     }
 
     /**
-     * @param id_pedido the id_pedido to set
+     * Define o pedido associado ao produto
+     * Deve existir pedido válido (não pode ser nulo)
+     * @param pedido the pedido to set;
      */
-    public void setId_pedido(Pedido id_pedido) {
-        this.id_pedido = id_pedido;
+    public void setPedido(Pedido pedido) {
+        if(pedido == null) {
+            throw new IllegalArgumentException("ERRO: ID do pedido não foi encontrado!");
+        }
+        this.pedido = pedido;
     }
 
     /**
-     * @return the id_produtp
+     * @return the produto
      */
-    public Produto getId_produto() {
-        return id_produto;
+    public Produto getProduto() {
+        return produto;
     }
 
     /**
-     * @param id_produtp the id_produtp to set
+     * Define o produto associado ao pedido
+     * Deve existir produto válido (não pode ser nulo)
+     * @param produto the produto to set;
      */
-    public void setId_produtp(Produto id_produtp) {
-        this.id_produto = id_produtp;
+    public void setProduto(Produto produto) {
+        if(produto == null) {
+            throw new IllegalArgumentException("ERRO: ID do produto não foi encontrado");
+        }
+        this.produto = produto;
     }
 
     /**
@@ -70,25 +92,33 @@ public class PedidoProduto extends EntidadeBase{
     }
 
     /**
-     * @param quantidade the quantidade to set
+     * Define a quantidade de produtos em um só pedido
+     * A quantidade deve ser maior que zero
+     * @param quantidade the quantidade to set;
      */
     public void setQuantidade(int quantidade) {
+        if(quantidade <= 0) {
+            throw new IllegalArgumentException("ERRO: Quantidade de produtos inválida! Deve haver ao menos um produto no pedido.");
+        }
         this.quantidade = quantidade;
     }
 
     /**
      * @return the precoUnitario
      */
-    public double getPrecoUnitario() {
+    public BigDecimal getPrecoUnitario() {
         return precoUnitario;
     }
 
     /**
-     * @param precoUnitario the precoUnitario to set
+     * Define o preço unitário dos produtos
+     * Cada produto deve ter um preço unitário e deve ser maior ou igual a zero
+     * @param precoUnitario the precoUnitario to set;
      */
-    public void setPrecoUnitario(double precoUnitario) {
+    public void setPrecoUnitario(BigDecimal precoUnitario) {
+        if(precoUnitario == null || precoUnitario.compareTo(BigDecimal.ZERO) < 0) {
+            throw new IllegalArgumentException("ERRO: O produto deve ter preço unitário!");
+        }
         this.precoUnitario = precoUnitario;
     }
-    
-    
 }

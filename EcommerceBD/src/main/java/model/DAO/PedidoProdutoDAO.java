@@ -1,5 +1,6 @@
 package model.DAO;
 
+import java.math.BigDecimal;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
@@ -27,10 +28,10 @@ public class PedidoProdutoDAO extends EntidadeBaseDAO<PedidoProduto> {
         String sql = "INSERT INTO pedido_produto (fk_ID_pedido, fk_ID_produto, Quantidade, preco_unitario) VALUES (?, ?, ?, ?)";
 
         try (PreparedStatement stmt = connection.prepareStatement(sql)) {
-            stmt.setLong(1, pedidoProduto.getId_pedido().getId());
-            stmt.setLong(2, pedidoProduto.getId_produto().getId());
+            stmt.setLong(1, pedidoProduto.getProduto().getId());
+            stmt.setLong(2, pedidoProduto.getPedido().getId());
             stmt.setInt(3, pedidoProduto.getQuantidade());
-            stmt.setDouble(4, pedidoProduto.getPrecoUnitario());
+            stmt.setBigDecimal(4, pedidoProduto.getPrecoUnitario());
 
             int linhas = stmt.executeUpdate();
 
@@ -47,8 +48,8 @@ public class PedidoProdutoDAO extends EntidadeBaseDAO<PedidoProduto> {
         String sql = "DELETE FROM pedido_produto WHERE fk_ID_pedido = ? AND fk_ID_produto = ?";
 
         try (PreparedStatement stmt = connection.prepareStatement(sql)) {
-            stmt.setLong(1, pedidoProduto.getId_pedido().getId());
-            stmt.setLong(2, pedidoProduto.getId_produto().getId());
+            stmt.setLong(1, pedidoProduto.getProduto().getId());
+            stmt.setLong(2, pedidoProduto.getPedido().getId());
             stmt.executeUpdate();
             System.out.println("[DAO] PedidoProduto deletado com sucesso!");
         } catch (Exception e) {
@@ -62,9 +63,9 @@ public class PedidoProdutoDAO extends EntidadeBaseDAO<PedidoProduto> {
 
         try (PreparedStatement stmt = connection.prepareStatement(sql)) {
             stmt.setInt(1, pedidoProduto.getQuantidade());
-            stmt.setDouble(2, pedidoProduto.getPrecoUnitario());
-            stmt.setLong(3, pedidoProduto.getId_pedido().getId());
-            stmt.setLong(4, pedidoProduto.getId_produto().getId());
+            stmt.setBigDecimal(2, pedidoProduto.getPrecoUnitario());
+            stmt.setLong(3, pedidoProduto.getProduto().getId());
+            stmt.setLong(4, pedidoProduto.getPedido().getId());
             stmt.executeUpdate();
 
             System.out.println("[DAO] PedidoProduto alterado com sucesso!");
@@ -77,7 +78,7 @@ public class PedidoProdutoDAO extends EntidadeBaseDAO<PedidoProduto> {
         Long idPedido = rs.getLong("fk_ID_pedido");
         Long idProduto = rs.getLong("fk_ID_produto");
         int quantidade = rs.getInt("Quantidade");
-        double precoUnitario = rs.getDouble("preco_unitario");
+        BigDecimal precoUnitario = rs.getBigDecimal("preco_unitario");
 
         PedidoDAO pedidoDAO = new PedidoDAO();
         ProdutoDAO produtoDAO = new ProdutoDAO();
@@ -85,7 +86,7 @@ public class PedidoProdutoDAO extends EntidadeBaseDAO<PedidoProduto> {
         Pedido pedido = pedidoDAO.buscarPorId(idPedido);
         Produto produto = produtoDAO.buscarPorId(idProduto);
 
-        return new PedidoProduto(idPedido, pedido, produto, quantidade, precoUnitario);
+        return new PedidoProduto(pedido, produto, quantidade, precoUnitario);
     }
 
     @Override
