@@ -17,10 +17,19 @@ public class NotaFiscal extends EntidadeBase{
     private String chaveDeAcesso;
     private Pedido id_pedido;
 
+    /*
+     * Construtor padrão
+     * Utilizado para criar uma NotaFiscal vazia que será populada mais tarde;
+     */
     public NotaFiscal() {
         super();
     }
 
+    /*
+     * Construtor completo para nova NotaFiscal
+     * Utilizado para gerar nova NotaFiscal
+     * O ID será gerado automáticamente pelo método gerarIdUnico;
+     */
     public NotaFiscal(LocalDateTime dataDeEmissao, int valorTotal, int imposto, String chaveDeAcesso, Pedido id_pedido) {
         super();
         this.dataDeEmissao = dataDeEmissao;
@@ -30,6 +39,9 @@ public class NotaFiscal extends EntidadeBase{
         this.id_pedido = id_pedido;
     }
 
+    /*
+     * Construtor completo para NotaFiscal já existente;
+     */
     public NotaFiscal(Long id, LocalDateTime dataDeEmissao, int valorTotal, int imposto, String chaveDeAcesso, Pedido id_pedido) {
         super(id);
         this.dataDeEmissao = dataDeEmissao;
