@@ -29,12 +29,44 @@
 
 <form class="cadastro-form" action="/cadastro" method="post">
 
-    <label>Seu email:
-        <input type="email" name="email" required>
+    </label> Você é pessoa física ou jurídica?
+        <input type="text" name="tipo" required>
     </label>
 
-    <label>Crie uma senha:
+    <label> Nome:
+        <input type="nome" name="nome" required>
+    </label>
+
+    <label> Email:
+        <input type="email" name="email" required>
+    </label> 
+    
+    </label> Senha:
         <input type="password" name="senha" required>
+    </label>
+
+    </label> CEP:
+        <input type="text" name="cep" required> 
+    </label>
+
+    </label> Cidade:
+        <input type="text" name="cidade" required>
+    </label>
+
+    </label> Logradouro:
+        <input type="text" name="logradouro" required>
+    </label>
+
+    </label> Número:
+        <input type="number" name="numero" required>
+    </label>
+
+    </label> Bairro:
+        <input type="text" name="bairro" required>
+    </label>
+
+    </label> Estado (UF):
+        <input type="text" name="estado" required>
     </label> <button type="submit">Cadastrar</button>
 </form>
 
