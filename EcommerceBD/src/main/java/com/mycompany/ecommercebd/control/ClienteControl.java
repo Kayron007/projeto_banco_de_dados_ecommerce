@@ -1,8 +1,4 @@
-<<<<<<< HEAD
-package com.mycompany.ecommercebd.control;
 
-import java.sql.Connection;
-=======
 /*
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
@@ -12,7 +8,6 @@ package com.mycompany.ecommercebd.control;
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.Scanner;
->>>>>>> 3ba32f0 (Colocando pop-up na página inicial do site + crição do modal.html em fragments)
 
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -24,12 +19,9 @@ import com.mycompany.ecommercebd.model.Cliente;
 import com.mycompany.ecommercebd.model.Conexao;
 import com.mycompany.ecommercebd.model.DAO.ClienteDAO;
 
-<<<<<<< HEAD
 import jakarta.servlet.http.HttpSession;
 
-=======
-<<<<<<< HEAD
->>>>>>> 895f942 (Colocando pop-up na página inicial do site + crição do modal.html em fragments)
+
 @Controller
 public class ClienteControl {
 
@@ -130,7 +122,6 @@ public class ClienteControl {
         }
     }
 }
-=======
 /**
  *
  * @author gustavo
@@ -403,4 +394,4 @@ public class ClienteControl {
         }
     }
 }
->>>>>>> 3ba32f0 (Colocando pop-up na página inicial do site + crição do modal.html em fragments)
+

@@ -144,11 +144,7 @@ public class Cliente extends EntidadeBase {
             throw new IllegalArgumentException("Campo obrigatório não preenchido: Número");
         }
 
-<<<<<<< HEAD
         if(bairro == null || bairro.trim().isEmpty()) {
-=======
-        if(bairro == null || numero.trim().isEmpty()) {
->>>>>>> 3ba32f0 (Colocando pop-up na página inicial do site + crição do modal.html em fragments)
             throw new IllegalArgumentException("Campo obrigatório não preenchido: Bairro");
         }
     }
@@ -218,11 +214,10 @@ public class Cliente extends EntidadeBase {
         }
         
         if(tipo != null) {
-<<<<<<< HEAD
+
             tipo = tipo.trim().toUpperCase();
-=======
+
             setTipo(getTipo().trim().toUpperCase());
->>>>>>> 3ba32f0 (Colocando pop-up na página inicial do site + crição do modal.html em fragments)
         }
     }
 
@@ -335,14 +330,9 @@ public class Cliente extends EntidadeBase {
 
     /**
 <<<<<<< HEAD
-     * @param bairro the bairro to set
-     */
-    public void setBairro(String bairro) {
-=======
      * @param bairro the bairo to set
      */
     public void setBairo(String bairro) {
->>>>>>> 3ba32f0 (Colocando pop-up na página inicial do site + crição do modal.html em fragments)
         this.bairro = bairro;
     }
 
