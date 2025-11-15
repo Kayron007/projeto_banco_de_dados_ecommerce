@@ -103,7 +103,7 @@ public class ClienteControl {
                 return "login";
             }
 
-            // 👉 Guarda o cliente na sessão
+            // Guarda o cliente na sessão
             session.setAttribute("clienteLogado", c);
 
             return "redirect:/";
@@ -112,5 +112,15 @@ public class ClienteControl {
             model.addAttribute("erro", "Erro ao logar: " + e.getMessage());
             return "login";
         }
+    }
+
+    // ------------------------------------------------------------------
+    // LOGOUT
+    // ------------------------------------------------------------------
+
+    @GetMapping("/logout")
+    public String logout(HttpSession session) {
+        session.invalidate();
+        return "redirect:/";
     }
 }
