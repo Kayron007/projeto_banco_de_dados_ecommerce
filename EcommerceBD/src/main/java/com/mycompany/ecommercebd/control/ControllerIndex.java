@@ -22,6 +22,18 @@ public class ControllerIndex {
         return "index";
     }
 
+    @GetMapping("/minhaConta")
+    public String minhaConta(HttpSession session, Model model) {
+        Cliente c = (Cliente) session.getAttribute("clienteLogado");
+
+        if (c == null) {
+            return "redirect:/"; // ou volta para login
+        }
+
+        model.addAttribute("cliente", c);
+        return "minhaConta";
+    }
+
     @GetMapping("/masculino")
     public String masculino(){
         return "produtos";
@@ -42,14 +54,11 @@ public class ControllerIndex {
         return "produtos";
     }
 
-    @GetMapping("/login")
-    public String login(){
-        return "login";
-    }
     @GetMapping("/carrinho")
     public String carrinho(){
         return "carrinho";
     }
+
     @GetMapping("/produtos")
     public String produtos(){
         return "produtos";
@@ -60,25 +69,4 @@ public class ControllerIndex {
         return "checkout";
          
     }
-    
-    @GetMapping("/minhaConta")
-    public String minhaConta(HttpSession session, Model model) {
-        Cliente c = (Cliente) session.getAttribute("clienteLogado");
-
-        if (c == null) {
-            return "redirect:/"; // ou volta para login
-        }
-
-        model.addAttribute("cliente", c);
-        return "minhaConta";
-    
-    }    
-
-    @GetMapping("/cadastro")
-    public String cadastro(){
-        return "cadastro";
-    }
-    
-    
-
 }
