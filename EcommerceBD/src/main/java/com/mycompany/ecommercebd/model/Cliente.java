@@ -144,7 +144,7 @@ public class Cliente extends EntidadeBase {
             throw new IllegalArgumentException("Campo obrigatório não preenchido: Número");
         }
 
-        if(bairro == null || numero.trim().isEmpty()) {
+        if(bairro == null || bairro.trim().isEmpty()) {
             throw new IllegalArgumentException("Campo obrigatório não preenchido: Bairro");
         }
     }
@@ -214,7 +214,7 @@ public class Cliente extends EntidadeBase {
         }
         
         if(tipo != null) {
-            setTipo(getTipo().trim().toUpperCase());
+            tipo = tipo.trim().toUpperCase();
         }
     }
 
@@ -326,9 +326,9 @@ public class Cliente extends EntidadeBase {
     }
 
     /**
-     * @param bairro the bairo to set
+     * @param bairro the bairro to set
      */
-    public void setBairo(String bairro) {
+    public void setBairro(String bairro) {
         this.bairro = bairro;
     }
 

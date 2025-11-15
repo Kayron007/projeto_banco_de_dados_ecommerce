@@ -215,7 +215,7 @@ public class ClienteDAO extends EntidadeBaseDAO<Cliente>{
                 c.setNumero(rs.getString("Numero"));
                 c.setCep(rs.getString("CEP"));
                 c.setLogradouro(rs.getString("Logradouro"));
-                c.setBairo(rs.getString("Bairro"));
+                c.setBairro(rs.getString("Bairro"));
                 c.setEstado(rs.getString("Estado"));
                 c.setCidade(rs.getString("Cidade"));
                 
