@@ -3,42 +3,98 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Carrinho | Minha Loja</title>
-    <link rel="stylesheet" href="css/style.css">
-</head>
+    <title>Carrinho | ROME</title>
+    <link rel="stylesheet" href="css/base.css">
+    <link rel="stylesheet" href="css/layout.css">
+    <link rel="stylesheet" href="css/components.css">
+    <link rel="stylesheet" href="css/carrinho.css">
+
 
 <body>
 
-<header>
-    <h1 class="logo">ROME</h1>
-    <nav>
-        <a href="index.html">Home</a>
-        <a href="produtos.html">Produtos</a>
-        <a href="carrinho.html">Carrinho</a>
-        <a href="login.html">Login</a>
-    </nav>
+<header class="header">
+    <div class="container header__content">
+        <div class="logo">
+            <a href="index.html">ROME</a>
+        </div>
+        <nav class="nav">
+            <a href="index.html">Home</a>
+            <a href="produtos.html">Produtos</a>
+            <a href="carrinho.html">Carrinho</a>
+            <a href="login.html">Login</a>
+            <a href="cadastro.html">Cadastro</a>
+        </nav>
+    </div>
 </header>
 
 <main>
 
 <h2 class="titulo">Meu Carrinho</h2>
 
-<div class="carrinho">
+<section class="carrinho-container">
+    <div class="carrinho-items">
+        <div class="carrinho-item">
+            <div class="carrinho-item-header">
+                <h3>Camiseta básica masculina</h3>
+                <form action="/carrinho/remover" method="post" style="display: inline;">
+                    <input type="hidden" name="produtoId" value="1">
+                    <button type="submit" class="btn-remover">Remover</button>
+                </form>
+            </div>
+            <p><strong>Preço:</strong> R$ 69,90</p>
+            <p><strong>Quantidade:</strong> 1</p>
+            <p><strong>Subtotal:</strong> R$ 69,90</p>
+        </div>
 
-    <div class="carrinho-item">
-        <p><strong>Produto:</strong> Produto Exemplo</p>
-        <p><strong>Preço:</strong> R$ 99,90</p>
-        <p><strong>Quantidade:</strong> 1</p>
+        <div class="carrinho-item">
+            <div class="carrinho-item-header">
+                <h3>Vestido midi floral</h3>
+                <form action="/carrinho/remover" method="post" style="display: inline;">
+                    <input type="hidden" name="produtoId" value="2">
+                    <button type="submit" class="btn-remover">Remover</button>
+                </form>
+            </div>
+            <p><strong>Preço:</strong> R$ 149,90</p>
+            <p><strong>Quantidade:</strong> 1</p>
+            <p><strong>Subtotal:</strong> R$ 149,90</p>
+        </div>
     </div>
 
-</div>
-
-<a class="botao-comprar" href="#">Finalizar Compra</a>
+    <div class="carrinho-resumo">
+        <h3>Resumo do Pedido</h3>
+        <div class="resumo-linha">
+            <span>Subtotal:</span>
+            <strong>R$ 219,80</strong>
+        </div>
+        <div class="resumo-linha">
+            <span>Frete:</span>
+            <strong>Grátis</strong>
+        </div>
+        <div class="resumo-linha resumo-total">
+            <span>Total:</span>
+            <strong>R$ 219,80</strong>
+        </div>
+        <a href="checkout.html" class="btn-primary">Comprar Agora</a>
+    </div>
+</section>
 
 </main>
 
-<footer>
-    <p>© 2025 — ROME</p>
+<footer class="footer">
+    <div class="container footer__content">
+        <div class="footer__col">
+            <h4>ROME</h4>
+            <p>Moda casual para quem vive em movimento.</p>
+        </div>
+        <div class="footer__col">
+            <h4>Atendimento</h4>
+            <p>WhatsApp: (00) 00000-0000</p>
+            <p>E-mail: contato@rome.com.br</p>
+        </div>
+    </div>
+    <div class="footer__bottom">
+        <p>© 2025 ROME - Todos os direitos reservados.</p>
+    </div>
 </footer>
 
 </body>

@@ -1,0 +1,234 @@
+/* ===== LINKS E BOTÕES ===== */
+.link {
+    font-size: 0.9rem;
+    color: #e5e7eb;
+}
+
+.link:hover {
+    text-decoration: underline;
+}
+
+.btn-primary,
+.btn-outline,
+.btn-small {
+    display: inline-block;
+    border-radius: 999px;
+    padding: 0.5rem 1.2rem;
+    font-size: 0.95rem;
+    font-weight: 600;
+    border: 1px solid transparent;
+    cursor: pointer;
+    text-align: center;
+}
+
+.btn-primary {
+    background-color: #111827;
+    color: #f9fafb;
+}
+
+.btn-primary:hover {
+    background-color: #020617;
+}
+
+.btn-outline {
+    background-color: transparent;
+    color: #111827;
+    border-color: #111827;
+}
+
+.btn-outline:hover {
+    background-color: #111827;
+    color: #f9fafb;
+}
+
+.btn-small {
+    background-color: #f97316;
+    color: #111827;
+}
+
+.btn-small:hover {
+    background-color: #ea580c;
+}
+
+/* ===== CATEGORIAS ===== */
+.categories {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 1.5rem;
+}
+
+.category-card {
+    background-color: #ffffff;
+    border-radius: 0.75rem;
+    padding: 1rem;
+    box-shadow: 0 12px 20px rgba(15, 23, 42, 0.08);
+    display: flex;
+    flex-direction: column;
+    gap: 0.4rem;
+    color: inherit;
+}
+
+.category-card h3 {
+    font-size: 1.05rem;
+}
+
+.category-card p {
+    font-size: 0.9rem;
+    color: #4b5563;
+}
+
+.category-card__image {
+    height: 140px;
+    border-radius: 0.75rem;
+    margin-bottom: 0.5rem;
+    background-size: cover;
+    background-position: center;
+}
+
+/* Gradientes de exemplo das categorias */
+.category-card__image--masc {
+    background-image: linear-gradient(135deg, #1d4ed8, #3b82f6);
+}
+
+.category-card__image--fem {
+    background-image: linear-gradient(135deg, #db2777, #fb7185);
+}
+
+.category-card__image--acc {
+    background-image: linear-gradient(135deg, #0f766e, #22c55e);
+}
+
+/* ===== PRODUTOS ===== */
+.products-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 1.5rem;
+}
+
+.product-card {
+    background-color: #ffffff;
+    border-radius: 0.75rem;
+    padding: 1rem;
+    box-shadow: 0 12px 20px rgba(15, 23, 42, 0.08);
+    display: flex;
+    flex-direction: column;
+    gap: 0.4rem;
+}
+
+.product-card__image {
+    height: 180px;
+    border-radius: 0.75rem;
+    margin-bottom: 0.5rem;
+    background-image: linear-gradient(135deg, #6b7280, #9ca3af);
+    background-size: cover;
+    background-position: center;
+}
+
+.product-card h3 {
+    font-size: 1rem;
+}
+
+.product-card__category {
+    font-size: 0.85rem;
+    color: #6b7280;
+}
+
+.product-card__price {
+    font-weight: 700;
+    margin: 0.25rem 0 0.4rem;
+    color: #16a34a;
+}
+
+.product-card__form {
+    margin-top: 0.25rem;
+}
+
+/* ===== NEWSLETTER ===== */
+.newsletter {
+    background-color: #111827;
+    color: #e5e7eb;
+    border-radius: 1rem;
+    padding: 1.75rem 1.25rem;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1.25rem;
+    align-items: center;
+}
+
+.newsletter__text {
+    flex: 1 1 220px;
+}
+
+.newsletter__text h2 {
+    font-size: 1.3rem;
+    margin-bottom: 0.25rem;
+}
+
+.newsletter__text p {
+    font-size: 0.9rem;
+}
+
+.newsletter__form {
+    flex: 1 1 220px;
+    display: flex;
+    gap: 0.75rem;
+    flex-wrap: wrap;
+}
+
+.newsletter__form input[type="email"] {
+    flex: 1 1 150px;
+    padding: 0.6rem 0.75rem;
+    border-radius: 999px;
+    border: none;
+}
+
+/* ===== FORMULÁRIOS GENÉRICOS (usados em checkout e login) ===== */
+.form-group {
+    margin-bottom: 1.25rem;
+}
+
+.form-group label {
+    display: block;
+    font-weight: 600;
+    margin-bottom: 0.5rem;
+    font-size: 0.95rem;
+}
+
+.form-group input,
+.form-group select {
+    width: 100%;
+    padding: 0.75rem;
+    border: 1px solid #ccc;
+    border-radius: 0.4rem;
+    font-size: 0.95rem;
+}
+
+.form-group input:focus,
+.form-group select:focus {
+    outline: none;
+    border-color: #111827;
+    box-shadow: 0 0 0 3px rgba(17, 24, 39, 0.1);
+}
+
+.form-row {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 1rem;
+}
+
+/* ===== LINHAS DE RESUMO (carrinho + checkout) ===== */
+.resumo-linha {
+    display: flex;
+    justify-content: space-between;
+    padding: 0.6rem 0;
+    border-bottom: 1px solid #ddd;
+    font-size: 0.95rem;
+}
+
+.resumo-total {
+    border-bottom: none;
+    font-size: 1.1rem;
+    font-weight: 700;
+    padding-top: 0.8rem;
+    margin-top: 0.5rem;
+}

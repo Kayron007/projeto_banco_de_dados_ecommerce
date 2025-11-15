@@ -1,0 +1,84 @@
+/* ===== MODAL LOGIN ===== */
+.modal-toggle {
+    display: none;
+}
+
+.modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(0, 0, 0, 0.5);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.3s, visibility 0.3s;
+    z-index: 999;
+    pointer-events: none;
+}
+
+.modal-toggle:checked ~ .modal-overlay {
+    opacity: 1;
+    visibility: visible;
+    pointer-events: auto;
+}
+
+.modal-content {
+    background-color: #ffffff;
+    border-radius: 0.75rem;
+    padding: 2rem;
+    max-width: 400px;
+    width: 90%;
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2);
+    animation: modalSlideIn 0.3s ease;
+}
+
+.modal-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1.5rem;
+}
+
+.modal-header h2 {
+    margin: 0;
+    font-size: 1.3rem;
+}
+
+.modal-close {
+    font-size: 2rem;
+    font-weight: 300;
+    color: #999;
+    cursor: pointer;
+    background: none;
+    border: none;
+    padding: 0;
+    line-height: 1;
+}
+
+.modal-close:hover {
+    color: #111827;
+}
+
+.modal-toggle:checked ~ .modal-overlay .modal-close {
+    cursor: pointer;
+}
+
+@keyframes modalSlideIn {
+    from {
+        transform: scale(0.9);
+        opacity: 0;
+    }
+    to {
+        transform: scale(1);
+        opacity: 1;
+    }
+}
+
+/* Caso queira controlar com classe .show em algum momento futuro */
+.modal-overlay.show {
+    pointer-events: auto;
+}
