@@ -71,11 +71,16 @@ public class AvaliacaoDAO extends EntidadeBaseDAO<Avaliacao> {
     public void alterar(Avaliacao avaliacao) {
         String sql = "UPDATE avaliacao SET comentario = ?, nota = ?";
 
-        try (PreparedStatement stmt = connection.prepareStatement(sql)) {
-            stmt.setString(1, avaliacao.getComentario());
-            stmt.setShort(2, avaliacao.getNota());
+        try {
+            avaliacao.normalizar();
+            avaliacao.validar();
+
+            try (PreparedStatement stmt = connection.prepareStatement(sql)) {
+                stmt.setString(1, avaliacao.getComentario());
+                stmt.setShort(2, avaliacao.getNota());
+            }
         } catch (Exception e) {
-            System.out.println("Erro ao deletar avaliação " + e.getMessage());
+            System.out.println("Erro ao alterar avaliação " + e.getMessage());
         }
     }
 
