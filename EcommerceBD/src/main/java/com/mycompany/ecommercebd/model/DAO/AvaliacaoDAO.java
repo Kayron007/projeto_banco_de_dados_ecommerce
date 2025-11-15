@@ -14,9 +14,6 @@ import java.util.List;
 
 import com.mycompany.ecommercebd.model.Avaliacao;
 import com.mycompany.ecommercebd.model.Cliente;
-import com.mycompany.ecommercebd.model.Conexao;
-import com.mycompany.ecommercebd.model.Fornecedor;
-import com.mycompany.ecommercebd.model.Pedido;
 import com.mycompany.ecommercebd.model.Produto;
 
 /**

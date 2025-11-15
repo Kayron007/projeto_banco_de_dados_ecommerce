@@ -332,7 +332,7 @@ public class Cliente extends EntidadeBase {
 <<<<<<< HEAD
      * @param bairro the bairo to set
      */
-    public void setBairo(String bairro) {
+    public void setBairro(String bairro) {
         this.bairro = bairro;
     }
 
