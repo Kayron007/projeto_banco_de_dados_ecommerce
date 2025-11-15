@@ -3,45 +3,79 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Login | Minha Loja</title>
+    <title>Login | ROME</title>
     <link rel="stylesheet" href="css/style.css">
 </head>
 
 <body>
 
-<header>
-    <h1 class="logo">ROME</h1>
-    <nav>
-        <a href="index.html">Home</a>
-        <a href="produtos.html">Produtos</a>
-        <a href="carrinho.html">Carrinho</a>
-        
-    </nav>
+<header class="header">
+    <div class="container header__content">
+        <div class="logo">
+            <a href="index.html">ROME</a>
+        </div>
+        <nav class="nav">
+            <a href="index.html">Home</a>
+            <a href="produtos.html">Produtos</a>
+            <a href="carrinho.html">Carrinho</a>
+            <a href="cadastro.html">Cadastro</a>
+        </nav>
+        <div class="header__actions">
+            <label for="modal-login-toggle" class="btn-small" style="cursor: pointer; margin: 0;">Login</label>
+        </div>
+    </div>
 </header>
 
 <main>
-
 <h2 class="titulo">Login</h2>
-
-<form class="login-form" action="/login" method="post">
-
-    <label>Email:
-        <input type="email" name="email" required>
-    </label>
-
-    <label>Senha:
-        <input type="password" name="senha" required>
-    </label>
-
-    <button type="submit">Entrar</button>
-</form>
-
-<a href= "cadastro.html" class"link">Não possui cadastro? Clique aqui para se cadastrar</a>
-
+<p style="text-align: center; color: #666;">Clique no botão de login no topo para entrar.</p>
 </main>
 
-<footer>
-    <p>© 2025 — Minha Loja</p>
+<!-- Modal de Login (checkbox trick) -->
+<input type="checkbox" id="modal-login-toggle" class="modal-toggle" hidden>
+
+<div class="modal-overlay">
+    <div class="modal-content">
+        <div class="modal-header">
+            <h2>Fazer Login</h2>
+            <label for="modal-login-toggle" class="modal-close">&times;</label>
+        </div>
+
+        <form class="login-form" action="/login" method="post">
+            <div class="form-group">
+                <label for="login-email">Email:</label>
+                <input type="email" id="login-email" name="email" required>
+            </div>
+
+            <div class="form-group">
+                <label for="login-senha">Senha:</label>
+                <input type="password" id="login-senha" name="senha" required>
+            </div>
+
+            <button type="submit" class="btn-primary" style="width: 100%;">Entrar</button>
+        </form>
+
+        <p style="text-align: center; margin-top: 1rem; font-size: 0.9rem;">
+            Não possui cadastro? <a href="cadastro.html" class="link">Clique aqui</a>
+        </p>
+    </div>
+</div>
+
+<footer class="footer">
+    <div class="container footer__content">
+        <div class="footer__col">
+            <h4>ROME</h4>
+            <p>Moda casual para quem vive em movimento.</p>
+        </div>
+        <div class="footer__col">
+            <h4>Atendimento</h4>
+            <p>WhatsApp: (00) 00000-0000</p>
+            <p>E-mail: contato@rome.com.br</p>
+        </div>
+    </div>
+    <div class="footer__bottom">
+        <p>© 2025 ROME - Todos os direitos reservados.</p>
+    </div>
 </footer>
 
 </body>

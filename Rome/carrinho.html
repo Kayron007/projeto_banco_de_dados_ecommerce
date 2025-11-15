@@ -31,14 +31,26 @@
 <section class="carrinho-container">
     <div class="carrinho-items">
         <div class="carrinho-item">
-            <h3>Camiseta básica masculina</h3>
+            <div class="carrinho-item-header">
+                <h3>Camiseta básica masculina</h3>
+                <form action="/carrinho/remover" method="post" style="display: inline;">
+                    <input type="hidden" name="produtoId" value="1">
+                    <button type="submit" class="btn-remover">Remover</button>
+                </form>
+            </div>
             <p><strong>Preço:</strong> R$ 69,90</p>
             <p><strong>Quantidade:</strong> 1</p>
             <p><strong>Subtotal:</strong> R$ 69,90</p>
         </div>
 
         <div class="carrinho-item">
-            <h3>Vestido midi floral</h3>
+            <div class="carrinho-item-header">
+                <h3>Vestido midi floral</h3>
+                <form action="/carrinho/remover" method="post" style="display: inline;">
+                    <input type="hidden" name="produtoId" value="2">
+                    <button type="submit" class="btn-remover">Remover</button>
+                </form>
+            </div>
             <p><strong>Preço:</strong> R$ 149,90</p>
             <p><strong>Quantidade:</strong> 1</p>
             <p><strong>Subtotal:</strong> R$ 149,90</p>
