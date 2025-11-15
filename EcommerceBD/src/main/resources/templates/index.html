@@ -19,16 +19,16 @@
         </div>
 
         <nav class="nav">
-            <a href="index.html">Home</a>
-            <a href="produtos.html">Masculino</a>
-            <a href="produtos.html">Feminino</a>
-            <a href="produtos.html">Acessórios</a>
-            <a href="produtos.html">Promoções</a>
+            <a th:href="@{/}">Home</a>
+            <a th:href="@{/masculino}">Masculino</a>
+            <a th:href="@{/feminino}">Feminino</a>
+            <a th:href="@{/acessorios}">Acessórios</a>
+            <a th:href="@{/}">Promoções</a>
         </nav>
 
         <div class="header__actions">
-            <a href="login.html" class="link">Minha Conta</a>
-            <a href="carrinho.html" class="btn-small">Carrinho</a>
+            <a th:href="@{/login}" class="link">Minha Conta</a>
+            <a th:href="@{/carrinho}" class="btn-small">Carrinho</a>
         </div>
     </div>
 </header>
@@ -71,23 +71,23 @@
         <div class="container">
             <div class="section__header">
                 <h2>Categorias em destaque</h2>
-                <a href="produtos.html" class="link">Ver todas as categorias</a>
+                <a th:href="@{/produtos}" class="link">Ver todas as categorias</a>
             </div>
 
             <div class="categories">
-                <a href="produtos.html" class="category-card">
+                <a th:href="@{/produtos}" class="category-card">
                     <div class="category-card__image category-card__image--masc"></div>
                     <h3>Masculino</h3>
                     <p>Camisetas, calças, bermudas e jaquetas.</p>
                 </a>
 
-                <a href="produtos.html" class="category-card">
+                <a th:href="@{/produtos}" class="category-card">
                     <div class="category-card__image category-card__image--fem"></div>
                     <h3>Feminino</h3>
                     <p>Blusas, vestidos, saias e conjuntos.</p>
                 </a>
 
-                <a href="produtos.html" class="category-card">
+                <a th:href="@{/produtos}" class="category-card">
                     <div class="category-card__image category-card__image--acc"></div>
                     <h3>Acessórios</h3>
                     <p>Bonés, cintos, bolsas e mais.</p>
@@ -101,7 +101,7 @@
         <div class="container">
             <div class="section__header">
                 <h2>Novidades da semana</h2>
-                <a href="produtos.html" class="link">Ver todos os produtos</a>
+                <a th:href="@{/produtos}" class="link">Ver todos os produtos</a>
             </div>
 
             <div class="products-grid">

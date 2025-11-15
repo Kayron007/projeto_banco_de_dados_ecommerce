@@ -11,7 +11,7 @@ import org.springframework.boot.SpringApplication;
  *
  * @author gustavo
  */
-@SpringBootApplication(scanBasePackages = {"model", "control"})
+@SpringBootApplication(scanBasePackages = {"com.mycompany.ecommercebd.model", "com.mycompany.ecommercebd.control"})
 public class EcommerceBD {
 
     public static void main(String[] args) {

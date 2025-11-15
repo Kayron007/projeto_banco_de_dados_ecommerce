@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import com.mycompany.ecommercebd.model.Cliente;
 
 @Controller 
-public class ControllerTeste {
+public class ControllerIndex {
     
     @GetMapping("/")
     public String index(Model model){
@@ -20,4 +20,33 @@ public class ControllerTeste {
         model.addAttribute("mensagem", "Bem-vindo ao E-commerce!");
         return "index";
     }
+    
+    @GetMapping("/masculino")
+    public String masculino(){
+        return "produtos";
+    }
+    
+    @GetMapping("/feminino")
+    public String feminino(){
+        return "produtos";
+    }
+    
+    @GetMapping("/acessorios")
+    public String acessorios(){
+        return "produtos";
+    }
+    
+    @GetMapping("/promocoes")
+    public String promocoes(){
+        return "produtos";
+    }
+    @GetMapping("/login")
+    public String login(){
+        return "login";
+    }
+    @GetMapping("/carrinho")
+    public String carrinho(){
+        return "carrinho";
+    }
+    
 }
