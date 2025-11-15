@@ -48,5 +48,18 @@ public class ControllerIndex {
     public String carrinho(){
         return "carrinho";
     }
+    @GetMapping("/produtos")
+    public String produtos(){
+        return "produtos";
+    }
+    @GetMapping("/cadastro")
+    public String cadastro(){
+        return "cadastro";
+    }
+    @GetMapping("/checkout")
+    public String checkout(){
+        return "checkout";
+    }
+    
     
 }

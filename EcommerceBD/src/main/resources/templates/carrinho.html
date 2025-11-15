@@ -15,14 +15,14 @@
 <header class="header">
     <div class="container header__content">
         <div class="logo">
-            <a href="index.html">ROME</a>
+            <a th:href="@{/}">ROME</a>
         </div>
         <nav class="nav">
             <a th:href="@{/}">Home</a>
             <a th:href="@{/masculino}">Masculino</a>
             <a th:href="@{/feminino}">Feminino</a>
             <a th:href="@{/acessorios}">Acessórios</a>
-            <a th:href="@{/}">Promoções</a>
+            <a th:href="@{/promocoes}">Promoções</a>
         </nav>
     </div>
 </header>
@@ -74,7 +74,7 @@
             <span>Total:</span>
             <strong>R$ 219,80</strong>
         </div>
-        <a href="checkout.html" class="btn-primary">Comprar Agora</a>
+        <a th:href="@{/checkout}" class="btn-primary">Comprar Agora</a>
     </div>
 </section>
 

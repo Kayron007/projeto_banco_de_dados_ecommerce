@@ -15,14 +15,14 @@
 <header class="header">
     <div class="container header__content">
         <div class="logo">
-            <a href="index.html">ROME</a>
+            <a th:href="@{/}">ROME</a>
         </div>
         <nav class="nav">
             <a th:href="@{/}">Home</a>
             <a th:href="@{/masculino}">Masculino</a>
             <a th:href="@{/feminino}">Feminino</a>
             <a th:href="@{/acessorios}">Acessórios</a>
-            <a th:href="@{/}">Promoções</a>
+            <a th:href="@{/promocoes}">Promoções</a>
         </nav>
     </div>
 </header>
@@ -176,7 +176,7 @@
         </div>
 
         <div class="checkout-actions">
-            <a href="carrinho.html" class="btn-outline">Voltar ao Carrinho</a>
+            <a th:href="@{/carrinho}" class="btn-outline">Voltar ao Carrinho</a>
             <button type="submit" class="btn-primary">Finalizar Compra</button>
         </div>
     </form>

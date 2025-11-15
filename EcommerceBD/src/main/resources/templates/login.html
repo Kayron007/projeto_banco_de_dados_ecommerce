@@ -16,14 +16,14 @@
 <header class="header">
     <div class="container header__content">
         <div class="logo">
-            <a href="index.html">ROME</a>
+            <a th:href="@{/}">ROME</a>
         </div>
         <nav class="nav">
             <a th:href="@{/}">Home</a>
             <a th:href="@{/masculino}">Masculino</a>
             <a th:href="@{/feminino}">Feminino</a>
             <a th:href="@{/acessorios}">Acessórios</a>
-            <a th:href="@{/}">Promoções</a>
+            <a th:href="@{/promocoes}">Promoções</a>
         </nav>
         <div class="header__actions">
             <label for="modal-login-toggle" class="btn-small" style="cursor: pointer; margin: 0;">Login</label>
@@ -61,7 +61,7 @@
         </form>
 
         <p style="text-align: center; margin-top: 1rem; font-size: 0.9rem;">
-            Não possui cadastro? <a href="cadastro.html" class="link">Clique aqui</a>
+            Não possui cadastro? <a th:href="@{/cadastro}" class="link">Clique aqui</a>
         </p>
     </div>
 </div>

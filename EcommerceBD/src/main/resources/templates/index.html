@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="pt-BR">
+<html xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -15,7 +15,7 @@
 <header class="header">
     <div class="container header__content">
         <div class="logo">
-            <a href="index.html">ROME</a>
+            <a th:href="@{/}">ROME</a>
         </div>
 
         <nav class="nav">
@@ -23,7 +23,7 @@
             <a th:href="@{/masculino}">Masculino</a>
             <a th:href="@{/feminino}">Feminino</a>
             <a th:href="@{/acessorios}">Acessórios</a>
-            <a th:href="@{/}">Promoções</a>
+            <a th:href="@{/promocoes}">Promoções</a>
         </nav>
 
         <div class="header__actions">
@@ -75,19 +75,19 @@
             </div>
 
             <div class="categories">
-                <a th:href="@{/produtos}" class="category-card">
+                <a th:href="@{/masculino}" class="category-card">
                     <div class="category-card__image category-card__image--masc"></div>
                     <h3>Masculino</h3>
                     <p>Camisetas, calças, bermudas e jaquetas.</p>
                 </a>
 
-                <a th:href="@{/produtos}" class="category-card">
+                <a th:href="@{/feminino}" class="category-card">
                     <div class="category-card__image category-card__image--fem"></div>
                     <h3>Feminino</h3>
                     <p>Blusas, vestidos, saias e conjuntos.</p>
                 </a>
 
-                <a th:href="@{/produtos}" class="category-card">
+                <a th:href="@{/acessorios}" class="category-card">
                     <div class="category-card__image category-card__image--acc"></div>
                     <h3>Acessórios</h3>
                     <p>Bonés, cintos, bolsas e mais.</p>
@@ -112,7 +112,7 @@
                     <h3>Camiseta básica masculina</h3>
                     <p class="product-card__category">Masculino • Algodão</p>
                     <p class="product-card__price">R$ 69,90</p>
-                    <form action="carrinho.html" method="get" class="product-card__form">
+                    <form th:action="@{/carrinho}" method="get" class="product-card__form">
                         <input type="hidden" name="produtoId" value="1">
                         <button type="submit" class="btn-primary">Adicionar ao carrinho</button>
                     </form>
@@ -124,7 +124,7 @@
                     <h3>Vestido midi floral</h3>
                     <p class="product-card__category">Feminino • Leve</p>
                     <p class="product-card__price">R$ 149,90</p>
-                    <form action="carrinho.html" method="get" class="product-card__form">
+                    <form th:action="@{/carrinho}" method="get" class="product-card__form">
                         <input type="hidden" name="produtoId" value="2">
                         <button type="submit" class="btn-primary">Adicionar ao carrinho</button>
                     </form>
@@ -136,7 +136,7 @@
                     <h3>Calça jogger unissex</h3>
                     <p class="product-card__category">Casual • Conforto</p>
                     <p class="product-card__price">R$ 129,90</p>
-                    <form action="carrinho.html" method="get" class="product-card__form">
+                    <form th:action="@{/carrinho}" method="get" class="product-card__form">
                         <input type="hidden" name="produtoId" value="3">
                         <button type="submit" class="btn-primary">Adicionar ao carrinho</button>
                     </form>
@@ -148,7 +148,7 @@
                     <h3>Jaqueta jeans oversize</h3>
                     <p class="product-card__category">Unissex • Jeans</p>
                     <p class="product-card__price">R$ 199,90</p>
-                    <form action="carrinho.html" method="get" class="product-card__form">
+                    <form th:action="@{/carrinho}" method="get" class="product-card__form">
                         <input type="hidden" name="produtoId" value="4">
                         <button type="submit" class="btn-primary">Adicionar ao carrinho</button>
                     </form>
