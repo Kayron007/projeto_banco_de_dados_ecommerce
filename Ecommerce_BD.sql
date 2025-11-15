@@ -148,6 +148,26 @@ CREATE TABLE pedido_produto (
 );
 
 -- ===========================================
+-- TABELA AVALIACAO (FEEDBACK DE PRODUTO)
+-- ===========================================
+CREATE TABLE avaliacao (
+  ID_avaliacao BIGINT NOT NULL AUTO_INCREMENT,
+  fk_ID_cliente BIGINT NOT NULL,
+  fk_ID_produto BIGINT NOT NULL,
+  comentario varchar(500) DEFAULT NULL,
+  nota smallint NOT NULL,
+
+  PRIMARY KEY (ID_avaliacao),
+
+  CONSTRAINT FK_AVALIACAO_CLIENTE FOREIGN KEY (fk_ID_cliente)
+      REFERENCES cliente (id) ON DELETE CASCADE ON UPDATE CASCADE,
+  CONSTRAINT FK_AVALIACAO_PRODUTO FOREIGN KEY (fk_ID_produto)
+      REFERENCES produto (ID_produto) ON DELETE CASCADE ON UPDATE CASCADE,
+
+  CONSTRAINT chk_avaliacao_nota CHECK (nota BETWEEN 0 AND 5)
+);
+
+-- ===========================================
 -- TABELA PESSOA JURIDICA (CLIENTE PJ)
 -- ===========================================
 CREATE TABLE pessoa_juridica (
