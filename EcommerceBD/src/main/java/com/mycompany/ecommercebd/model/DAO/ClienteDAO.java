@@ -215,7 +215,11 @@ public class ClienteDAO extends EntidadeBaseDAO<Cliente>{
                 c.setNumero(rs.getString("Numero"));
                 c.setCep(rs.getString("CEP"));
                 c.setLogradouro(rs.getString("Logradouro"));
+<<<<<<< HEAD
                 c.setBairro(rs.getString("Bairro"));
+=======
+                c.setBairo(rs.getString("Bairro"));
+>>>>>>> 3ba32f0 (Colocando pop-up na página inicial do site + crição do modal.html em fragments)
                 c.setEstado(rs.getString("Estado"));
                 c.setCidade(rs.getString("Cidade"));
                 

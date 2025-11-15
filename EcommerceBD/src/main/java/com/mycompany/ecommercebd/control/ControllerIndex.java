@@ -41,6 +41,13 @@ public class ControllerIndex {
     public String promocoes(){
         return "produtos";
     }
+<<<<<<< HEAD
+=======
+    @GetMapping("/login")
+    public String login(){
+        return "login";
+    }
+>>>>>>> 3ba32f0 (Colocando pop-up na página inicial do site + crição do modal.html em fragments)
     @GetMapping("/carrinho")
     public String carrinho(){
         return "carrinho";
@@ -49,9 +56,11 @@ public class ControllerIndex {
     public String produtos(){
         return "produtos";
     }
+<<<<<<< HEAD
     @GetMapping("/checkout")
     public String checkout(){
         return "checkout";
+<<<<<<< HEAD
     }
     
     @GetMapping("/minhaConta")
@@ -65,4 +74,19 @@ public class ControllerIndex {
         model.addAttribute("cliente", c);
         return "minhaConta";
     }
+=======
+    }    
+=======
+    @GetMapping("/cadastro")
+    public String cadastro(){
+        return "cadastro";
+    }
+    @GetMapping("/checkout")
+    public String checkout(){
+        return "checkout";
+    }
+    
+    
+>>>>>>> 3ba32f0 (Colocando pop-up na página inicial do site + crição do modal.html em fragments)
+>>>>>>> 895f942 (Colocando pop-up na página inicial do site + crição do modal.html em fragments)
 }
