@@ -14,6 +14,7 @@ public class Produto extends EntidadeBase{
     private String categoria;
     private String precoStr;
     private Double preco;
+    private String sexo;
     private int quantidade;
 
     /*
@@ -29,7 +30,7 @@ public class Produto extends EntidadeBase{
      * Utilizado para CADASTRAR um novo produto
      * O ID será gerado automáticamente posteriormente pelo método gerarIdUnico;
      */
-    public Produto(String nome, String descricao, String tamanho, String categoria, String preco, int quantidade) {
+    public Produto(String nome, String descricao, String tamanho, String categoria, String preco, int quantidade, String sexo) {
         super();
         this.nome = nome;
         this.descricao = descricao;
@@ -37,12 +38,13 @@ public class Produto extends EntidadeBase{
         this.categoria = categoria;
         setPreco(preco);
         this.quantidade = quantidade;
+        this.sexo = sexo;
     }
 
     /*
      * Construtor completo para Produto já cadastrado;
      */
-    public Produto(Long id, String nome, String descricao, String tamanho, String categoria, Double preco, int quantidade) {
+    public Produto(Long id, String nome, String descricao, String tamanho, String categoria, Double preco, int quantidade, String sexo) {
         super(id);
         this.nome = nome;
         this.descricao = descricao;
@@ -50,6 +52,7 @@ public class Produto extends EntidadeBase{
         this.categoria = categoria;
         this.preco = preco;
         this.quantidade = quantidade;
+        this.sexo = sexo;
     }
 
     /* MÉTODOS DE VALIDAÇÃO */
@@ -169,7 +172,24 @@ public class Produto extends EntidadeBase{
         "\nCategoria: " + categoria +
         "\nPreço: " + preco +
         "\nQuantidade: " + quantidade +
+        "\nSexo: " + sexo +
         "}";
+    }
+
+    public String getPrecoStr() {
+        return precoStr;
+    }
+
+    public void setPrecoStr(String precoStr) {
+        this.precoStr = precoStr;
+    }
+
+    public String getSexo() {
+        return sexo;
+    }
+
+    public void setSexo(String sexo) {
+        this.sexo = sexo;
     }
 
     /**

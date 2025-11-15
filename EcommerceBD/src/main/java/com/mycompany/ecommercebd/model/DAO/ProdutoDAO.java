@@ -26,8 +26,8 @@ public class ProdutoDAO extends EntidadeBaseDAO<Produto> {
             throw new RuntimeException(e);
         }
 
-        String sql = "INSERT INTO produto (ID_produto, Descricao, Quantidade, Tamanho, Preco, Categoria) "
-                   + "VALUES (?, ?, ?, ?, ?, ?)";
+        String sql = "INSERT INTO produto (ID_produto, Descricao, Quantidade, Tamanho, Preco, Categoria, sexo) "
+                   + "VALUES (?, ?, ?, ?, ?, ?, ?)";
 
         try (PreparedStatement stmt = connection.prepareStatement(sql)) {
             stmt.setLong(1, produto.getId());
@@ -36,6 +36,7 @@ public class ProdutoDAO extends EntidadeBaseDAO<Produto> {
             stmt.setString(4, produto.getTamanho());
             stmt.setDouble(5, produto.getPreco());
             stmt.setString(6, produto.getCategoria());
+            stmt.setString(7, produto.getSexo());
 
             int linhasAfetadas = stmt.executeUpdate();
             if (linhasAfetadas == 0) {
@@ -61,7 +62,7 @@ public class ProdutoDAO extends EntidadeBaseDAO<Produto> {
 
     @Override
     public void alterar(Produto produto) {
-        String sql = "UPDATE produto SET Descricao = ?, Quantidade = ?, Tamanho = ?, Preco = ?, Categoria = ? "
+        String sql = "UPDATE produto SET Descricao = ?, Quantidade = ?, Tamanho = ?, Preco = ?, Categoria = ?, sexo = ?"
                    + "WHERE ID_produto = ?";
 
         try {
@@ -74,12 +75,13 @@ public class ProdutoDAO extends EntidadeBaseDAO<Produto> {
                 stmt.setString(3, produto.getTamanho());
                 stmt.setDouble(4, produto.getPreco());
                 stmt.setString(5, produto.getCategoria());
+                stmt.setString(6, produto.getSexo());
                 stmt.setLong(6, produto.getId());
 
                 stmt.executeUpdate();
                 System.out.println("[DAO] Produto alterado com sucesso!");
             } 
-        } catch (Exception e) {
+        } catch (SQLException e) {
             System.out.println("Erro ao alterar produto: " + e.getMessage());
         }
     }
@@ -92,8 +94,9 @@ public class ProdutoDAO extends EntidadeBaseDAO<Produto> {
         String categoria = rs.getString("Categoria");
         Double preco = rs.getDouble("Preco");
         Integer quantidade = rs.getInt("Quantidade");
+        String sexo = rs.getString("sexo");
 
-        return new Produto(id, nome, descricao, tamanho, categoria, preco, quantidade);
+        return new Produto(id, nome, descricao, tamanho, categoria, preco, quantidade, sexo);
     }
 
     @Override
@@ -131,6 +134,7 @@ public class ProdutoDAO extends EntidadeBaseDAO<Produto> {
                 p.setTamanho(rs.getString("Tamanho"));
                 p.setPreco(rs.getDouble("Preço"));
                 p.setCategoria(rs.getString("Categoria"));
+                p.setSexo(rs.getString("sexo"));
                 produtos.add(p);
             }
 

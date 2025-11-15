@@ -14,6 +14,23 @@ Este repositório contém a **modelagem conceitual, lógica e física** de um ba
 - **brModelo** – Modelagem conceitual e lógica.  
 - **MySQL** – SGBD utilizado para implementação.  
 - **Workbench** – Ambiente para executar os scripts SQL.  
+- **MongoDB + mongosh** – Camada NoSQL usada para eventos e cache.  
+
+## Requisitos e Instalação  
+
+1. **MySQL Server 8.x ou 5.7+**  
+   - Baixe o instalador oficial em https://dev.mysql.com/downloads/installer/  
+   - Durante a instalação selecione o MySQL Server e opcionalmente o MySQL Workbench.  
+   - Crie um usuário administrador (diferente do `root`, pois o script bloqueia o root) e anote a senha.  
+
+2. **MySQL Workbench ou cliente CLI**  
+   - Pode ser instalado junto com o MySQL Installer ou baixado em https://dev.mysql.com/downloads/workbench/  
+   - Use-o para abrir e executar o arquivo `Ecommerce_BD.sql`.  
+
+3. **MongoDB Community Server 4.4+ e mongosh**  
+   - Baixe em https://www.mongodb.com/try/download/community e instale o serviço local.  
+   - Instale também o shell `mongosh` (disponível no mesmo instalador ou em https://www.mongodb.com/try/download/shell).  
+   - Após a instalação, execute `mongosh mongodb_setup.js` na pasta do projeto para criar as coleções e pipelines demonstrativas.  
 
 ## ⚙️ Como Executar o Projeto  
 
@@ -49,3 +66,7 @@ Você pode:
 ## 📜 Licença  
 
 O MySQL é de código aberto, o que significa que qualquer pessoa pode fazer download do software MySQL pela internet e usá-lo gratuitamente. As organizações também podem alterar seu código de origem para atender às suas necessidades. O software MySQL usa a Licença Pública Geral GNU (GNU General Public License, GPL), que é um conjunto comum de regras para definir o que pode ou não ser feito com o software em várias situações. Consulte a página [Políticas legais do MySQL](https://www.mysql.com/about/legal/) para obter mais informações sobre licenciamento.  
+
+## MongoDB complementar
+
+Complementarmente ao MySQL, o sistema utiliza um script MongoDB (mongodb_setup.js) para armazenar eventos de pedidos e caches de catalogo em um banco orientado a documentos, justificando o uso de um NoSQL para dados semi estruturados e consultas analiticas em tempo real. Execute o script no mongosh para criar a base EcommerceRealtime, coleções, índices e pipelines comentados que explicam como o MongoDB se integra ao fluxo transacional descrito acima.
