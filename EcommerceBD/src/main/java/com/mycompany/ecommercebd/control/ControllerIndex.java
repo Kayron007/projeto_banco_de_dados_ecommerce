@@ -41,6 +41,11 @@ public class ControllerIndex {
     public String promocoes(){
         return "produtos";
     }
+
+    @GetMapping("/login")
+    public String login(){
+        return "login";
+    }
     @GetMapping("/carrinho")
     public String carrinho(){
         return "carrinho";
@@ -49,9 +54,11 @@ public class ControllerIndex {
     public String produtos(){
         return "produtos";
     }
+    
     @GetMapping("/checkout")
     public String checkout(){
         return "checkout";
+         
     }
     
     @GetMapping("/minhaConta")
@@ -64,5 +71,14 @@ public class ControllerIndex {
 
         model.addAttribute("cliente", c);
         return "minhaConta";
+    
+    }    
+
+    @GetMapping("/cadastro")
+    public String cadastro(){
+        return "cadastro";
     }
+    
+    
+
 }

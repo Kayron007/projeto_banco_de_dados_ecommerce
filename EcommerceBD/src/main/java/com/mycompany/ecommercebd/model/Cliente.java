@@ -214,7 +214,10 @@ public class Cliente extends EntidadeBase {
         }
         
         if(tipo != null) {
+
             tipo = tipo.trim().toUpperCase();
+
+            setTipo(getTipo().trim().toUpperCase());
         }
     }
 
@@ -326,9 +329,10 @@ public class Cliente extends EntidadeBase {
     }
 
     /**
-     * @param bairro the bairro to set
+<<<<<<< HEAD
+     * @param bairro the bairo to set
      */
-    public void setBairro(String bairro) {
+    public void setBairo(String bairro) {
         this.bairro = bairro;
     }
 

@@ -5,11 +5,10 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.ArrayList;
 import java.util.List;
 
 import com.mycompany.ecommercebd.model.Cliente;
-
-import java.util.ArrayList;
 
 public class ClienteDAO extends EntidadeBaseDAO<Cliente>{
     private Connection connection;
@@ -215,7 +214,7 @@ public class ClienteDAO extends EntidadeBaseDAO<Cliente>{
                 c.setNumero(rs.getString("Numero"));
                 c.setCep(rs.getString("CEP"));
                 c.setLogradouro(rs.getString("Logradouro"));
-                c.setBairro(rs.getString("Bairro"));
+                c.setBairo(rs.getString("Bairro"));
                 c.setEstado(rs.getString("Estado"));
                 c.setCidade(rs.getString("Cidade"));
                 

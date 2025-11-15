@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<body>
+<th:block th:fragment="modalLogin">
+    <!-- Checkbox que controla o modal -->
+    <input type="checkbox" id="modal-login-toggle" class="modal-toggle" hidden>
+
+    <!-- Overlay do modal -->
+    <div class="modal-overlay">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>Fazer Login</h2>
+                <label for="modal-login-toggle" class="modal-close">&times;</label>
+            </div>
+
+            <form class="login-form" th:action="@{/login}" method="post">
+                <div class="form-group">
+                    <label for="login-email">Email:</label>
+                    <input type="email" id="login-email" name="email" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="login-senha">Senha:</label>
+                    <input type="password" id="login-senha" name="senha" required>
+                </div>
+
+                <button type="submit" class="btn-primary" style="width: 100%;">Entrar</button>
+            </form>
+
+            <p style="text-align: center; margin-top: 1rem; font-size: 0.9rem;">
+                Não possui cadastro?
+                <a th:href="@{/cadastro}" class="link">Clique aqui</a>
+            </p>
+        </div>
+    </div>
+</th:block>
+</body>
+</html>
