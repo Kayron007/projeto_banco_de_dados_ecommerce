@@ -37,7 +37,11 @@
 </main>
 
 <!-- Modal de Login (checkbox trick) -->
-<input type="checkbox" id="modal-login-toggle" class="modal-toggle" hidden>
+<input type="checkbox"
+       id="modal-login-toggle"
+       class="modal-toggle"
+       hidden
+       th:checked="${erro != null}">
 
 <div class="modal-overlay">
     <div class="modal-content">
@@ -59,7 +63,9 @@
 
             <button type="submit" class="btn-primary" style="width: 100%;">Entrar</button>
         </form>
-
+        <div th:if="${erro}" class="erro-login" style="color: red; text-align: center; margin-top: 1rem;">
+            <p th:text="${erro}"></p>
+        </div>
         <p style="text-align: center; margin-top: 1rem; font-size: 0.9rem;">
             Não possui cadastro? <a th:href="@{/cadastro}" class="link">Clique aqui</a>
         </p>

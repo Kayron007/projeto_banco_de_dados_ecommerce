@@ -12,6 +12,8 @@ import com.mycompany.ecommercebd.model.Cliente;
 import com.mycompany.ecommercebd.model.Conexao;
 import com.mycompany.ecommercebd.model.DAO.ClienteDAO;
 
+import jakarta.servlet.http.HttpSession;
+
 @Controller
 public class ClienteControl {
 
@@ -88,7 +90,8 @@ public class ClienteControl {
     public String loginCliente(
             @RequestParam("email") String email,
             @RequestParam("senha") String senha,
-            Model model) {
+            Model model,
+            HttpSession session) {
 
         try (Connection con = Conexao.conectar()) {
 
@@ -100,8 +103,10 @@ public class ClienteControl {
                 return "login";
             }
 
-            model.addAttribute("email", email);
-            return "resultado";
+            // 👉 Guarda o cliente na sessão
+            session.setAttribute("clienteLogado", c);
+
+            return "redirect:/";
 
         } catch (Exception e) {
             model.addAttribute("erro", "Erro ao logar: " + e.getMessage());

@@ -10,17 +10,18 @@ import org.springframework.web.bind.annotation.GetMapping;
 
 import com.mycompany.ecommercebd.model.Cliente;
 
+import jakarta.servlet.http.HttpSession;
+
 @Controller 
 public class ControllerIndex {
     
     @GetMapping("/")
-    public String index(Model model){
-        Cliente cliente = new Cliente("fisico", "nome", "email", "senha", "11111111", "cidade", "logradouro", "numero", "bairro", "estado");
-        System.out.println("Metodo index foi chamado");
-        model.addAttribute("mensagem", "Bem-vindo ao E-commerce!");
+    public String index(Model model, HttpSession session) {
+        Cliente logado = (Cliente) session.getAttribute("clienteLogado");
+        model.addAttribute("clienteLogado", logado);
         return "index";
     }
-    
+
     @GetMapping("/masculino")
     public String masculino(){
         return "produtos";
@@ -51,5 +52,17 @@ public class ControllerIndex {
     @GetMapping("/checkout")
     public String checkout(){
         return "checkout";
-    }    
+    }
+    
+    @GetMapping("/minhaConta")
+    public String minhaConta(HttpSession session, Model model) {
+        Cliente c = (Cliente) session.getAttribute("clienteLogado");
+
+        if (c == null) {
+            return "redirect:/"; // ou volta para login
+        }
+
+        model.addAttribute("cliente", c);
+        return "minhaConta";
+    }
 }
