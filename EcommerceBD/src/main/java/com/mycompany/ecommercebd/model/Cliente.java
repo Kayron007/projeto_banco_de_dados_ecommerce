@@ -214,10 +214,7 @@ public class Cliente extends EntidadeBase {
         }
         
         if(tipo != null) {
-
             tipo = tipo.trim().toUpperCase();
-
-            setTipo(getTipo().trim().toUpperCase());
         }
     }
 
