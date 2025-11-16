@@ -116,7 +116,14 @@
     </div>
 </footer>
 
-<div th:replace="fragments/modal :: modalLogin"></div>
+<!-- Modal de Login (checkbox trick) -->
+<input type="checkbox"
+       id="modal-login-toggle"
+       class="modal-toggle"
+       hidden
+       th:checked="${loginRequired}">
+
+<div th:replace="~{fragments/modal :: modalLogin}"></div>
 
 </body>
 </html>
