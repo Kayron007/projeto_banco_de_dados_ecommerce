@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="pt-BR" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Moda Masculina | ROME</title>
+
+    <link rel="stylesheet" href="/css/base.css">
+    <link rel="stylesheet" href="/css/layout.css">
+    <link rel="stylesheet" href="/css/components.css">
+    <link rel="stylesheet" href="/css/home.css">
+    <link rel="stylesheet" href="/css/auth.css">
+</head>
+<body>
+
+<header class="header">
+    <div class="container header__content">
+        <div class="logo">
+            <a th:href="@{/}">ROME</a>
+        </div>
+
+        <nav class="nav">
+            <a th:href="@{/}">Home</a>
+            <a th:href="@{/masculino}" class="link">Masculino</a>
+            <a th:href="@{/feminino}">Feminino</a>
+            <a th:href="@{/acessorios}">Acessórios</a>
+            <a th:href="@{/promocoes}">Promoções</a>
+        </nav>
+
+        <div class="header__actions">
+            <label for="modal-login-toggle" class="link" style="cursor:pointer;">Minha Conta</label>
+            <a th:href="@{/carrinho}" class="btn-small">Carrinho</a>
+        </div>
+    </div>
+</header>
+
+<main>
+    <section class="section">
+        <div class="container">
+            <div class="section__header">
+                <h2>Moda Masculina</h2>
+            </div>
+
+            <div class="products-grid">
+                <!-- Produtos de teste, só pra ver layout -->
+                <article class="product-card">
+                    <div class="product-card__image"></div>
+                    <h3>Camiseta básica masculina</h3>
+                    <p class="product-card__category">Masculino • Algodão</p>
+                    <p class="product-card__price">R$ 69,90</p>
+                    <button class="btn-primary">Adicionar ao carrinho</button>
+                </article>
+
+                <article class="product-card">
+                    <div class="product-card__image"></div>
+                    <h3>Calça jeans slim</h3>
+                    <p class="product-card__category">Masculino • Jeans</p>
+                    <p class="product-card__price">R$ 159,90</p>
+                    <button class="btn-primary">Adicionar ao carrinho</button>
+                </article>
+            </div>
+        </div>
+    </section>
+</main>
+
+<footer class="footer">
+    <div class="container footer__content">
+        <div class="footer__col">
+            <h4>Rome</h4>
+            <p>Moda para quem vive em movimento.</p>
+        </div>
+
+        <div class="footer__col">
+            <h4>Institucional</h4>
+            <a href="#">Quem somos</a>
+            <a href="#">Política de privacidade</a>
+            <a href="#">Trocas e devoluções</a>
+        </div>
+
+        <div class="footer__col">
+            <h4>Atendimento</h4>
+            <p>WhatsApp: (00) 00000-0000</p>
+            <p>E-mail: contato@rome.com.br</p>
+        </div>
+    </div>
+
+    <div class="footer__bottom">
+        <p>© 2025 ROME - Todos os direitos reservados.</p>
+    </div>
+</footer>
+
+<div th:replace="fragments/modal :: modalLogin"></div>
+
+</body>
+</html>

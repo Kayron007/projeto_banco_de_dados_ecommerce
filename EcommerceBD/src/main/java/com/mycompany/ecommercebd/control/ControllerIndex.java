@@ -34,24 +34,25 @@ public class ControllerIndex {
         return "minhaConta";
     }
 
-    @GetMapping("/masculino")
-    public String masculino(){
-        return "produtos";
+   @GetMapping("/masculino")
+    public String masculino() {
+        return "masculino";   // carrega templates/masculino.html
     }
-    
+
     @GetMapping("/feminino")
-    public String feminino(){
-        return "produtos";
+    public String feminino() {
+        return "feminino";    // carrega templates/feminino.html
     }
     
-    @GetMapping("/acessorios")
-    public String acessorios(){
-        return "produtos";
-    }
+   @GetMapping("/acessorios")
+    public String acessorios() {
+    return "acessorios"; // carrega templates/acessorios.html
+}
+
     
     @GetMapping("/promocoes")
     public String promocoes(){
-        return "produtos";
+        return "promocoes";
     }
 
     @GetMapping("/carrinho")
