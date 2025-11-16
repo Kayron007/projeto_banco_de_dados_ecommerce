@@ -11,7 +11,6 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 
 import com.mycompany.ecommercebd.model.Cliente;
 
-import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
 
 @Controller 
@@ -36,7 +35,6 @@ public class ControllerIndex {
         if (c == null) {
             return "redirect:/"; // ou volta para login
         }
-
         model.addAttribute("cliente", c);
         return "minhaConta";
     }
@@ -63,11 +61,12 @@ public class ControllerIndex {
     }
 
    @GetMapping("/carrinho")
-    public String carrinho(HttpSession session, Model model, HttpServletRequest request) {
+    public String carrinho(HttpSession session, Model model) {
         Cliente logado = (Cliente) session.getAttribute("clienteLogado");
 
         if (logado == null) {
             // Usuário não logado → renderiza a página atual com modal aberto
+            session.setAttribute("redirectAfterLogin", "/carrinho");
             model.addAttribute("loginRequired", true);
             return "index"; // fallback
         }

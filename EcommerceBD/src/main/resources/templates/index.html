@@ -39,15 +39,7 @@
             <!-- Se não estiver logado -->
             <span th:if="${clienteLogado == null}">
                 <label for="modal-login-toggle" class="link" style="cursor:pointer;">Minha Conta</label>
-                
-            <!-- Se estiver logado -->
-            <span th:if="${clienteLogado != null}">
                 <a th:href="@{/carrinho}" class="btn-small">Carrinho</a>
-            </span>
-
-            <!-- Se não estiver logado -->
-            <span th:if="${clienteLogado == null}">
-                <label for="modal-login-toggle" class="btn-small" style="cursor:pointer;">Carrinho</label>
             </span>
             </span>
         </div>
@@ -245,6 +237,6 @@
        hidden
        th:checked="${loginRequired}">
 
-<div th:replace="fragments/modal :: modalLogin"></div>
+<div th:replace="~{fragments/modal :: modalLogin}"></div>
 </body>
 </html>

@@ -94,6 +94,8 @@ public class ClienteControl {
             Model model,
             HttpSession session) {
 
+        String redirect = (String) session.getAttribute("redirectAfterLogin");
+
         try (Connection con = Conexao.conectar()) {
 
             ClienteDAO dao = new ClienteDAO(con);
@@ -101,17 +103,29 @@ public class ClienteControl {
 
             if (c == null || c.getSenha() == null || !c.getSenha().equals(senha)) {
                 model.addAttribute("erro", "Email ou senha inválidos!");
-                return "login";
+
+                if(redirect != null) {
+                    model.addAttribute("loginRequired", true);
+                }
+                return "index";
             }
 
             // Guarda o cliente na sessão
             session.setAttribute("clienteLogado", c);
 
+            if (redirect != null) {
+                session.removeAttribute("redirectAfterLogin");
+                return "redirect:" + redirect;
+            }
             return "redirect:/";
 
         } catch (Exception e) {
             model.addAttribute("erro", "Erro ao logar: " + e.getMessage());
-            return "login";
+            
+            if(redirect != null) {
+                model.addAttribute("loginRequired", true);
+            }
+            return "index";
         }
     }
 

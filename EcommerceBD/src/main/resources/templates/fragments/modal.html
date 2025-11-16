@@ -2,14 +2,14 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <body>
 <th:block th:fragment="modalLogin">
-    <!-- Checkbox que controla o modal -->
-    <input type="checkbox" id="modal-login-toggle" class="modal-toggle" hidden>
 
-    <!-- Overlay do modal -->
+    <!-- Overlay e conteúdo do modal -->
     <div class="modal-overlay">
         <div class="modal-content">
+            
             <div class="modal-header">
                 <h2>Fazer Login</h2>
+                <!-- Fecha o modal usando o checkbox que está no index -->
                 <label for="modal-login-toggle" class="modal-close">&times;</label>
             </div>
 
@@ -31,8 +31,10 @@
                 Não possui cadastro?
                 <a th:href="@{/cadastro}" class="link">Clique aqui</a>
             </p>
+
         </div>
     </div>
+
 </th:block>
 </body>
 </html>
