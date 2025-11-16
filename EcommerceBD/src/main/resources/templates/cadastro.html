@@ -1,85 +1,161 @@
 <!DOCTYPE html>
-<html lang="pt-BR">
+<html lang="pt-BR" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Cadastro | ROME</title>
+
+    <!-- CSS global da aplicação -->
     <link rel="stylesheet" href="/css/base.css">
     <link rel="stylesheet" href="/css/layout.css">
     <link rel="stylesheet" href="/css/components.css">
-    <link rel="stylesheet" href="/css/home.css">
+    <!-- Não precisa de home.css aqui -->
+    <link rel="stylesheet" href="/css/auth.css"> <!-- estilos de autenticação (modal + página) -->
 </head>
 
 <body>
 
-<header>
-    <h1 class="logo">ROME</h1>
-        <nav>
-        <a th:href="@{/}">Home</a>
-        <a th:href="@{/masculino}">Masculino</a>
-        <a th:href="@{/feminino}">Feminino</a>
-        <a th:href="@{/acessorios}">Acessórios</a>
-        <a th:href="@{/promocoes}">Promoções</a>
-    </nav>
+<!-- HEADER igual ao da home -->
+<header class="header">
+    <div class="container header__content">
+        <div class="logo">
+            <a th:href="@{/}">ROME</a>
+        </div>
+
+        <nav class="nav">
+            <a th:href="@{/}">Home</a>
+            <a th:href="@{/masculino}">Masculino</a>
+            <a th:href="@{/feminino}">Feminino</a>
+            <a th:href="@{/acessorios}">Acessórios</a>
+            <a th:href="@{/promocoes}">Promoções</a>
+        </nav>
+
+        <div class="header__actions">
+            <label for="modal-login-toggle" class="link" style="cursor:pointer;">Minha Conta</label>
+            <a th:href="@{/carrinho}" class="btn-small">Carrinho</a>
+        </div>
+    </div>
 </header>
 
-<main>
+<main class="auth-page">
+    <div class="container auth-layout">
 
-<h2 class="titulo">Cadastro</h2>
+        <!-- Lado esquerdo: texto explicando o cadastro -->
+        <section class="auth-copy">
+            <h1 class="auth-title">Crie sua conta</h1>
+            <p class="auth-subtitle">
+                Cadastre-se para acompanhar seus pedidos, salvar endereços e receber ofertas exclusivas da ROME.
+            </p>
 
-<form class="cadastro-form" action="/cadastro" method="post">
+            <ul class="auth-benefits">
+                <li>✔ Acompanhe seus pedidos em tempo real</li>
+                <li>✔ Salve seus dados para futuras compras</li>
+                <li>✔ Receba cupons e promoções por e-mail</li>
+            </ul>
+        </section>
 
-    </label> Você é pessoa física ou jurídica?
-        <input type="text" name="tipo" required>
-    </label>
+        <!-- Lado direito: formulário de cadastro -->
+        <section class="auth-card">
+            <form th:action="@{/cadastro}" method="post" class="auth-form">
 
-    <label> Nome:
-        <input type="nome" name="nome" required>
-    </label>
+                <div class="form-group">
+                    <label for="tipo">Você é pessoa física ou jurídica?</label>
+                    <input type="text" id="tipo" name="tipo" required>
+                </div>
 
-    <label> Email:
-        <input type="email" name="email" required>
-    </label> 
-    
-    </label> Senha:
-        <input type="password" name="senha" required>
-    </label>
+                <div class="form-group">
+                    <label for="nome">Nome completo</label>
+                    <input type="text" id="nome" name="nome" required>
+                </div>
 
-    </label> CEP:
-        <input type="text" name="cep" required> 
-    </label>
+                <div class="form-group">
+                    <label for="email">E-mail</label>
+                    <input type="email" id="email" name="email" required>
+                </div>
 
-    </label> Cidade:
-        <input type="text" name="cidade" required>
-    </label>
+                <div class="form-group">
+                    <label for="senha">Senha</label>
+                    <input type="password" id="senha" name="senha" required>
+                </div>
 
-    </label> Logradouro:
-        <input type="text" name="logradouro" required>
-    </label>
+                <div class="form-group">
+                    <label for="cep">CEP</label>
+                    <input type="text" id="cep" name="cep" required>
+                </div>
 
-    </label> Número:
-        <input type="number" name="numero" required>
-    </label>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="cidade">Cidade</label>
+                        <input type="text" id="cidade" name="cidade" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="estado">Estado (UF)</label>
+                        <input type="text" id="estado" name="estado" required>
+                    </div>
+                </div>
 
-    </label> Bairro:
-        <input type="text" name="bairro" required>
-    </label>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="logradouro">Logradouro</label>
+                        <input type="text" id="logradouro" name="logradouro" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="numero">Número</label>
+                        <input type="number" id="numero" name="numero" required>
+                    </div>
+                </div>
 
-    </label> Estado (UF):
-        <input type="text" name="estado" required>
-    </label> 
-    </label> <button type="submit">Cadastrar</button>
-</form>
+                <div class="form-group">
+                    <label for="bairro">Bairro</label>
+                    <input type="text" id="bairro" name="bairro" required>
+                </div>
 
+                <div class="auth-footer">
+                    <button type="submit" class="btn-primary auth-submit">
+                        Cadastrar
+                    </button>
+                    <p class="auth-footer-text">
+                        Já tem cadastro?
+                        <label for="modal-login-toggle" class="link" style="cursor:pointer;">
+                            Fazer login
+                        </label>
+                    </p>
+                </div>
+
+            </form>
+        </section>
+
+    </div>
 </main>
 
-<footer>
-    <p>© 2025 — Minha Loja</p>
+<footer class="footer">
+    <div class="container footer__content">
+        <div class="footer__col">
+            <h4>UrbanWear</h4>
+            <p>Moda casual para quem vive em movimento.</p>
+        </div>
+
+        <div class="footer__col">
+            <h4>Institucional</h4>
+            <a href="#">Quem somos</a>
+            <a href="#">Política de privacidade</a>
+            <a href="#">Trocas e devoluções</a>
+        </div>
+
+        <div class="footer__col">
+            <h4>Atendimento</h4>
+            <p>WhatsApp: (00) 00000-0000</p>
+            <p>E-mail: contato@rome.com.br</p>
+        </div>
+    </div>
+
+    <div class="footer__bottom">
+        <p>© 2025 ROME - Todos os direitos reservados.</p>
+    </div>
 </footer>
 
-<label for="modal-login-toggle" class="link" style="cursor:pointer;">
-    Minha Conta
-</label>
+<!-- Modal global de login -->
+<div th:replace="fragments/modal :: modalLogin"></div>
 
 </body>
 </html>

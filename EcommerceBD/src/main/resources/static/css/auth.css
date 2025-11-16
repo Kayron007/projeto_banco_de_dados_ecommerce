@@ -82,3 +82,114 @@
 .modal-overlay.show {
     pointer-events: auto;
 }
+
+/* ============================================================
+   PÁGINAS DE AUTENTICAÇÃO (CADASTRO E LOGIN EM TELA CHEIA)
+   (usa APENAS o que já existe: form-group, form-row, btn-primary)
+   ============================================================ */
+
+.auth-page {
+    padding: 3rem 0;
+}
+
+.auth-layout {
+    display: grid;
+    grid-template-columns: minmax(0, 1.1fr) minmax(0, 1fr);
+    gap: 2.5rem;
+    align-items: stretch;
+}
+
+.auth-copy {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: 1rem;
+}
+
+.auth-title {
+    font-size: 2rem;
+    font-weight: 700;
+    color: #111827;
+}
+
+.auth-subtitle {
+    font-size: 0.98rem;
+    color: #4b5563;
+    max-width: 480px;
+}
+
+.auth-benefits {
+    list-style: none;
+    margin-top: 0.5rem;
+    font-size: 0.9rem;
+    color: #374151;
+    padding-left: 0;
+}
+
+.auth-benefits li {
+    margin-bottom: 0.35rem;
+}
+
+.auth-card {
+    background-color: #ffffff;
+    border-radius: 0.85rem;
+    padding: 2rem 1.75rem;
+    box-shadow: 0 10px 25px rgba(15, 23, 42, 0.12);
+    border: 1px solid #e5e7eb;
+}
+
+.auth-form {
+    display: flex;
+    flex-direction: column;
+}
+
+.auth-form .form-group {
+    margin-bottom: 1rem;
+}
+
+.auth-form .form-row {
+    margin-bottom: 1rem;
+}
+
+.auth-footer {
+    margin-top: 0.75rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+}
+
+.auth-submit {
+    width: 100%;
+    padding: 0.8rem 1.5rem;
+    font-size: 1rem;
+}
+
+.auth-footer-text {
+    font-size: 0.9rem;
+    color: #4b5563;
+}
+
+@media (max-width: 900px) {
+    .auth-layout {
+        grid-template-columns: 1fr;
+        gap: 2rem;
+    }
+
+    .auth-page {
+        padding: 2rem 0;
+    }
+
+    .auth-card {
+        padding: 1.5rem 1.25rem;
+    }
+}
+
+@media (max-width: 600px) {
+    .auth-title {
+        font-size: 1.6rem;
+    }
+
+    .auth-subtitle {
+        font-size: 0.95rem;
+    }
+}
