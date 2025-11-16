@@ -30,7 +30,16 @@
         </nav>
 
         <div class="header__actions">
-            <label for="modal-login-toggle" class="link" style="cursor:pointer;">Minha Conta</label>
+            <!-- Se estiver logado -->
+            <span th:if="${clienteLogado != null}">
+                Olá, <span th:text="${clienteLogado.nome}">Usuário</span> |
+                <a th:href="@{/logout}" class="link">Sair</a>
+            </span>
+            
+            <!-- Se não estiver logado -->
+            <label th:if="${clienteLogado == null}" for="modal-login-toggle" class="link" style="cursor:pointer;">
+                Minha Conta
+            </label>
             <a th:href="@{/carrinho}" class="btn-small">Carrinho</a>
         </div>
     </div>

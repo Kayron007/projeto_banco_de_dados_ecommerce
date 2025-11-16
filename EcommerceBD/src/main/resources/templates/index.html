@@ -29,8 +29,27 @@
         </nav>
 
         <div class="header__actions">
-            <label for="modal-login-toggle" class="link" style="cursor:pointer;">Minha Conta</label>
-            <a th:href="@{/carrinho}" class="btn-small">Carrinho</a>
+            <!-- Se estiver logado -->
+            <span th:if="${clienteLogado != null}">
+                Olá, <span th:text="${clienteLogado.nome}">Usuário</span> |
+                <a th:href="@{/logout}" class="link">Sair</a>
+                <a th:href="@{/carrinho}" class="btn-small">Carrinho</a>
+            </span>
+
+            <!-- Se não estiver logado -->
+            <span th:if="${clienteLogado == null}">
+                <label for="modal-login-toggle" class="link" style="cursor:pointer;">Minha Conta</label>
+                
+            <!-- Se estiver logado -->
+            <span th:if="${clienteLogado != null}">
+                <a th:href="@{/carrinho}" class="btn-small">Carrinho</a>
+            </span>
+
+            <!-- Se não estiver logado -->
+            <span th:if="${clienteLogado == null}">
+                <label for="modal-login-toggle" class="btn-small" style="cursor:pointer;">Carrinho</label>
+            </span>
+            </span>
         </div>
     </div>
 </header>
@@ -219,7 +238,13 @@
 </footer>
 
 
-<!-- Modal de Login (fragmento Thymeleaf) -->
+<!-- Modal de Login (checkbox trick) -->
+<input type="checkbox"
+       id="modal-login-toggle"
+       class="modal-toggle"
+       hidden
+       th:checked="${loginRequired}">
+
 <div th:replace="fragments/modal :: modalLogin"></div>
 </body>
 </html>

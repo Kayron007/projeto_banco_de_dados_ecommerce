@@ -47,7 +47,7 @@ public class ClienteControl {
             @RequestParam("numero") String numero,
             @RequestParam("bairro") String bairro,
             @RequestParam("estado") String estado,
-            Model model) {
+            Model model, HttpSession session) {
 
         try (Connection con = Conexao.conectar()) {
 
@@ -74,7 +74,8 @@ public class ClienteControl {
             dao.inserir(novo);
 
             model.addAttribute("email", email);
-            return "resultado";
+            session.setAttribute("clienteLogado", novo);
+            return "redirect:/";
 
         } catch (Exception e) {
             model.addAttribute("mensagem", "Erro ao cadastrar: " + e.getMessage());

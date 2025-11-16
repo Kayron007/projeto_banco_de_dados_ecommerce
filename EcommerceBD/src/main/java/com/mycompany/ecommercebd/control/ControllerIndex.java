@@ -7,9 +7,11 @@ package com.mycompany.ecommercebd.control;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 
 import com.mycompany.ecommercebd.model.Cliente;
 
+import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
 
 @Controller 
@@ -20,6 +22,11 @@ public class ControllerIndex {
         Cliente logado = (Cliente) session.getAttribute("clienteLogado");
         model.addAttribute("clienteLogado", logado);
         return "index";
+    }
+
+    @ModelAttribute("clienteLogado")
+    public Cliente addClienteLogadoToModel(HttpSession session) {
+        return (Cliente) session.getAttribute("clienteLogado");
     }
 
     @GetMapping("/minhaConta")
@@ -55,8 +62,16 @@ public class ControllerIndex {
         return "promocoes";
     }
 
-    @GetMapping("/carrinho")
-    public String carrinho(){
+   @GetMapping("/carrinho")
+    public String carrinho(HttpSession session, Model model, HttpServletRequest request) {
+        Cliente logado = (Cliente) session.getAttribute("clienteLogado");
+
+        if (logado == null) {
+            // Usuário não logado → renderiza a página atual com modal aberto
+            model.addAttribute("loginRequired", true);
+            return "index"; // fallback
+        }
+        model.addAttribute("clienteLogado", logado);
         return "carrinho";
     }
 
