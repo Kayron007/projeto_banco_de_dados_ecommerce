@@ -30,11 +30,13 @@ CREATE TABLE pagamento (
 -- ===========================================
 CREATE TABLE produto (
   ID_produto BIGINT NOT NULL AUTO_INCREMENT, -- Mantem AUTO_INCREMENT porque produtos sao inseridos em massa e nao sao dados criticos
+  Nome varchar(100) NOT NULL,
   Descricao varchar(500) DEFAULT NULL,
   Quantidade int DEFAULT NULL,
   Tamanho varchar(5) DEFAULT NULL,
   Preco decimal(10,2) DEFAULT NULL,
   Categoria varchar(20) DEFAULT NULL,
+  Sexo varchar(20) DEFAULT NULL,
   PRIMARY KEY (ID_produto)
 );
 
