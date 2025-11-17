@@ -183,23 +183,19 @@
 
         <div class="checkout-resumo">
             <h3>Resumo do Pedido</h3>
-            <div class="resumo-linha">
-                <span>Subtotal:</span>
-                <strong>R$ 219,80</strong>
-            </div>
-            <div class="resumo-linha">
-                <span>Frete:</span>
-                <strong>Grátis</strong>
+            <div class="resumo-linha" th:each="item : ${carrinho}">
+                <span th:text="${item.produto.nome}">Produto</span>
+                <strong th:text="${item.quantidade + 'x R$ ' + #numbers.formatDecimal(item.produto.preco,1,'POINT',2,'COMMA')}">1x</strong>
             </div>
             <div class="resumo-linha resumo-total">
                 <span>Total:</span>
-                <strong>R$ 219,80</strong>
+                <strong th:text="${'R$ ' + #numbers.formatDecimal(totalCarrinho,1,'POINT',2,'COMMA')}">R$ 0,00</strong>
             </div>
         </div>
 
         <div class="checkout-actions">
             <a th:href="@{/carrinho}" class="btn-outline">Voltar ao Carrinho</a>
-            <button type="submit" class="btn-primary">Finalizar Compra</button>
+            <button type="submit" class="btn-primary" th:disabled="${#lists.isEmpty(carrinho)}">Finalizar Compra</button>
         </div>
     </form>
 
