@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="pt-BR" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Produtos | ROME</title>
+
+    <link rel="stylesheet" href="/css/base.css">
+    <link rel="stylesheet" href="/css/layout.css">
+    <link rel="stylesheet" href="/css/components.css">
+    <link rel="stylesheet" href="/css/home.css">
+    <link rel="stylesheet" href="/css/auth.css"> <!-- pro popup de login -->
+</head>
+<body>
+
+<header class="header">
+    <div class="container header__content">
+        <div class="logo">
+            <a th:href="@{/}">ROME</a>
+        </div>
+
+        <nav class="nav">
+            <a th:href="@{/}">Home</a>
+            <a th:href="@{/masculino}">Masculino</a>
+            <a th:href="@{/feminino}">Feminino</a>
+            <a th:href="@{/acessorios}">Acessórios</a>
+            <a th:href="@{/promocoes}">Promoções</a>
+        </nav>
+
+        <div class="header__actions">
+            <label for="modal-login-toggle" class="link" style="cursor:pointer;">Minha Conta</label>
+            <a th:href="@{/carrinho}" class="btn-small">Carrinho</a>
+        </div>
+    </div>
+</header>
+
+<main>
+
+    <!-- SEÇÃO MASCULINO -->
+    <section class="section">
+        <div class="container">
+            <div class="section__header">
+                <h2>Moda Masculina</h2>
+                <a th:href="@{/masculino}" class="link">Ver tudo masculino</a>
+            </div>
+
+            <div th:if="${#lists.isEmpty(produtosMasculinos)}" class="products-empty">
+                <p>Nenhum produto masculino cadastrado no momento.</p>
+            </div>
+
+            <div class="products-grid" th:if="${!#lists.isEmpty(produtosMasculinos)}">
+                <article class="product-card" th:each="produto : ${produtosMasculinos}">
+                    <div class="product-card__image"
+                         th:style="${produto.imagemUrl} != null ? 'background-image:url(' + ${produto.imagemUrl} + ');' : null">
+                    </div>
+
+                    <h3 th:text="${produto.nome}">Nome do produto</h3>
+
+                    <p class="product-card__category"
+                       th:text="${produto.categoria}">Masculino</p>
+
+                    <p class="product-card__price"
+                       th:text="${'R$ ' + #numbers.formatDecimal(produto.preco, 1, 'POINT', 2, 'COMMA')}">
+                        R$ 0,00
+                    </p>
+
+                    <form th:action="@{/carrinho}" method="get" class="product-card__form">
+                        <input type="hidden" name="produtoId" th:value="${produto.id}">
+                        <button type="submit" class="btn-primary">Adicionar ao carrinho</button>
+                    </form>
+                </article>
+            </div>
+        </div>
+    </section>
+
+    <!-- SEÇÃO FEMININO -->
+    <section class="section section--gray">
+        <div class="container">
+            <div class="section__header">
+                <h2>Moda Feminina</h2>
+                <a th:href="@{/feminino}" class="link">Ver tudo feminino</a>
+            </div>
+
+            <div th:if="${#lists.isEmpty(produtosFemininos)}" class="products-empty">
+                <p>Nenhum produto feminino cadastrado no momento.</p>
+            </div>
+
+            <div class="products-grid" th:if="${!#lists.isEmpty(produtosFemininos)}">
+                <article class="product-card" th:each="produto : ${produtosFemininos}">
+                    <div class="product-card__image"
+                         th:style="${produto.imagemUrl} != null ? 'background-image:url(' + ${produto.imagemUrl} + ');' : null">
+                    </div>
+
+                    <h3 th:text="${produto.nome}">Nome do produto</h3>
+
+                    <p class="product-card__category"
+                       th:text="${produto.categoria}">Feminino</p>
+
+                    <p class="product-card__price"
+                       th:text="${'R$ ' + #numbers.formatDecimal(produto.preco, 1, 'POINT', 2, 'COMMA')}">
+                        R$ 0,00
+                    </p>
+
+                    <form th:action="@{/carrinho}" method="get" class="product-card__form">
+                        <input type="hidden" name="produtoId" th:value="${produto.id}">
+                        <button type="submit" class="btn-primary">Adicionar ao carrinho</button>
+                    </form>
+                </article>
+            </div>
+        </div>
+    </section>
+
+    <!-- SEÇÃO ACESSÓRIOS -->
+    <section class="section">
+        <div class="container">
+            <div class="section__header">
+                <h2>Acessórios</h2>
+                <a th:href="@{/acessorios}" class="link">Ver todos acessórios</a>
+            </div>
+
+            <div th:if="${#lists.isEmpty(produtosAcessorios)}" class="products-empty">
+                <p>Nenhum acessório cadastrado no momento.</p>
+            </div>
+
+            <div class="products-grid" th:if="${!#lists.isEmpty(produtosAcessorios)}">
+                <article class="product-card" th:each="produto : ${produtosAcessorios}">
+                    <div class="product-card__image"
+                         th:style="${produto.imagemUrl} != null ? 'background-image:url(' + ${produto.imagemUrl} + ');' : null">
+                    </div>
+
+                    <h3 th:text="${produto.nome}">Nome do produto</h3>
+
+                    <p class="product-card__category"
+                       th:text="${produto.categoria}">Acessórios</p>
+
+                    <p class="product-card__price"
+                       th:text="${'R$ ' + #numbers.formatDecimal(produto.preco, 1, 'POINT', 2, 'COMMA')}">
+                        R$ 0,00
+                    </p>
+
+                    <form th:action="@{/carrinho}" method="get" class="product-card__form">
+                        <input type="hidden" name="produtoId" th:value="${produto.id}">
+                        <button type="submit" class="btn-primary">Adicionar ao carrinho</button>
+                    </form>
+                </article>
+            </div>
+        </div>
+    </section>
+
+</main>
+
+<footer class="footer">
+    <div class="container footer__content">
+        <div class="footer__col">
+            <h4>UrbanWear</h4>
+            <p>Moda casual para quem vive em movimento.</p>
+        </div>
+
+        <div class="footer__col">
+            <h4>Institucional</h4>
+            <a href="#">Quem somos</a>
+            <a href="#">Política de privacidade</a>
+            <a href="#">Trocas e devoluções</a>
+        </div>
+
+        <div class="footer__col">
+            <h4>Atendimento</h4>
+            <p>WhatsApp: (00) 00000-0000</p>
+            <p>E-mail: contato@rome.com.br</p>
+        </div>
+    </div>
+
+    <div class="footer__bottom">
+        <p>© 2025 ROME - Todos os direitos reservados.</p>
+    </div>
+</footer>
+
+<!-- Modal global -->
+<div th:replace="fragments/modal :: modalLogin"></div>
+
+</body>
+</html>

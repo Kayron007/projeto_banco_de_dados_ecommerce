@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Minha conta</title>
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+</head>
+<body>
+
+<header class="header">
+    <!-- você pode reaproveitar o mesmo header do index -->
+</header>
+
+<main class="container conta-container">
+
+    <h1>Minha conta</h1>
+
+    <nav class="account-menu">
+        <a href="#dados">Meus dados</a>
+        <a href="#pedidos">Meus pedidos</a>
+    </nav>
+
+    <!-- 🔹 Seção Meus dados -->
+    <section id="dados" class="account-section">
+        <h2>Meus dados</h2>
+
+        <form th:action="@{/minha-conta/atualizar}" method="post" class="form-conta">
+            <label>Nome</label>
+            <input type="text" name="nome" th:value="${cliente.nome}" required>
+
+            <label>CEP</label>
+            <input type="text" name="cep" th:value="${cliente.cep}">
+
+            <label>Cidade</label>
+            <input type="text" name="cidade" th:value="${cliente.cidade}">
+
+            <label>Logradouro</label>
+            <input type="text" name="logradouro" th:value="${cliente.logradouro}">
+
+            <label>Número</label>
+            <input type="text" name="numero" th:value="${cliente.numero}">
+
+            <label>Bairro</label>
+            <input type="text" name="bairro" th:value="${cliente.bairro}">
+
+            <label>Estado</label>
+            <input type="text" name="estado" th:value="${cliente.estado}">
+
+            <button type="submit" class="btn-primary">Salvar alterações</button>
+        </form>
+
+        <p th:if="${mensagemSucesso}" th:text="${mensagemSucesso}" class="mensagem-sucesso"></p>
+        <p th:if="${erro}" th:text="${erro}" class="mensagem-erro"></p>
+    </section>
+
+    <!-- 🔹 Seção Meus pedidos -->
+    <section id="pedidos" class="account-section">
+        <h2>Meus pedidos</h2>
+
+        <div th:if="${#lists.isEmpty(pedidos)}">
+            <p>Você ainda não fez nenhum pedido.</p>
+        </div>
+
+        <table th:if="${!#lists.isEmpty(pedidos)}" class="tabela-pedidos">
+            <thead>
+                <tr>
+                    <th>Pedido</th>
+                    <th>Data</th>
+                    <th>Status</th>
+                    <th>Valor total</th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr th:each="pedido : ${pedidos}">
+                    <td th:text="${pedido.id}">1</td>
+                    <td th:text="${pedido.data}">2025-01-01</td>
+                    <td th:text="${pedido.status}">Finalizado</td>
+                    <td th:text="${pedido.valorTotal}">199.90</td>
+                    <td>
+                        <a th:href="@{'/minha-conta/pedidos/' + ${pedido.id}}">Ver detalhes</a>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </section>
+
+</main>
+
+</body>
+</html>

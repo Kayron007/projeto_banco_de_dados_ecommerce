@@ -10,12 +10,26 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.mycompany.ecommercebd.model.Cliente;
+import com.mycompany.ecommercebd.model.Conexao;
 import com.mycompany.ecommercebd.model.NotaFiscal;
+import com.mycompany.ecommercebd.model.Pagamento;
 import com.mycompany.ecommercebd.model.Pedido;
 
 public class NotaFiscalDAO extends EntidadeBaseDAO<NotaFiscal> {
 
     private Connection connection;
+
+        // Construtor com conexão (para usar nos controllers)
+    public NotaFiscalDAO(Connection connection) {
+        this.connection = connection;
+    }
+
+    // Construtor padrão (para uso em outros DAOs)
+    public NotaFiscalDAO() {
+        this.connection = Conexao.conectar();
+    }
+
     @Override
     public void inserir(NotaFiscal notaFiscal) throws SQLException {
         notaFiscal.normalizar();
@@ -102,9 +116,11 @@ public class NotaFiscalDAO extends EntidadeBaseDAO<NotaFiscal> {
                 }
             }
         }
+        
 
         return null;
     }
+    
 
     private NotaFiscal montarNotaFiscal(ResultSet rs) throws SQLException {
         Long id = rs.getLong("ID_nota_fiscal");
@@ -139,4 +155,60 @@ public class NotaFiscalDAO extends EntidadeBaseDAO<NotaFiscal> {
 
         return notas;
     }
+    public NotaFiscal buscarPorPedido(Long idPedido) {
+    String sql = "SELECT * FROM notafiscal WHERE fk_Pedido_ID_pedido = ?";
+
+    try (PreparedStatement stmt = connection.prepareStatement(sql)) {
+        stmt.setLong(1, idPedido);
+
+        try (ResultSet rs = stmt.executeQuery()) {
+            if (rs.next()) {
+                return montarNotaFiscal(rs);
+            }
+        }
+    } catch (Exception e) {
+        System.out.println("Erro ao buscar nota fiscal do pedido: " + e.getMessage());
+    }
+
+    return null;
+}
+
+    // Lista todos os pedidos de um cliente específico
+    public List<Pedido> listarPorCliente(Long idCliente) {
+        List<Pedido> pedidos = new ArrayList<>();
+
+        String sql = "SELECT * FROM pedido WHERE fk_Cliente_id = ?";
+
+        try (PreparedStatement stmt = connection.prepareStatement(sql)) {
+            stmt.setLong(1, idCliente);
+
+            try (ResultSet rs = stmt.executeQuery()) {
+                while (rs.next()) {
+                    Pedido p = new Pedido();
+                    p.setId(rs.getLong("ID_pedido"));
+                    p.setData(rs.getTimestamp("Data_do_pedido").toLocalDateTime());
+                    p.setStatus(rs.getString("Status"));
+                    p.setValorTotal(rs.getInt("Valor_total"));
+
+                    Long Idcliente = rs.getLong("fk_Cliente_id");
+                    ClienteDAO cd = new ClienteDAO(connection);
+                    Cliente c = cd.buscarPorId(Idcliente);
+                    p.setId_cliente(c);
+
+                    Long Idpagamento = rs.getLong("fk_Pagamento_ID_pagamento");
+                    PagamentoDAO pd = new PagamentoDAO();
+                    Pagamento Pa = pd.buscarPorId(Idpagamento);
+                    p.setId_pagamento(Pa);
+
+                    pedidos.add(p);
+                }
+            }
+        } catch (Exception e) {
+            System.out.println("Erro ao listar pedidos do cliente: " + e.getMessage());
+        }
+
+        return pedidos;
+    }
+
+
 }

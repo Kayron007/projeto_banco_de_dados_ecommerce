@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Detalhes do pedido</title>
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+</head>
+<body>
+
+<header class="header">
+    <!-- mesmo header padrão -->
+</header>
+
+<main class="container">
+
+    <h1>Detalhes do pedido</h1>
+
+    <section class="pedido-info">
+        <p><strong>Número do pedido:</strong> <span th:text="${pedido.id}"></span></p>
+        <p><strong>Data:</strong> <span th:text="${pedido.data}"></span></p>
+        <p><strong>Status:</strong> <span th:text="${pedido.status}"></span></p>
+        <p><strong>Valor total:</strong> <span th:text="${pedido.valorTotal}"></span></p>
+    </section>
+
+    <section class="pedido-itens">
+        <h2>Produtos</h2>
+
+        <table>
+            <thead>
+                <tr>
+                    <th>Produto</th>
+                    <th>Quantidade</th>
+                    <th>Preço unitário</th>
+                    <th>Subtotal</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr th:each="item : ${itens}">
+                    <td th:text="${item.produto.nome}">Produto X</td>
+                    <td th:text="${item.quantidade}">1</td>
+                    <td th:text="${item.precoUnitario}">99.90</td>
+                    <td th:text="${item.quantidade * item.precoUnitario}">99.90</td>
+                </tr>
+            </tbody>
+        </table>
+    </section>
+
+    <section class="nota-fiscal" th:if="${notaFiscal != null}">
+        <h2>Nota fiscal</h2>
+        <p><strong>Chave de acesso:</strong> <span th:text="${notaFiscal.chaveDeAcesso}"></span></p>
+        <p><strong>Data de emissão:</strong> <span th:text="${notaFiscal.dataDeEmissao}"></span></p>
+        <p><strong>Imposto:</strong> <span th:text="${notaFiscal.imposto}"></span></p>
+        <p><strong>Valor total NF:</strong> <span th:text="${notaFiscal.valorTotal}"></span></p>
+    </section>
+
+    <a th:href="@{/minha-conta}" class="link-voltar">Voltar para minha conta</a>
+
+</main>
+
+</body>
+</html>

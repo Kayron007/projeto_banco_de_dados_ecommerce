@@ -11,12 +11,24 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.mycompany.ecommercebd.model.Cliente;
+import com.mycompany.ecommercebd.model.Conexao;
 import com.mycompany.ecommercebd.model.Pagamento;
 import com.mycompany.ecommercebd.model.Pedido;
+
 
 public class PedidoDAO extends EntidadeBaseDAO<Pedido> {
 
     private Connection connection;
+
+        // Construtor recebendo a conexão (usado nos controllers)
+    public PedidoDAO(Connection connection) {
+        this.connection = connection;
+    }
+
+    // Construtor padrão (usado em outros DAOs, ex: NotaFiscalDAO)
+    public PedidoDAO() {
+        this.connection = Conexao.conectar();
+    }
 
     @Override
     public void inserir(Pedido pedido) throws SQLException {
@@ -123,13 +135,51 @@ public class PedidoDAO extends EntidadeBaseDAO<Pedido> {
     }
 
     @Override
-    public List<Pedido> listar() {
-        List<Pedido> pedidos = new ArrayList<>();
+public List<Pedido> listar() {
+    List<Pedido> pedidos = new ArrayList<>();
 
-        String sql = "SELECT * FROM pedido";
+    String sql = "SELECT * FROM pedido";
 
-        try (Statement st = connection.createStatement(); ResultSet rs = st.executeQuery(sql)) {
+    try (Statement st = connection.createStatement(); ResultSet rs = st.executeQuery(sql)) {
 
+        while (rs.next()) {
+            Pedido p = new Pedido();
+            p.setId(rs.getLong("ID_pedido"));
+            p.setData(rs.getTimestamp("Data_do_pedido").toLocalDateTime());
+            p.setStatus(rs.getString("Status"));
+            p.setValorTotal(rs.getInt("Valor_total"));
+
+            Long Idcliente = rs.getLong("fk_Cliente_id");
+            ClienteDAO cd = new ClienteDAO(connection);
+            Cliente c = cd.buscarPorId(Idcliente);
+            p.setId_cliente(c);
+
+            Long Idpagamento = rs.getLong("fk_Pagamento_ID_pagamento");
+            PagamentoDAO pd = new PagamentoDAO();
+            Pagamento Pa = pd.buscarPorId(Idpagamento);
+            p.setId_pagamento(Pa);
+
+            pedidos.add(p);
+        }
+
+    } catch (Exception e) {
+        System.out.println("Erro ao listar pedidos: " + e.getMessage());
+    }
+
+    // 🔴 ISSO FALTAVA
+    return pedidos;
+}
+
+// 🔥 NOVO MÉTODO
+public List<Pedido> listarPorCliente(Long idCliente) {
+    List<Pedido> pedidos = new ArrayList<>();
+
+    String sql = "SELECT * FROM pedido WHERE fk_Cliente_id = ?";
+
+    try (PreparedStatement stmt = connection.prepareStatement(sql)) {
+        stmt.setLong(1, idCliente);
+
+        try (ResultSet rs = stmt.executeQuery()) {
             while (rs.next()) {
                 Pedido p = new Pedido();
                 p.setId(rs.getLong("ID_pedido"));
@@ -149,11 +199,14 @@ public class PedidoDAO extends EntidadeBaseDAO<Pedido> {
 
                 pedidos.add(p);
             }
-
-        } catch (Exception e) {
-            System.out.println("Erro ao listar pedidos: " + e.getMessage());
         }
 
-        return pedidos;
+    } catch (Exception e) {
+        System.out.println("Erro ao listar pedidos do cliente: " + e.getMessage());
     }
+
+    return pedidos;
+}
+
+
 }
