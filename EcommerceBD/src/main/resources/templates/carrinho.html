@@ -33,48 +33,31 @@
 
 <section class="carrinho-container">
     <div class="carrinho-items">
-        <div class="carrinho-item">
-            <div class="carrinho-item-header">
-                <h3>Camiseta básica masculina</h3>
-                <form action="/carrinho/remover" method="post" style="display: inline;">
-                    <input type="hidden" name="produtoId" value="1">
-                    <button type="submit" class="btn-remover">Remover</button>
-                </form>
-            </div>
-            <p><strong>Preço:</strong> R$ 69,90</p>
-            <p><strong>Quantidade:</strong> 1</p>
-            <p><strong>Subtotal:</strong> R$ 69,90</p>
+        <div th:if="${#lists.isEmpty(carrinho)}">
+            <p>Seu carrinho está vazio.</p>
         </div>
 
-        <div class="carrinho-item">
+        <div class="carrinho-item" th:each="item : ${carrinho}">
             <div class="carrinho-item-header">
-                <h3>Vestido midi floral</h3>
-                <form action="/carrinho/remover" method="post" style="display: inline;">
-                    <input type="hidden" name="produtoId" value="2">
+                <h3 th:text="${item.produto.nome}">Produto</h3>
+                <form th:action="@{/carrinho/remover}" method="post" style="display: inline;">
+                    <input type="hidden" name="produtoId" th:value="${item.produto.id}">
                     <button type="submit" class="btn-remover">Remover</button>
                 </form>
             </div>
-            <p><strong>Preço:</strong> R$ 149,90</p>
-            <p><strong>Quantidade:</strong> 1</p>
-            <p><strong>Subtotal:</strong> R$ 149,90</p>
+            <p><strong>Preço:</strong> <span th:text="${#numbers.formatDecimal(item.produto.preco,1,'POINT',2,'COMMA')}">0,00</span></p>
+            <p><strong>Quantidade:</strong> <span th:text="${item.quantidade}">1</span></p>
+            <p><strong>Subtotal:</strong> <span th:text="${#numbers.formatDecimal(item.produto.preco * item.quantidade,1,'POINT',2,'COMMA')}">0,00</span></p>
         </div>
     </div>
 
     <div class="carrinho-resumo">
         <h3>Resumo do Pedido</h3>
         <div class="resumo-linha">
-            <span>Subtotal:</span>
-            <strong>R$ 219,80</strong>
-        </div>
-        <div class="resumo-linha">
-            <span>Frete:</span>
-            <strong>Grátis</strong>
-        </div>
-        <div class="resumo-linha resumo-total">
             <span>Total:</span>
-            <strong>R$ 219,80</strong>
+            <strong th:text="${'R$ ' + #numbers.formatDecimal(totalCarrinho,1,'POINT',2,'COMMA')}">R$ 0,00</strong>
         </div>
-        <a th:href="@{/checkout}" class="btn-primary">Comprar Agora</a>
+        <a th:if="${!#lists.isEmpty(carrinho)}" th:href="@{/checkout}" class="btn-primary">Comprar Agora</a>
     </div>
 </section>
 

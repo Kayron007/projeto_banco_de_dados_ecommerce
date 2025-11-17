@@ -109,7 +109,7 @@ CREATE TABLE pedido (
 -- TABELA NOTA FISCAL
 -- ===========================================
 CREATE TABLE notafiscal (
-  ID_nota_fiscal BIGINT NOT NULL AUTO_INCREMENT,
+  ID_nota_fiscal BIGINT NOT NULL AUTO_INCREMENT, -- AUTO_INCREMENT facilita ordem cronologica das notas e integracao fiscal
   Data_de_emissao datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
   Valor_total decimal(10,2) NOT NULL,
   Imposto decimal(10,2) NOT NULL DEFAULT 0.00,
@@ -153,7 +153,7 @@ CREATE TABLE pedido_produto (
 -- TABELA AVALIACAO (FEEDBACK DE PRODUTO)
 -- ===========================================
 CREATE TABLE avaliacao (
-  ID_avaliacao BIGINT NOT NULL AUTO_INCREMENT,
+  ID_avaliacao BIGINT NOT NULL AUTO_INCREMENT, -- AUTO_INCREMENT garante identificador unico por avaliacao sem depender de UUID
   fk_ID_cliente BIGINT NOT NULL,
   fk_ID_produto BIGINT NOT NULL,
   comentario varchar(500) DEFAULT NULL,
@@ -204,7 +204,7 @@ CREATE TABLE pessoa_fisica (
 -- TABELA TELEFONE
 -- ===========================================
 CREATE TABLE telefone (
-  id_telefone BIGINT NOT NULL AUTO_INCREMENT, -- Auto_increment mantem o cadastro simples e nao compromete requisitos de ID
+  id_telefone BIGINT NOT NULL AUTO_INCREMENT,  -- AUTO_INCREMENT simplifica cadastros rapidos e evita colisoes de IDs
   id_fornecedor BIGINT DEFAULT NULL,
   id_cliente BIGINT DEFAULT NULL,
   numero char(11) NOT NULL,  -- somente números
