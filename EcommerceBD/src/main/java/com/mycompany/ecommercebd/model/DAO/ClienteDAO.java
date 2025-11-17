@@ -78,7 +78,7 @@ public class ClienteDAO extends EntidadeBaseDAO<Cliente>{
         String sql = "SELECT c.id, c.tipo, c.nome, c.cep, c.cidade, c.logradouro, " +
                      "c.numero, c.bairro, c.estado, c.email, c.senha " +
                      "FROM cliente c " +
-                     "WHERE c.ID_cliente = ?";
+                     "WHERE c.ID = ?";
         
         try (PreparedStatement stmt = connection.prepareStatement(sql)) {
             stmt.setLong(1, id);
@@ -154,7 +154,7 @@ public class ClienteDAO extends EntidadeBaseDAO<Cliente>{
 
     @Override
     public void deletar(Cliente obj) {
-        String sql = "DELETE FROM cliente WHERE ID_cliente = ?";
+        String sql = "DELETE FROM cliente WHERE ID = ?";
         try (PreparedStatement stmt = connection.prepareStatement(sql)) {
 
             stmt.setLong(1, obj.getId());
