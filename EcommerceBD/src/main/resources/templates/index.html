@@ -32,6 +32,7 @@
             <!-- Se estiver logado -->
             <span th:if="${clienteLogado != null}">
                 Olá, <span th:text="${clienteLogado.nome}">Usuário</span> |
+                <a th:href="@{/minha-conta}" class="link">Minha Conta</a> |
                 <a th:href="@{/logout}" class="link">Sair</a>
                 <a th:href="@{/carrinho}" class="btn-small">Carrinho</a>
             </span>
