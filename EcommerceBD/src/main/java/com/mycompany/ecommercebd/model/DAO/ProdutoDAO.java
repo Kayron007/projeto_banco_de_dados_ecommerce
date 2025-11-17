@@ -9,10 +9,20 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.mycompany.ecommercebd.model.Produto;
+import com.mycompany.ecommercebd.model.Conexao;
 
 public class ProdutoDAO extends EntidadeBaseDAO<Produto> {
 
     private Connection connection;
+
+    public ProdutoDAO(Connection connection) {
+        this.connection = connection;
+    }
+
+    // Fallback para pontos onde ainda não havia injeção da conexão
+    public ProdutoDAO() {
+        this.connection = Conexao.conectar();
+    }
 
     @Override
     public void inserir(Produto produto) throws SQLException {

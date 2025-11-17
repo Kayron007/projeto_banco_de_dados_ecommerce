@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="pt-BR" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title th:text="${produto.nome}">Produto</title>
+    <link rel="stylesheet" href="/css/base.css">
+    <link rel="stylesheet" href="/css/layout.css">
+    <link rel="stylesheet" href="/css/components.css">
+</head>
+<body>
+
+<header class="header">
+    <div class="container header__content">
+        <div class="logo">
+            <a th:href="@{/}">ROME</a>
+        </div>
+        <nav class="nav">
+            <a th:href="@{/}">Home</a>
+            <a th:href="@{/masculino}">Masculino</a>
+            <a th:href="@{/feminino}">Feminino</a>
+            <a th:href="@{/acessorios}">Acessorios</a>
+            <a th:href="@{/promocoes}">Promocoes</a>
+        </nav>
+        <div class="header__actions">
+            <span th:if="${clienteLogado != null}">
+                Ola, <span th:text="${clienteLogado.nome}">Cliente</span> |
+                <a th:href="@{/logout}" class="link">Sair</a>
+            </span>
+            <label th:if="${clienteLogado == null}" for="modal-login-toggle" class="link" style="cursor:pointer;">Minha Conta</label>
+            <a th:href="@{/carrinho}" class="btn-small">Carrinho</a>
+        </div>
+    </div>
+</header>
+
+<main class="container">
+    <section class="product-details">
+        <h1 th:text="${produto.nome}">Nome do produto</h1>
+        <p th:text="${produto.descricao}">Descricao do produto</p>
+        <p><strong>Categoria:</strong> <span th:text="${produto.categoria}">Categoria</span></p>
+        <p><strong>Preco:</strong> <span th:text="${#numbers.formatDecimal(produto.preco, 1, 'POINT', 2, 'COMMA')}">0,00</span></p>
+    </section>
+
+    <section class="product-reviews">
+        <div class="section__header" style="display:flex; justify-content:space-between; align-items:center;">
+            <h2>Avaliacoes</h2>
+            <span th:text="${#numbers.formatDecimal(mediaAvaliacoes, 1, 'POINT', 1, 'COMMA')} + ' / 5'">0 / 5</span>
+        </div>
+
+        <div th:if="${#lists.isEmpty(avaliacoes)}">
+            <p>Nenhuma avaliacao para este produto.</p>
+        </div>
+        <div th:unless="${#lists.isEmpty(avaliacoes)}">
+            <article th:each="avaliacao : ${avaliacoes}" class="review-card">
+                <strong th:text="${avaliacao.getId_cliente().nome}">Cliente</strong>
+                <span> - Nota: <span th:text="${avaliacao.nota}">0</span></span>
+                <p th:text="${avaliacao.comentario}">Comentario</p>
+            </article>
+        </div>
+
+        <div class="review-form">
+            <h3>Deixe sua avaliacao</h3>
+            <form th:action="@{'/produtos/' + ${produto.id} + '/avaliacoes'}" method="post">
+                <label for="nota">Nota (1 a 5)</label>
+                <input type="number" id="nota" name="nota" min="1" max="5" required>
+
+                <label for="comentario">Comentario</label>
+                <textarea id="comentario" name="comentario" rows="3" placeholder="Compartilhe sua experiencia"></textarea>
+
+                <button type="submit" class="btn-primary">Enviar avaliacao</button>
+            </form>
+            <p th:if="${erro}" th:text="${erro}" class="mensagem-erro"></p>
+        </div>
+    </section>
+
+    <a th:href="@{/produtos}" class="link">Voltar para lista de produtos</a>
+</main>
+
+<div th:replace="fragments/modal :: modalLogin"></div>
+</body>
+</html>

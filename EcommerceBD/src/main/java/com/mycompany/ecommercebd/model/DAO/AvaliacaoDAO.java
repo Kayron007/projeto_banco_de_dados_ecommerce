@@ -15,6 +15,7 @@ import java.util.List;
 import com.mycompany.ecommercebd.model.Avaliacao;
 import com.mycompany.ecommercebd.model.Cliente;
 import com.mycompany.ecommercebd.model.Produto;
+import com.mycompany.ecommercebd.model.Conexao;
 
 /**
  *
@@ -23,6 +24,15 @@ import com.mycompany.ecommercebd.model.Produto;
 public class AvaliacaoDAO extends EntidadeBaseDAO<Avaliacao> {
 
     private Connection connection;
+
+    public AvaliacaoDAO(Connection connection) {
+        this.connection = connection;
+    }
+
+    // Fallback para pontos onde ainda não havia injeção da conexão
+    public AvaliacaoDAO() {
+        this.connection = Conexao.conectar();
+    }
 
     @Override
     public void inserir(Avaliacao avaliacao) throws SQLException {
@@ -53,7 +63,7 @@ public class AvaliacaoDAO extends EntidadeBaseDAO<Avaliacao> {
 
     @Override
     public void deletar(Avaliacao avaliacao) {
-        String sql = "DELETE FRMO avaliacao WHERE ID_avaliacao = ?";
+        String sql = "DELETE FROM avaliacao WHERE ID_avaliacao = ?";
 
         try (PreparedStatement stmt = connection.prepareStatement(sql)) {
             stmt.setLong(1, avaliacao.getId());
@@ -66,7 +76,7 @@ public class AvaliacaoDAO extends EntidadeBaseDAO<Avaliacao> {
 
     @Override
     public void alterar(Avaliacao avaliacao) {
-        String sql = "UPDATE avaliacao SET comentario = ?, nota = ?";
+        String sql = "UPDATE avaliacao SET comentario = ?, nota = ? WHERE ID_avaliacao = ?";
 
         try {
             avaliacao.normalizar();
@@ -75,6 +85,8 @@ public class AvaliacaoDAO extends EntidadeBaseDAO<Avaliacao> {
             try (PreparedStatement stmt = connection.prepareStatement(sql)) {
                 stmt.setString(1, avaliacao.getComentario());
                 stmt.setShort(2, avaliacao.getNota());
+                stmt.setLong(3, avaliacao.getId());
+                stmt.executeUpdate();
             }
         } catch (Exception e) {
             System.out.println("Erro ao alterar avaliação " + e.getMessage());
@@ -84,17 +96,17 @@ public class AvaliacaoDAO extends EntidadeBaseDAO<Avaliacao> {
     @Override
     public List<Avaliacao> listar() {
         List<Avaliacao> notas = new ArrayList<>();
-        String sql = "SELECT * FROM notafiscal";
+        String sql = "SELECT * FROM avaliacao";
 
         try (Statement st = connection.createStatement(); ResultSet rs = st.executeQuery(sql)) {
 
             while (rs.next()) {
-                Avaliacao nf = montarFornecedor(rs);
-                notas.add(nf);
+                Avaliacao avaliacao = montarFornecedor(rs);
+                notas.add(avaliacao);
             }
 
         } catch (Exception e) {
-            System.out.println("Erro ao listar notas fiscais: " + e.getMessage());
+            System.out.println("Erro ao listar avalia\u00e7\u00f5es: " + e.getMessage());
         }
 
         return notas;
@@ -109,7 +121,7 @@ public class AvaliacaoDAO extends EntidadeBaseDAO<Avaliacao> {
         Cliente c = cd.buscarPorId(id_cliente);
 
         Long id_produto = rs.getLong("fk_ID_produto");
-        ProdutoDAO pd = new ProdutoDAO();
+        ProdutoDAO pd = new ProdutoDAO(connection);
         Produto p = pd.buscarPorId(id_produto);
 
         String comentario = rs.getString("comentario");
@@ -121,7 +133,7 @@ public class AvaliacaoDAO extends EntidadeBaseDAO<Avaliacao> {
 
     @Override
     public Avaliacao buscarPorId(Long id) throws SQLException {
-        String sql = "SELECT a.ID";
+        String sql = "SELECT * FROM avaliacao WHERE ID_avaliacao = ?";
 
         try (PreparedStatement stmt = connection.prepareStatement(sql)) {
             stmt.setLong(1, id);
@@ -134,5 +146,21 @@ public class AvaliacaoDAO extends EntidadeBaseDAO<Avaliacao> {
         }
 
         return null;
+    }
+
+    public List<Avaliacao> listarPorProduto(Long idProduto) throws SQLException {
+        List<Avaliacao> avaliacoes = new ArrayList<>();
+        String sql = "SELECT * FROM avaliacao WHERE fk_ID_produto = ?";
+
+        try (PreparedStatement stmt = connection.prepareStatement(sql)) {
+            stmt.setLong(1, idProduto);
+            try (ResultSet rs = stmt.executeQuery()) {
+                while (rs.next()) {
+                    avaliacoes.add(montarFornecedor(rs));
+                }
+            }
+        }
+
+        return avaliacoes;
     }
 }
