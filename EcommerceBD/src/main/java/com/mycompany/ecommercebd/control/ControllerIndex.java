@@ -1,7 +1,3 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 package com.mycompany.ecommercebd.control;
 
 import java.sql.Connection;
@@ -40,59 +36,57 @@ public class ControllerIndex {
         Cliente c = (Cliente) session.getAttribute("clienteLogado");
 
         if (c == null) {
-            return "redirect:/"; // ou volta para login
+            return "redirect:/";
         }
         model.addAttribute("cliente", c);
         return "minhaConta";
     }
 
-   @GetMapping("/masculino")
+    @GetMapping("/masculino")
     public String masculino(Model model) {
-        carregarProdutosPorCategoria(model, "masculino", "produtos");
-        return "masculino";   // carrega templates/masculino.html
+        carregarProdutosPorSexo(model, "masculino", "produtos");
+        return "masculino";
     }
 
     @GetMapping("/feminino")
     public String feminino(Model model) {
-        carregarProdutosPorCategoria(model, "feminino", "produtos");
-        return "feminino";    // carrega templates/feminino.html
+        carregarProdutosPorSexo(model, "feminino", "produtos");
+        return "feminino";
     }
     
-   @GetMapping("/acessorios")
+    @GetMapping("/acessorios")
     public String acessorios(Model model) {
         carregarProdutosPorCategoria(model, "acessorio", "produtos");
-        return "acessorios"; // carrega templates/acessorios.html
-}
+        return "acessorios";
+    }
 
-    
     @GetMapping("/promocoes")
     public String promocoes(){
         return "promocoes";
     }
 
-   @GetMapping("/carrinho")
+    @GetMapping("/carrinho")
     public String carrinho(HttpSession session, Model model) {
         Cliente logado = (Cliente) session.getAttribute("clienteLogado");
 
         if (logado == null) {
-            // Usuário não logado → renderiza a página atual com modal aberto
             session.setAttribute("redirectAfterLogin", "/carrinho");
             model.addAttribute("loginRequired", true);
-            return "index"; // fallback
+            return "index";
         }
         model.addAttribute("clienteLogado", logado);
         return "carrinho";
     }
 
-    @GetMapping("/produtos")
+    @GetMapping("/produtos/todos")
     public String produtos(Model model){
         try (Connection con = Conexao.conectar()) {
             ProdutoDAO produtoDAO = new ProdutoDAO(con);
             List<Produto> todos = produtoDAO.listar();
 
-            model.addAttribute("produtosMasculinos", filtrarCategoria(todos, "masculino"));
-            model.addAttribute("produtosFemininos", filtrarCategoria(todos, "feminino"));
-            model.addAttribute("produtosAcessorios", filtrarCategoria(todos, "acessorio"));
+            model.addAttribute("produtosMasculinos", filtrarPorSexo(todos, "masculino"));
+            model.addAttribute("produtosFemininos", filtrarPorSexo(todos, "feminino"));
+            model.addAttribute("produtosAcessorios", filtrarPorCategoria(todos, "acessorio"));
         } catch (Exception e) {
             model.addAttribute("erro", "Erro ao carregar produtos: " + e.getMessage());
         }
@@ -102,21 +96,63 @@ public class ControllerIndex {
     @GetMapping("/checkout")
     public String checkout(){
         return "checkout";
-         
     }
 
-    private List<Produto> filtrarCategoria(List<Produto> produtos, String categoriaAlvo) {
-        if (produtos == null) return List.of();
+    /**
+     * Filtra produtos pelo SEXO (case-insensitive)
+     * Aceita valores como "Masculino", "masculino", "Feminino", "feminino"
+     */
+    private List<Produto> filtrarPorSexo(List<Produto> produtos, String sexoAlvo) {
+        if (produtos == null || sexoAlvo == null) return List.of();
+
+        final String alvo = sexoAlvo.toLowerCase();
+
         return produtos.stream()
-                .filter(p -> p.getCategoria() != null &&
-                        p.getCategoria().toLowerCase().contains(categoriaAlvo.toLowerCase()))
+                .filter(p -> {
+                    String sexo = p.getSexo();
+                    if (sexo == null) return false;
+                    return sexo.toLowerCase().contains(alvo);
+                })
                 .collect(Collectors.toList());
     }
 
+    /**
+     * Filtra produtos pela CATEGORIA (acessorio, calcado, roupa, etc)
+     */
+    private List<Produto> filtrarPorCategoria(List<Produto> produtos, String categoriaAlvo) {
+        if (produtos == null || categoriaAlvo == null) return List.of();
+
+        final String alvo = categoriaAlvo.toLowerCase();
+
+        return produtos.stream()
+                .filter(p -> {
+                    String cat = p.getCategoria();
+                    if (cat == null) return false;
+                    return cat.toLowerCase().contains(alvo);
+                })
+                .collect(Collectors.toList());
+    }
+
+    /**
+     * Carrega produtos por SEXO
+     */
+    private void carregarProdutosPorSexo(Model model, String sexo, String atributo) {
+        try (Connection con = Conexao.conectar()) {
+            ProdutoDAO produtoDAO = new ProdutoDAO(con);
+            model.addAttribute(atributo, filtrarPorSexo(produtoDAO.listar(), sexo));
+        } catch (Exception e) {
+            model.addAttribute("erro", "Erro ao carregar produtos: " + e.getMessage());
+            model.addAttribute(atributo, List.of());
+        }
+    }
+
+    /**
+     * Carrega produtos por CATEGORIA
+     */
     private void carregarProdutosPorCategoria(Model model, String categoria, String atributo) {
         try (Connection con = Conexao.conectar()) {
             ProdutoDAO produtoDAO = new ProdutoDAO(con);
-            model.addAttribute(atributo, filtrarCategoria(produtoDAO.listar(), categoria));
+            model.addAttribute(atributo, filtrarPorCategoria(produtoDAO.listar(), categoria));
         } catch (Exception e) {
             model.addAttribute("erro", "Erro ao carregar produtos: " + e.getMessage());
             model.addAttribute(atributo, List.of());
