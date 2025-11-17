@@ -43,6 +43,28 @@
                 <label for="nome">Nome Completo:</label>
                 <input type="text" id="nome" name="nome" required>
             </div>
+
+            <div class="form-group radio-group" style="display:flex; gap:12px; align-items:center;">
+                <span style="font-weight:600;">Tipo de cliente:</span>
+                <label>
+                    <input type="radio" name="tipo-cliente" value="pf" checked>
+                    Pessoa F�sica
+                </label>
+                <label>
+                    <input type="radio" name="tipo-cliente" value="pj">
+                    Pessoa Jur�dica
+                </label>
+            </div>
+
+            <div class="form-group" id="campo-cpf">
+                <label for="cpf">CPF:</label>
+                <input type="text" id="cpf" name="cpf" placeholder="Apenas n�meros" maxlength="11" pattern="\\d{11}">
+            </div>
+
+            <div class="form-group" id="campo-cnpj" style="display:none;">
+                <label for="cnpj">CNPJ:</label>
+                <input type="text" id="cnpj" name="cnpj" placeholder="Apenas n�meros" maxlength="14" pattern="\\d{14}">
+            </div>
             
             <div class="form-group">
                 <label for="email">Email:</label>
@@ -203,6 +225,32 @@
 </footer>
 
 <div th:replace="fragments/modal :: modalLogin"></div>
+
+<script>
+    (function () {
+        const radios = document.querySelectorAll('input[name="tipo-cliente"]');
+        const campoCpf = document.getElementById('campo-cpf');
+        const campoCnpj = document.getElementById('campo-cnpj');
+        const inputCpf = document.getElementById('cpf');
+        const inputCnpj = document.getElementById('cnpj');
+
+        function toggleDocs() {
+            const selecionado = document.querySelector('input[name="tipo-cliente"]:checked').value;
+            if (selecionado === 'pf') {
+                campoCpf.style.display = '';
+                campoCnpj.style.display = 'none';
+                inputCnpj.value = '';
+            } else {
+                campoCpf.style.display = 'none';
+                campoCnpj.style.display = '';
+                inputCpf.value = '';
+            }
+        }
+
+        radios.forEach(r => r.addEventListener('change', toggleDocs));
+        toggleDocs();
+    })();
+</script>
 
 </body>
 </html>
