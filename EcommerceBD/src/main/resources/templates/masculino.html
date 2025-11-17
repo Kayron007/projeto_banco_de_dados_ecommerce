@@ -28,13 +28,11 @@
         </nav>
 
         <div class="header__actions">
-            <!-- Se estiver logado -->
             <span th:if="${clienteLogado != null}">
                 Olá, <span th:text="${clienteLogado.nome}">Usuário</span> |
                 <a th:href="@{/logout}" class="link">Sair</a>
             </span>
             
-            <!-- Se não estiver logado -->
             <label th:if="${clienteLogado == null}" for="modal-login-toggle" class="link" style="cursor:pointer;">
                 Minha Conta
             </label>
@@ -50,22 +48,18 @@
                 <h2>Moda Masculina</h2>
             </div>
 
-            <div class="products-grid">
-                <!-- Produtos de teste, só pra ver layout -->
-                <article class="product-card">
-                    <div class="product-card__image"></div>
-                    <h3>Camiseta básica masculina</h3>
-                    <p class="product-card__category">Masculino • Algodão</p>
-                    <p class="product-card__price">R$ 69,90</p>
-                    <button class="btn-primary">Adicionar ao carrinho</button>
-                </article>
+            <div th:if="${#lists.isEmpty(produtos)}" class="products-empty">
+                <p>Nenhum produto masculino cadastrado.</p>
+            </div>
 
-                <article class="product-card">
+            <div class="products-grid" th:if="${!#lists.isEmpty(produtos)}">
+                <article class="product-card" th:each="produto : ${produtos}">
                     <div class="product-card__image"></div>
-                    <h3>Calça jeans slim</h3>
-                    <p class="product-card__category">Masculino • Jeans</p>
-                    <p class="product-card__price">R$ 159,90</p>
-                    <button class="btn-primary">Adicionar ao carrinho</button>
+                    <h3 th:text="${produto.nome}">Nome do produto</h3>
+                    <p class="product-card__category" th:text="${produto.categoria}">Masculino</p>
+                    <p class="product-card__price"
+                       th:text="${'R$ ' + #numbers.formatDecimal(produto.preco,1,'POINT',2,'COMMA')}">R$ 0,00</p>
+                    <a th:href="@{'/produtos/' + ${produto.id}}" class="link">Ver detalhes</a>
                 </article>
             </div>
         </div>

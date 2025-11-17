@@ -8,8 +8,8 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.mycompany.ecommercebd.model.Conexao;
 import com.mycompany.ecommercebd.model.Produto;
+import com.mycompany.ecommercebd.model.Conexao;
 
 public class ProdutoDAO extends EntidadeBaseDAO<Produto> {
 
@@ -72,7 +72,7 @@ public class ProdutoDAO extends EntidadeBaseDAO<Produto> {
 
     @Override
     public void alterar(Produto produto) {
-        String sql = "UPDATE produto SET Descricao = ?, Quantidade = ?, Tamanho = ?, Preco = ?, Categoria = ?, sexo = ? "
+        String sql = "UPDATE produto SET Descricao = ?, Quantidade = ?, Tamanho = ?, Preco = ?, Categoria = ?, sexo = ?"
                    + "WHERE ID_produto = ?";
 
         try {
@@ -86,11 +86,11 @@ public class ProdutoDAO extends EntidadeBaseDAO<Produto> {
                 stmt.setDouble(4, produto.getPreco());
                 stmt.setString(5, produto.getCategoria());
                 stmt.setString(6, produto.getSexo());
-                stmt.setLong(7, produto.getId());
+                stmt.setLong(6, produto.getId());
 
                 stmt.executeUpdate();
                 System.out.println("[DAO] Produto alterado com sucesso!");
-            }
+            } 
         } catch (SQLException e) {
             System.out.println("Erro ao alterar produto: " + e.getMessage());
         }
@@ -130,11 +130,6 @@ public class ProdutoDAO extends EntidadeBaseDAO<Produto> {
     public List<Produto> listar() {
         List<Produto> produtos = new ArrayList<>();
 
-        if (connection == null) {
-            System.out.println("Conexao nula ao listar produtos.");
-            return produtos;
-        }
-
         String sql = "SELECT * FROM produto";
 
         try (Statement st = connection.createStatement();
@@ -143,12 +138,11 @@ public class ProdutoDAO extends EntidadeBaseDAO<Produto> {
             while (rs.next()) {
                 Produto p = new Produto();
                 p.setId(rs.getLong("ID_produto"));
-                p.setNome(rs.getString("Nome"));
                 p.setDescricao(rs.getString("Descricao"));
                 int qtd = rs.getInt("Quantidade");
                 p.setQuantidade(rs.wasNull() ? 0 : qtd);
                 p.setTamanho(rs.getString("Tamanho"));
-                p.setPreco(rs.getDouble("Preco"));
+                p.setPreco(rs.getDouble("Preço"));
                 p.setCategoria(rs.getString("Categoria"));
                 p.setSexo(rs.getString("sexo"));
                 produtos.add(p);
@@ -161,3 +155,4 @@ public class ProdutoDAO extends EntidadeBaseDAO<Produto> {
         return produtos;
     }
 }
+
