@@ -103,7 +103,9 @@ public class ControllerIndex {
 
     // Mapeia requisições GET para "/promocoes" - página de promoções
     @GetMapping("/promocoes")
-    public String promocoes(){
+    public String promocoes(Model model){
+        // Carrega produtos da categoria "promoção" (dados vindos do banco)
+        carregarProdutosPorCategoria(model, "promocao", "produtos");
         return "promocoes";
     }
 
@@ -395,9 +397,13 @@ public class ControllerIndex {
         return produtos.stream()
                 .filter(p -> {
                     String sexo = p.getSexo();
-                    if (sexo == null) return false;
-                    // Usa contains() para aceitar variações como "Masculino", "masculino", etc
-                    return sexo.toLowerCase().contains(alvo);
+                    String categoria = p.getCategoria();
+                    String sexoNorm = sexo != null ? sexo.toLowerCase() : "";
+                    String catNorm = categoria != null ? categoria.toLowerCase() : "";
+
+                    // Usa contains() para aceitar variações como "Masculino", "masc", "M", etc.
+                    // Também considera quando o dado veio preenchido na coluna Categoria.
+                    return sexoNorm.contains(alvo) || catNorm.contains(alvo);
                 })
                 .collect(Collectors.toList());
     }
