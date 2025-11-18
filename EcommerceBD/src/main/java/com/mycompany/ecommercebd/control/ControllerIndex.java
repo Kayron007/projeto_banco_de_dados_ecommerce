@@ -117,6 +117,25 @@ public class ControllerIndex {
     }
 
     // ------------------------------------------------------------------
+    // PÁGINAS INSTITUCIONAIS
+    // ------------------------------------------------------------------
+
+    @GetMapping("/quem-somos")
+    public String quemSomos() {
+        return "institucional-quem-somos";
+    }
+
+    @GetMapping("/politica-privacidade")
+    public String politicaPrivacidade() {
+        return "institucional-politica-privacidade";
+    }
+
+    @GetMapping("/trocas-devolucoes")
+    public String trocasDevolucoes() {
+        return "institucional-trocas-devolucoes";
+    }
+
+    // ------------------------------------------------------------------
     // CARRINHO DE COMPRAS
     // ------------------------------------------------------------------
 
