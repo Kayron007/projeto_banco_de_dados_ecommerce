@@ -33,58 +33,91 @@
     </div>
 </header>
 
-<main class="container">
-    <section class="product-details">
-        <h1 th:text="${produto.nome}">Nome do produto</h1>
-        <p th:text="${produto.descricao}">Descricao do produto</p>
-        <p><strong>Categoria:</strong> <span th:text="${produto.categoria}">Categoria</span></p>
-        <p><strong>Preco:</strong> <span th:text="${#numbers.formatDecimal(produto.preco, 1, 'POINT', 2, 'COMMA')}">0,00</span></p>
-        <div style="margin-top:12px; display:flex; flex-direction:column; gap:8px; max-width:240px;">
-            <label for="quantidade" style="font-weight:600;">Quantidade</label>
-            <input type="number" id="quantidade" name="quantidade" min="1" value="1" style="width:80px;">
+<main class="container product-detail-page">
+    <section class="product-detail-layout">
+        <div class="product-gallery">
+            <div class="gallery-thumbs">
+                <div class="gallery-thumb"
+                     th:style="${produto.imagemUrl} != null ? 'background-image:url(' + ${produto.imagemUrl} + ');' : null"></div>
+                <div class="gallery-thumb"
+                     th:style="${produto.imagemUrl} != null ? 'background-image:url(' + ${produto.imagemUrl} + ');' : null"></div>
+                <div class="gallery-thumb"
+                     th:style="${produto.imagemUrl} != null ? 'background-image:url(' + ${produto.imagemUrl} + ');' : null"></div>
+                <div class="gallery-thumb"
+                     th:style="${produto.imagemUrl} != null ? 'background-image:url(' + ${produto.imagemUrl} + ');' : null"></div>
+            </div>
+            <div class="gallery-main">
+                <div class="gallery-main-image"
+                     th:style="${produto.imagemUrl} != null ? 'background-image:url(' + ${produto.imagemUrl} + ');' : null"></div>
+            </div>
+        </div>
 
-            <form th:action="@{/carrinho/adicionar}" method="post" class="product-card__form">
-                <input type="hidden" name="produtoId" th:value="${produto.id}">
-                <input type="hidden" name="quantidade" id="quantidadeAdd" value="1">
-                <button type="submit" class="btn-primary" onclick="document.getElementById('quantidadeAdd').value=document.getElementById('quantidade').value;">Adicionar ao carrinho</button>
-            </form>
-            <form th:action="@{/carrinho/adicionar}" method="post" class="product-card__form">
-                <input type="hidden" name="produtoId" th:value="${produto.id}">
-                <input type="hidden" name="quantidade" id="quantidadeBuy" value="1">
-                <input type="hidden" name="redirect" value="/checkout">
-                <button type="submit" class="btn-secondary" onclick="document.getElementById('quantidadeBuy').value=document.getElementById('quantidade').value;">Comprar agora</button>
-            </form>
+        <div class="product-info-panel">
+            <h1 th:text="${produto.nome}">Nome do produto</h1>
+            <p class="product-detail__desc" th:text="${produto.descricao}">Descricao do produto</p>
+            <p class="product-detail__meta"><strong>Categoria:</strong> <span th:text="${produto.categoria}">Categoria</span></p>
+            <p class="product-detail__price"><strong>Preço:</strong> <span th:text="${#numbers.formatDecimal(produto.preco, 1, 'POINT', 2, 'COMMA')}">0,00</span></p>
+
+            <div class="product-card__actions">
+                <div class="quantity-selector">
+                    <label for="quantidade">Quantidade</label>
+                    <input type="number" id="quantidade" name="quantidade" min="1" value="1">
+                </div>
+
+                <form th:action="@{/carrinho/adicionar}"
+                      method="post"
+                      class="product-card__form"
+                      th:onsubmit="|document.getElementById('quantidadeAdd').value=document.getElementById('quantidade').value;|">
+                    <input type="hidden" name="produtoId" th:value="${produto.id}">
+                    <input type="hidden" name="quantidade" id="quantidadeAdd" value="1">
+                    <button type="submit" class="btn-primary">Adicionar ao carrinho</button>
+                </form>
+                <form th:action="@{/carrinho/adicionar}"
+                      method="post"
+                      class="product-card__form"
+                      th:onsubmit="|document.getElementById('quantidadeBuy').value=document.getElementById('quantidade').value;|">
+                    <input type="hidden" name="produtoId" th:value="${produto.id}">
+                    <input type="hidden" name="quantidade" id="quantidadeBuy" value="1">
+                    <input type="hidden" name="redirect" value="/checkout">
+                    <button type="submit" class="btn-secondary">Comprar agora</button>
+                </form>
+            </div>
         </div>
     </section>
 
     <section class="product-reviews">
-        <div class="section__header" style="display:flex; justify-content:space-between; align-items:center;">
-            <h2>Avaliacoes</h2>
-            <span th:text="${#numbers.formatDecimal(mediaAvaliacoes, 1, 'POINT', 1, 'COMMA')} + ' / 5'">0 / 5</span>
+        <div class="reviews-header">
+            <div>
+                <h2>Avaliações</h2>
+                <p class="reviews-subtitle">Veja o que outros clientes acharam</p>
+            </div>
+            <span class="reviews-score" th:text="${#numbers.formatDecimal(mediaAvaliacoes, 1, 'POINT', 1, 'COMMA')} + ' / 5'">0 / 5</span>
         </div>
 
-        <div th:if="${#lists.isEmpty(avaliacoes)}">
-            <p>Nenhuma avaliacao para este produto.</p>
+        <div th:if="${#lists.isEmpty(avaliacoes)}" class="reviews-empty">
+            <p>Nenhuma avaliação para este produto.</p>
+            <small>Seja o primeiro a avaliar!</small>
         </div>
-        <div th:unless="${#lists.isEmpty(avaliacoes)}">
+        <div th:unless="${#lists.isEmpty(avaliacoes)}" class="reviews-list">
             <article th:each="avaliacao : ${avaliacoes}" class="review-card">
-                <strong th:text="${avaliacao.getId_cliente().nome}">Cliente</strong>
-                <span> - Nota: <span th:text="${avaliacao.nota}">0</span></span>
-                <p th:text="${avaliacao.comentario}">Comentario</p>
+                <div class="review-card__top">
+                    <strong th:text="${avaliacao.getId_cliente().nome}">Cliente</strong>
+                    <span class="review-badge" th:text="${avaliacao.nota + ' / 5'}">0 / 5</span>
+                </div>
+                <p class="review-comment" th:text="${avaliacao.comentario}">Comentario</p>
             </article>
         </div>
 
         <div class="review-form">
-            <h3>Deixe sua avaliacao</h3>
-            
-                <label for="nota">Nota (1 a 5)</label>
-                <input type="number" id="nota" name="nota" min="1" max="5" required>
+            <h3>Deixe sua avaliação</h3>
 
-                <label for="comentario">Comentario</label>
-                <textarea id="comentario" name="comentario" rows="3" placeholder="Compartilhe sua experiencia"></textarea>
+            <label for="nota">Nota (1 a 5)</label>
+            <input type="number" id="nota" name="nota" min="1" max="5" required>
 
-                <button type="submit" class="btn-primary">Enviar avaliacao</button>
-            </form>
+            <label for="comentario">Comentário</label>
+            <textarea id="comentario" name="comentario" rows="3" placeholder="Compartilhe sua experiencia"></textarea>
+
+            <button type="submit" class="btn-primary">Enviar avaliação</button>
             <p th:if="${erro}" th:text="${erro}" class="mensagem-erro"></p>
         </div>
     </section>

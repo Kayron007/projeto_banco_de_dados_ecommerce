@@ -81,6 +81,7 @@ a {
 }
 
 .btn-primary,
+.btn-secondary,
 .btn-outline,
 .btn-small {
     display: inline-block;
@@ -94,12 +95,26 @@ a {
 }
 
 .btn-primary {
-    background-color: #111827;
-    color: #f9fafb;
+    background-color: #f97316; /* laranja */
+    color: #111827;
+    box-shadow: 0 8px 18px rgba(0, 0, 0, 0.15); /* sombra preta suave */
 }
 
 .btn-primary:hover {
-    background-color: #020617;
+    background-color: #ea580c;
+    box-shadow: 0 10px 22px rgba(0, 0, 0, 0.2);
+}
+
+.btn-secondary {
+    background-color: #f97316;
+    color: #111827;
+    border: 1px solid transparent;
+    box-shadow: 0 8px 18px rgba(0, 0, 0, 0.15);
+}
+
+.btn-secondary:hover {
+    background-color: #ea580c;
+    box-shadow: 0 10px 22px rgba(0, 0, 0, 0.2);
 }
 
 .btn-outline {
@@ -605,12 +620,14 @@ a {
 }
 
 .checkout-actions .btn-primary {
-    background-color: #111827;
-    color: #f9fafb;
+    background-color: #f97316;
+    color: #111827;
+    box-shadow: 0 8px 18px rgba(0, 0, 0, 0.15);
 }
 
 .checkout-actions .btn-primary:hover {
-    background-color: #020617;
+    background-color: #ea580c;
+    box-shadow: 0 10px 22px rgba(0, 0, 0, 0.2);
 }
 
 /* ===== MODAL LOGIN ===== */

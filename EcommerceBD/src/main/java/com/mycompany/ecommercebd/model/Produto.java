@@ -16,6 +16,7 @@ public class Produto extends EntidadeBase{
     private Double preco;
     private String sexo;
     private int quantidade;
+    private String imagemUrl;
 
     /*
      * Construtor padrão
@@ -281,5 +282,13 @@ public class Produto extends EntidadeBase{
      */
     public void setQuantidade(int quantidade) {
         this.quantidade = quantidade;
+    }
+
+    public String getImagemUrl() {
+        return imagemUrl;
+    }
+
+    public void setImagemUrl(String imagemUrl) {
+        this.imagemUrl = imagemUrl;
     }
 }
