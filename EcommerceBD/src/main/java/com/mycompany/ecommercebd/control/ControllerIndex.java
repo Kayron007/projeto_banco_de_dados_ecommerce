@@ -26,6 +26,13 @@ import jakarta.servlet.http.HttpSession;
 // Indica que esta classe é um Controller do Spring MVC, responsável por gerenciar as principais requisições do sistema
 @Controller 
 public class ControllerIndex {
+
+    /**
+     * IDs configurados para exibir produtos específicos na página de promoções.
+     * Se a lista estiver vazia, usaremos a categoria "promocao".
+     * Atualize com os IDs desejados do banco (ex.: List.of(5L, 12L)).
+     */
+    private static final List<Long> IDS_PROMO_CONFIG = List.of();
     
     // ------------------------------------------------------------------
     // NAVEGAÇÃO PRINCIPAL
@@ -104,8 +111,8 @@ public class ControllerIndex {
     // Mapeia requisições GET para "/promocoes" - página de promoções
     @GetMapping("/promocoes")
     public String promocoes(Model model){
-        // Carrega produtos da categoria "promoção" (dados vindos do banco)
-        carregarProdutosPorCategoria(model, "promocao", "produtos");
+        // Carrega produtos de promoções priorizando IDs específicos (ou categoria "promocao" se vazio)
+        carregarProdutosPromocao(model);
         return "promocoes";
     }
 
@@ -432,6 +439,28 @@ public class ControllerIndex {
                     return cat.toLowerCase().contains(alvo);
                 })
                 .collect(Collectors.toList());
+    }
+
+    /**
+     * Carrega produtos de promoção, priorizando IDs específicos.
+     * Se a lista estiver vazia, cai no filtro por categoria "promocao".
+     */
+    private void carregarProdutosPromocao(Model model) {
+        try (Connection con = Conexao.conectar()) {
+            ProdutoDAO produtoDAO = new ProdutoDAO(con);
+
+            List<Produto> produtosPromo;
+            if (IDS_PROMO_CONFIG.isEmpty()) {
+                produtosPromo = filtrarPorCategoria(produtoDAO.listar(), "promocao");
+            } else {
+                produtosPromo = produtoDAO.listarPorIds(IDS_PROMO_CONFIG);
+            }
+
+            model.addAttribute("produtos", produtosPromo);
+        } catch (Exception e) {
+            model.addAttribute("erro", "Erro ao carregar promoções: " + e.getMessage());
+            model.addAttribute("produtos", List.of());
+        }
     }
 
     // ------------------------------------------------------------------
