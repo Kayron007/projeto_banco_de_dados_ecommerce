@@ -37,6 +37,15 @@ public class ControllerIndex {
         // Recupera o cliente logado da sessão para exibir informações personalizadas
         Cliente logado = (Cliente) session.getAttribute("clienteLogado");
         model.addAttribute("clienteLogado", logado);
+        // Carrega produtos mais recentes para a seção "Novidades da semana"
+        try (Connection con = Conexao.conectar()) {
+            ProdutoDAO produtoDAO = new ProdutoDAO(con);
+            List<Produto> novidades = produtoDAO.listarMaisRecentes(8);
+            model.addAttribute("novidades", novidades);
+        } catch (Exception e) {
+            model.addAttribute("novidades", new ArrayList<Produto>());
+            System.out.println("Erro ao carregar novidades: " + e.getMessage());
+        }
         // Retorna o template da página inicial
         return "index";
     }

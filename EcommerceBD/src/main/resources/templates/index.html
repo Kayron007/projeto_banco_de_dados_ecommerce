@@ -130,59 +130,26 @@
         <div class="container">
             <div class="section__header">
                 <h2>Novidades da semana</h2>
-                <a th:href="@{/produtos}" class="link">Ver todos os produtos</a>
+                <a th:if="${!#lists.isEmpty(novidades)}" th:href="@{/produtos}" class="link">Ver todos os produtos</a>
             </div>
 
-            <div class="products-grid">
+            <div class="products-empty" th:if="${#lists.isEmpty(novidades)}">
+                <p>Nenhum produto adicionado recentemente.</p>
+            </div>
 
-                <!-- Produto 1 -->
-                <article class="product-card">
+            <div class="products-grid" th:if="${!#lists.isEmpty(novidades)}">
+                <article class="product-card" th:each="produto : ${novidades}">
                     <div class="product-card__image"></div>
-                    <h3>Camiseta básica masculina</h3>
-                    <p class="product-card__category">Masculino • Algodão</p>
-                    <p class="product-card__price">R$ 69,90</p>
-                    <form th:action="@{/carrinho}" method="get" class="product-card__form">
-                        <input type="hidden" name="produtoId" value="1">
+                    <h3 th:text="${produto.nome}">Nome do produto</h3>
+                    <p class="product-card__category" th:text="${produto.categoria}">Categoria</p>
+                    <p class="product-card__price"
+                       th:text="${'R$ ' + #numbers.formatDecimal(produto.preco,1,'POINT',2,'COMMA')}">R$ 0,00</p>
+                    <form th:action="@{/carrinho/adicionar}" method="post" class="product-card__form">
+                        <input type="hidden" name="produtoId" th:value="${produto.id}">
                         <button type="submit" class="btn-primary">Adicionar ao carrinho</button>
                     </form>
+                    <a th:href="@{'/produtos/' + ${produto.id}}" class="link">Ver detalhes</a>
                 </article>
-
-                <!-- Produto 2 -->
-                <article class="product-card">
-                    <div class="product-card__image"></div>
-                    <h3>Vestido midi floral</h3>
-                    <p class="product-card__category">Feminino • Leve</p>
-                    <p class="product-card__price">R$ 149,90</p>
-                    <form th:action="@{/carrinho}" method="get" class="product-card__form">
-                        <input type="hidden" name="produtoId" value="2">
-                        <button type="submit" class="btn-primary">Adicionar ao carrinho</button>
-                    </form>
-                </article>
-
-                <!-- Produto 3 -->
-                <article class="product-card">
-                    <div class="product-card__image"></div>
-                    <h3>Calça jogger unissex</h3>
-                    <p class="product-card__category">Casual • Conforto</p>
-                    <p class="product-card__price">R$ 129,90</p>
-                    <form th:action="@{/carrinho}" method="get" class="product-card__form">
-                        <input type="hidden" name="produtoId" value="3">
-                        <button type="submit" class="btn-primary">Adicionar ao carrinho</button>
-                    </form>
-                </article>
-
-                <!-- Produto 4 -->
-                <article class="product-card">
-                    <div class="product-card__image"></div>
-                    <h3>Jaqueta jeans oversize</h3>
-                    <p class="product-card__category">Unissex • Jeans</p>
-                    <p class="product-card__price">R$ 199,90</p>
-                    <form th:action="@{/carrinho}" method="get" class="product-card__form">
-                        <input type="hidden" name="produtoId" value="4">
-                        <button type="submit" class="btn-primary">Adicionar ao carrinho</button>
-                    </form>
-                </article>
-
             </div>
         </div>
     </section>
@@ -202,22 +169,6 @@
     </section>
 
 </main>
-<!-- RODAPÉ DE CATEGORIAS NA HOME -->
-<section class="section section--gray">
-    <div class="container">
-        <div class="section__header">
-            <h2>Categorias</h2>
-        </div>
-
-        <div class="categories-footer">
-            <a th:href="@{/masculino}" class="categories-footer__item">Moda Masculina</a>
-            <a th:href="@{/feminino}" class="categories-footer__item">Moda Feminina</a>
-            <a th:href="@{/acessorios}" class="categories-footer__item">Acessórios</a>
-            <a th:href="@{/promocoes}" class="categories-footer__item">Promoções</a>
-        </div>
-    </div>
-</section>
-
 <!-- FOOTER -->
 <footer class="footer">
     <div class="container footer__content">
