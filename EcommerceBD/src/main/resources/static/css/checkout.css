@@ -91,12 +91,14 @@
 }
 
 .checkout-actions .btn-primary {
-    background-color: #111827;
-    color: #f9fafb;
+    background-color: #f97316;
+    color: #111827;
+    box-shadow: 0 8px 18px rgba(0, 0, 0, 0.15);
 }
 
 .checkout-actions .btn-primary:hover {
-    background-color: #020617;
+    background-color: #ea580c;
+    box-shadow: 0 10px 22px rgba(0, 0, 0, 0.2);
 }
 
 /* Responsivo do checkout */

@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
@@ -24,20 +24,20 @@
             <a th:href="@{/}">Home</a>
             <a th:href="@{/masculino}">Masculino</a>
             <a th:href="@{/feminino}">Feminino</a>
-            <a th:href="@{/acessorios}">Acessórios</a>
-            <a th:href="@{/promocoes}">Promoções</a>
+            <a th:href="@{/acessorios}">AcessÃ³rios</a>
+            <a th:href="@{/promocoes}">PromoÃ§Ãµes</a>
         </nav>
 
         <div class="header__actions">
             <!-- Se estiver logado -->
             <span th:if="${clienteLogado != null}">
-                Olá, <span th:text="${clienteLogado.nome}">Usuário</span> |
+                OlÃ¡, <span th:text="${clienteLogado.nome}">UsuÃ¡rio</span> |
                 <a th:href="@{/minha-conta}" class="link">Minha Conta</a> |
                 <a th:href="@{/logout}" class="link">Sair</a>
                 <a th:href="@{/carrinho}" class="btn-small">Carrinho</a>
             </span>
 
-            <!-- Se não estiver logado -->
+            <!-- Se nÃ£o estiver logado -->
             <span th:if="${clienteLogado == null}">
                 <label for="modal-login-toggle" class="link" style="cursor:pointer;">Minha Conta</label>
                 <a th:href="@{/carrinho}" class="btn-small">Carrinho</a>
@@ -50,19 +50,24 @@
 <main>
 
     <!-- ALERTA DE SUCESSO (Pedido Finalizado) -->
-    <div th:if="${session.mensagemSucesso}" 
-         class="alert alert-success" 
-         id="alertaSucesso"
-         style="margin: 20px auto; max-width: 1200px; padding: 20px; background: #d4edda; border: 1px solid #c3e6cb; border-radius: 8px; color: #155724; box-shadow: 0 2px 8px rgba(0,0,0,0.1);">
-        <div style="display: flex; align-items: center; gap: 12px;">
-            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+    <div th:if="${session.mensagemSucesso}"
+         class="toast-notice"
+         id="alertaSucesso">
+        <div class="toast-icon" aria-hidden="true">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                 <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path>
                 <polyline points="22 4 12 14.01 9 11.01"></polyline>
             </svg>
-            <p th:text="${session.mensagemSucesso}" style="margin: 0; font-size: 16px; font-weight: 500;">
-            </p>
         </div>
+        <p th:text="${session.mensagemSucesso}" class="toast-text"></p>
     </div>
+    <script th:if="${session.mensagemSucesso}">
+        // Esconde o toast após alguns segundos
+        setTimeout(() => {
+            const toast = document.getElementById('alertaSucesso');
+            if (toast) toast.classList.add('toast-hide');
+        }, 3500);
+    </script>
 
     <!-- BANNER PRINCIPAL (slider apenas com CSS; sem JS) -->
     <section class="banner">
@@ -73,24 +78,24 @@
         </div>
     </section>
 
-    <!-- FAIXA DE BENEFÍCIOS -->
+    <!-- FAIXA DE BENEFÃCIOS -->
     <section class="benefits">
         <div class="container benefits__grid">
             <div class="benefit">
-                <h3>Frete grátis</h3>
+                <h3>Frete grÃ¡tis</h3>
                 <p>Para compras acima de R$ 199,00.</p>
             </div>
             <div class="benefit">
-                <h3>Troca fácil</h3>
-                <p>Primeira troca grátis em até 30 dias.</p>
+                <h3>Troca fÃ¡cil</h3>
+                <p>Primeira troca grÃ¡tis em atÃ© 30 dias.</p>
             </div>
             <div class="benefit">
-                <h3>Até 6x sem juros</h3>
-                <p>Parcele no cartão em pagamentos recorrentes.</p>
+                <h3>AtÃ© 6x sem juros</h3>
+                <p>Parcele no cartÃ£o em pagamentos recorrentes.</p>
             </div>
             <div class="benefit">
                 <h3>Estilo e conforto</h3>
-                <p>Peças pensadas para o dia a dia.</p>
+                <p>PeÃ§as pensadas para o dia a dia.</p>
             </div>
         </div>
     </section>
@@ -107,7 +112,7 @@
                 <a th:href="@{/masculino}" class="category-card">
                     <div class="category-card__image category-card__image--masc"></div>
                     <h3>Masculino</h3>
-                    <p>Camisetas, calças, bermudas e jaquetas.</p>
+                    <p>Camisetas, calÃ§as, bermudas e jaquetas.</p>
                 </a>
 
                 <a th:href="@{/feminino}" class="category-card">
@@ -118,8 +123,8 @@
 
                 <a th:href="@{/acessorios}" class="category-card">
                     <div class="category-card__image category-card__image--acc"></div>
-                    <h3>Acessórios</h3>
-                    <p>Bonés, cintos, bolsas e mais.</p>
+                    <h3>AcessÃ³rios</h3>
+                    <p>BonÃ©s, cintos, bolsas e mais.</p>
                 </a>
             </div>
         </div>
@@ -166,7 +171,7 @@
         <div class="container newsletter">
             <div class="newsletter__text">
                 <h2>Receba ofertas exclusivas</h2>
-                <p>Cadastre-se para receber novidades, lançamentos e cupons de desconto.</p>
+                <p>Cadastre-se para receber novidades, lanÃ§amentos e cupons de desconto.</p>
             </div>
             <form class="newsletter__form" action="/newsletter" method="post">
                 <input type="email" name="email" placeholder="Seu e-mail" required>
@@ -187,8 +192,8 @@
         <div class="footer__col">
             <h4>Institucional</h4>
             <a th:href="@{/quem-somos}">Quem somos</a>
-            <a th:href="@{/politica-privacidade}">Pol�tica de privacidade</a>
-            <a th:href="@{/trocas-devolucoes}">Trocas e devolu��es</a>
+            <a th:href="@{/politica-privacidade}">Política de privacidade</a>
+            <a th:href="@{/trocas-devolucoes}">Trocas e devoluções</a>
         </div>
 
         <div class="footer__col">
@@ -199,7 +204,7 @@
     </div>
 
     <div class="footer__bottom">
-        <p>© 2025 ROME - Todos os direitos reservados.</p>
+        <p>Â© 2025 ROME - Todos os direitos reservados.</p>
     </div>
 </footer>
 
@@ -218,13 +223,13 @@
     (function() {
         const alerta = document.getElementById('alertaSucesso');
         if (alerta) {
-            // Remove o alerta após 5 segundos
+            // Remove o alerta apÃ³s 5 segundos
             setTimeout(function() {
                 alerta.style.transition = 'opacity 0.5s ease-out, transform 0.5s ease-out';
                 alerta.style.opacity = '0';
                 alerta.style.transform = 'translateY(-20px)';
                 
-                // Remove do DOM após a animação
+                // Remove do DOM apÃ³s a animaÃ§Ã£o
                 setTimeout(function() {
                     alerta.remove();
                 }, 500);
