@@ -17,10 +17,12 @@ import org.springframework.web.bind.annotation.RequestHeader;
 import com.mycompany.ecommercebd.model.Cliente;
 import com.mycompany.ecommercebd.model.Conexao;
 import com.mycompany.ecommercebd.model.DAO.ProdutoDAO;
+import com.mycompany.ecommercebd.service.EventoService;
 import com.mycompany.ecommercebd.model.Pedido;
 import com.mycompany.ecommercebd.model.PedidoProduto;
 import com.mycompany.ecommercebd.model.Produto;
 
+import org.bson.Document;
 import jakarta.servlet.http.HttpSession;
 
 // Indica que esta classe é um Controller do Spring MVC, responsável por gerenciar as principais requisições do sistema
@@ -400,6 +402,31 @@ public class ControllerIndex {
         if (carrinho.isEmpty()) {
             model.addAttribute("erro", "Carrinho vazio!");
             return "redirect:/carrinho";
+        }
+
+        BigDecimal total = carrinho.stream()
+        .map(pp -> pp.getPrecoUnitario().multiply(BigDecimal.valueOf(pp.getQuantidade())))
+        .reduce(BigDecimal.ZERO, BigDecimal::add);
+
+        Long pedidoId = -1L; // Temporário
+        
+        //Registra evento no MongoDB
+        try {
+            Document payload = new Document()
+                .append("valor", total.doubleValue())
+                .append("itens", carrinho.size())
+                .append("canal", "web");
+            
+            EventoService.registrarEvento(
+                pedidoId,
+                logado.getId(),
+                "pedido_criado",
+                "checkout",
+                payload
+            );
+        } catch (Exception e) {
+            // Não quebra o checkout se MongoDB falhar
+            e.printStackTrace();
         }
         
         // Limpa o carrinho para simular compra finalizada
