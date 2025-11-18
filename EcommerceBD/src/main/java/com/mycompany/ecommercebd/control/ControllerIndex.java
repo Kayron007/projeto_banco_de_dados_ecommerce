@@ -160,6 +160,8 @@ public class ControllerIndex {
     public String adicionarAoCarrinho(
             // Captura o ID do produto enviado pelo formulário
             @RequestParam("produtoId") Long produtoId,
+            // Caminho opcional para redirecionamento após adicionar (ex: /checkout)
+            @RequestParam(value = "redirect", required = false) String redirectParam,
             // Captura o cabeçalho HTTP "Referer" para saber de qual página veio a requisição
             @RequestHeader(value = "Referer", required = false) String referer,
             // HttpSession para armazenar o carrinho
@@ -218,9 +220,15 @@ public class ControllerIndex {
         // Atualiza o carrinho na sessão
         session.setAttribute("carrinho", carrinho);
         
-        // Redireciona para a página anterior (referer) ou para home se não houver
-        // Isso mantém o usuário navegando sem ser levado ao carrinho automaticamente
-        return "redirect:" + (referer != null ? referer : "/");
+        // Decide destino: redirect explícito, depois referer, senão home
+        String destino = "/";
+        if (redirectParam != null && !redirectParam.isBlank()) {
+            destino = redirectParam;
+        } else if (referer != null) {
+            destino = referer;
+        }
+
+        return "redirect:" + destino;
     }
 
     // Mapeia requisições POST para "/carrinho/remover" - remove produto do carrinho
