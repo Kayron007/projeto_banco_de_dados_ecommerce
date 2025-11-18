@@ -77,6 +77,7 @@
             <strong th:text="${'R$ ' + #numbers.formatDecimal(totalCarrinho,1,'POINT',2,'COMMA')}">R$ 0,00</strong>
         </div>
         <a th:if="${!#lists.isEmpty(carrinho)}" th:href="@{/checkout}" class="btn-primary">Comprar Agora</a>
+        <a th:href="@{/}" class="btn-outline" style="margin-top:8px;">Continuar comprando</a>
     </div>
 </section>
 
