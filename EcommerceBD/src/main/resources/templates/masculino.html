@@ -53,17 +53,24 @@
             </div>
 
             <div class="products-grid" th:if="${!#lists.isEmpty(produtos)}">
-                <article class="product-card" th:each="produto : ${produtos}">
+                <article class="product-card" th:each="produto : ${produtos}" th:onclick="|window.location.href='@{'/produtos/' + ${produto.id}}'|" style="cursor:pointer;">
                     <div class="product-card__image"></div>
                     <h3 th:text="${produto.nome}">Nome do produto</h3>
                     <p class="product-card__category" th:text="${produto.categoria}">Masculino</p>
                     <p class="product-card__price"
                        th:text="${'R$ ' + #numbers.formatDecimal(produto.preco,1,'POINT',2,'COMMA')}">R$ 0,00</p>
-                    <form th:action="@{/carrinho/adicionar}" method="post" class="product-card__form">
+                    <div class="product-card__actions">
+                        <form th:action="@{/carrinho/adicionar}" method="post" class="product-card__form" onclick="event.stopPropagation();">
                         <input type="hidden" name="produtoId" th:value="${produto.id}">
-                        <button type="submit" class="btn-primary">Adicionar ao carrinho</button>
+                        <button type="submit" class="btn-primary" onclick="event.stopPropagation();">Adicionar ao carrinho</button>
                     </form>
-                    <a th:href="@{'/produtos/' + ${produto.id}}" class="link">Ver detalhes</a>
+                        <form th:action="@{/carrinho/adicionar}" method="post" class="product-card__form" onclick="event.stopPropagation();">
+                            <input type="hidden" name="produtoId" th:value="${produto.id}">
+                            <input type="hidden" name="redirect" value="/checkout">
+                            <button type="submit" class="btn-secondary">Comprar agora</button>
+                        </form>
+                    </div>
+                    <a th:href="@{'/produtos/' + ${produto.id}}" class="link" onclick="event.stopPropagation();">Ver detalhes</a>
                 </article>
             </div>
         </div>
@@ -79,9 +86,9 @@
 
         <div class="footer__col">
             <h4>Institucional</h4>
-            <a href="#">Quem somos</a>
-            <a href="#">PolÃ­tica de privacidade</a>
-            <a href="#">Trocas e devoluÃ§Ãµes</a>
+            <a th:href="@{/quem-somos}">Quem somos</a>
+            <a th:href="@{/politica-privacidade}">Política de privacidade</a>
+            <a th:href="@{/trocas-devolucoes}">Trocas e devoluções</a>
         </div>
 
         <div class="footer__col">
@@ -103,7 +110,8 @@
        hidden
        th:checked="${loginRequired}">
 
-<div th:replace="~{fragments/modal :: modalLogin}"></div>
+
 
 </body>
 </html>
+

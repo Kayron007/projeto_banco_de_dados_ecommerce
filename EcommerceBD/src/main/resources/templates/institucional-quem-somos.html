@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="pt-BR" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Quem Somos | ROME</title>
+    <link rel="stylesheet" href="/css/base.css">
+    <link rel="stylesheet" href="/css/layout.css">
+    <link rel="stylesheet" href="/css/components.css">
+</head>
+<body>
+<header class="header">
+    <div class="container header__content">
+        <div class="logo">
+            <a th:href="@{/}">ROME</a>
+        </div>
+        <nav class="nav">
+            <a th:href="@{/}">Home</a>
+            <a th:href="@{/masculino}">Masculino</a>
+            <a th:href="@{/feminino}">Feminino</a>
+            <a th:href="@{/acessorios}">Acessórios</a>
+            <a th:href="@{/promocoes}">Promoções</a>
+        </nav>
+    </div>
+</header>
+
+<main>
+    <section class="section">
+        <div class="container">
+            <h1>Quem Somos</h1>
+            <p>Somos a ROME, uma marca de moda que combina conforto, tecnologia têxtil e design minimalista. Atuamos no e-commerce desde 2020, atendendo todo o Brasil com uma cadeia de fornecedores homologados e operações próprias de fulfillment.</p>
+            <p><strong>Razão social:</strong> ROME Comércio de Vestuário LTDA</p>
+            <p><strong>CNPJ:</strong> 12.345.678/0001-90</p>
+            <p><strong>Inscrição estadual:</strong> Isento</p>
+            <p><strong>Endereço administrativo:</strong> Av. das Nações, 1234 - Centro, São Paulo/SP - CEP 01000-000</p>
+            <p><strong>Contato:</strong> contato@rome.com.br | (11) 98765-0000</p>
+        </div>
+    </section>
+</main>
+
+<footer class="footer">
+    <div class="container footer__content">
+        <div class="footer__col">
+            <h4>Rome</h4>
+            <p>Moda para quem vive em movimento.</p>
+        </div>
+        <div class="footer__col">
+            <h4>Institucional</h4>
+            <a th:href="@{/quem-somos}">Quem somos</a>
+            <a th:href="@{/politica-privacidade}">Política de privacidade</a>
+            <a th:href="@{/trocas-devolucoes}">Trocas e devoluções</a>
+        </div>
+        <div class="footer__col">
+            <h4>Atendimento</h4>
+            <p>WhatsApp: (00) 00000-0000</p>
+            <p>E-mail: contato@rome.com.br</p>
+        </div>
+    </div>
+    <div class="footer__bottom">
+        <p>© 2025 ROME - Todos os direitos reservados.</p>
+    </div>
+</footer>
+
+</body>
+</html>

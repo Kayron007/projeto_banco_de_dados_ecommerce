@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="pt-BR" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Política de Privacidade | ROME</title>
+    <link rel="stylesheet" href="/css/base.css">
+    <link rel="stylesheet" href="/css/layout.css">
+    <link rel="stylesheet" href="/css/components.css">
+</head>
+<body>
+<header class="header">
+    <div class="container header__content">
+        <div class="logo">
+            <a th:href="@{/}">ROME</a>
+        </div>
+        <nav class="nav">
+            <a th:href="@{/}">Home</a>
+            <a th:href="@{/masculino}">Masculino</a>
+            <a th:href="@{/feminino}">Feminino</a>
+            <a th:href="@{/acessorios}">Acessórios</a>
+            <a th:href="@{/promocoes}">Promoções</a>
+        </nav>
+    </div>
+</header>
+
+<main>
+    <section class="section">
+        <div class="container">
+            <h1>Política de Privacidade</h1>
+            <p>Na ROME, tratamos seus dados pessoais conforme a LGPD, com base em finalidades claras e consentimento quando exigido.</p>
+            <ul>
+                <li><strong>Coleta:</strong> cadastro, navegação, cookies e histórico de compras.</li>
+                <li><strong>Uso:</strong> processamento de pedidos, entrega, suporte, prevenção a fraude e marketing quando autorizado.</li>
+                <li><strong>Compartilhamento:</strong> apenas com parceiros de pagamento, logística e antifraude, seguindo requisitos de segurança e confidencialidade.</li>
+                <li><strong>Direitos do titular:</strong> confirmação, acesso, correção, exclusão, portabilidade, revogação de consentimento.</li>
+                <li><strong>Segurança:</strong> criptografia em trânsito, controles de acesso e monitoramento.</li>
+                <li><strong>Cookies:</strong> cookies essenciais e de analytics; você pode ajustar no navegador.</li>
+            </ul>
+            <p><strong>Encarregado de dados (DPO):</strong> dpo@rome.com.br</p>
+        </div>
+    </section>
+</main>
+
+<footer class="footer">
+    <div class="container footer__content">
+        <div class="footer__col">
+            <h4>Rome</h4>
+            <p>Moda para quem vive em movimento.</p>
+        </div>
+        <div class="footer__col">
+            <h4>Institucional</h4>
+            <a th:href="@{/quem-somos}">Quem somos</a>
+            <a th:href="@{/politica-privacidade}">Política de privacidade</a>
+            <a th:href="@{/trocas-devolucoes}">Trocas e devoluções</a>
+        </div>
+        <div class="footer__col">
+            <h4>Atendimento</h4>
+            <p>WhatsApp: (00) 00000-0000</p>
+            <p>E-mail: contato@rome.com.br</p>
+        </div>
+    </div>
+    <div class="footer__bottom">
+        <p>© 2025 ROME - Todos os direitos reservados.</p>
+    </div>
+</footer>
+
+</body>
+</html>

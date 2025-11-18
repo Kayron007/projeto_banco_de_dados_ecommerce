@@ -66,9 +66,9 @@
 
                     <form th:action="@{/carrinho/adicionar}" method="post" class="product-card__form">
                         <input type="hidden" name="produtoId" th:value="${produto.id}">
-                        <button type="submit" class="btn-primary">Adicionar ao carrinho</button>
+                        <button type="submit" class="btn-primary" onclick="event.stopPropagation();">Adicionar ao carrinho</button>
                     </form>
-                    <a th:href="@{'/produtos/' + ${produto.id}}" class="link">Ver detalhes</a>
+                    <a th:href="@{'/produtos/' + ${produto.id}}" class="link" onclick="event.stopPropagation();">Ver detalhes</a>
                 </article>
             </div>
         </div>
@@ -104,9 +104,9 @@
 
                     <form th:action="@{/carrinho/adicionar}" method="post" class="product-card__form">
                         <input type="hidden" name="produtoId" th:value="${produto.id}">
-                        <button type="submit" class="btn-primary">Adicionar ao carrinho</button>
+                        <button type="submit" class="btn-primary" onclick="event.stopPropagation();">Adicionar ao carrinho</button>
                     </form>
-                    <a th:href="@{'/produtos/' + ${produto.id}}" class="link">Ver detalhes</a>
+                    <a th:href="@{'/produtos/' + ${produto.id}}" class="link" onclick="event.stopPropagation();">Ver detalhes</a>
                 </article>
             </div>
         </div>
@@ -142,9 +142,9 @@
 
                     <form th:action="@{/carrinho/adicionar}" method="post" class="product-card__form">
                         <input type="hidden" name="produtoId" th:value="${produto.id}">
-                        <button type="submit" class="btn-primary">Adicionar ao carrinho</button>
+                        <button type="submit" class="btn-primary" onclick="event.stopPropagation();">Adicionar ao carrinho</button>
                     </form>
-                    <a th:href="@{'/produtos/' + ${produto.id}}" class="link">Ver detalhes</a>
+                    <a th:href="@{'/produtos/' + ${produto.id}}" class="link" onclick="event.stopPropagation();">Ver detalhes</a>
                 </article>
             </div>
         </div>
@@ -161,9 +161,9 @@
 
         <div class="footer__col">
             <h4>Institucional</h4>
-            <a href="#">Quem somos</a>
-            <a href="#">PolÃ­tica de privacidade</a>
-            <a href="#">Trocas e devoluÃ§Ãµes</a>
+            <a th:href="@{/quem-somos}">Quem somos</a>
+            <a th:href="@{/politica-privacidade}">Política de privacidade</a>
+            <a th:href="@{/trocas-devolucoes}">Trocas e devoluções</a>
         </div>
 
         <div class="footer__col">
@@ -179,7 +179,9 @@
 </footer>
 
 <!-- Modal global -->
-<div th:replace="fragments/modal :: modalLogin"></div>
+
 
 </body>
 </html>
+
+

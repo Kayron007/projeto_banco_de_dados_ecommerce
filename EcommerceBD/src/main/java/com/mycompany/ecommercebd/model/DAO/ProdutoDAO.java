@@ -160,4 +160,69 @@ public class ProdutoDAO extends EntidadeBaseDAO<Produto> {
 
         return produtos;
     }
+
+    /**
+     * Retorna os produtos mais recentes cadastrados.
+     * A ordenação utiliza o ID (auto-increment) como proxy da data de inserção.
+     */
+    public List<Produto> listarMaisRecentes(int limite) {
+        List<Produto> produtos = new ArrayList<>();
+
+        if (connection == null) {
+            System.out.println("Conexao nula ao listar produtos recentes.");
+            return produtos;
+        }
+
+        String sql = "SELECT * FROM produto ORDER BY ID_produto DESC LIMIT ?";
+
+        try (PreparedStatement stmt = connection.prepareStatement(sql)) {
+            stmt.setInt(1, limite);
+
+            try (ResultSet rs = stmt.executeQuery()) {
+                while (rs.next()) {
+                    produtos.add(montarProduto(rs));
+                }
+            }
+        } catch (Exception e) {
+            System.out.println("Erro ao listar produtos recentes: " + e.getMessage());
+        }
+
+        return produtos;
+    }
+
+    /**
+     * Lista produtos pelos IDs informados.
+     */
+    public List<Produto> listarPorIds(List<Long> ids) {
+        List<Produto> produtos = new ArrayList<>();
+
+        if (connection == null) {
+            System.out.println("Conexao nula ao listar produtos por IDs.");
+            return produtos;
+        }
+
+        if (ids == null || ids.isEmpty()) {
+            return produtos;
+        }
+
+        // Monta placeholders ?,?,? conforme quantidade de IDs
+        String placeholders = String.join(",", ids.stream().map(id -> "?").toArray(String[]::new));
+        String sql = "SELECT * FROM produto WHERE ID_produto IN (" + placeholders + ")";
+
+        try (PreparedStatement stmt = connection.prepareStatement(sql)) {
+            for (int i = 0; i < ids.size(); i++) {
+                stmt.setLong(i + 1, ids.get(i));
+            }
+
+            try (ResultSet rs = stmt.executeQuery()) {
+                while (rs.next()) {
+                    produtos.add(montarProduto(rs));
+                }
+            }
+        } catch (Exception e) {
+            System.out.println("Erro ao listar produtos por IDs: " + e.getMessage());
+        }
+
+        return produtos;
+    }
 }

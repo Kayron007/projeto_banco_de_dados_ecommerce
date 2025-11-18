@@ -26,6 +26,13 @@ import jakarta.servlet.http.HttpSession;
 // Indica que esta classe é um Controller do Spring MVC, responsável por gerenciar as principais requisições do sistema
 @Controller 
 public class ControllerIndex {
+
+    /**
+     * IDs configurados para exibir produtos específicos na página de promoções.
+     * Se a lista estiver vazia, usaremos a categoria "promocao".
+     * Atualize com os IDs desejados do banco (ex.: List.of(5L, 12L)).
+     */
+    private static final List<Long> IDS_PROMO_CONFIG = List.of();
     
     // ------------------------------------------------------------------
     // NAVEGAÇÃO PRINCIPAL
@@ -37,6 +44,21 @@ public class ControllerIndex {
         // Recupera o cliente logado da sessão para exibir informações personalizadas
         Cliente logado = (Cliente) session.getAttribute("clienteLogado");
         model.addAttribute("clienteLogado", logado);
+        // Exibe modal de login se marcado na sessão (ex.: fluxo de comprar agora sem login)
+        Object loginFlag = session.getAttribute("loginRequired");
+        if (loginFlag instanceof Boolean && (Boolean) loginFlag) {
+            model.addAttribute("loginRequired", true);
+            session.removeAttribute("loginRequired");
+        }
+        // Carrega produtos mais recentes para a seção "Novidades da semana"
+        try (Connection con = Conexao.conectar()) {
+            ProdutoDAO produtoDAO = new ProdutoDAO(con);
+            List<Produto> novidades = produtoDAO.listarMaisRecentes(8);
+            model.addAttribute("novidades", novidades);
+        } catch (Exception e) {
+            model.addAttribute("novidades", new ArrayList<Produto>());
+            System.out.println("Erro ao carregar novidades: " + e.getMessage());
+        }
         // Retorna o template da página inicial
         return "index";
     }
@@ -94,8 +116,29 @@ public class ControllerIndex {
 
     // Mapeia requisições GET para "/promocoes" - página de promoções
     @GetMapping("/promocoes")
-    public String promocoes(){
+    public String promocoes(Model model){
+        // Carrega produtos de promoções priorizando IDs específicos (ou categoria "promocao" se vazio)
+        carregarProdutosPromocao(model);
         return "promocoes";
+    }
+
+    // ------------------------------------------------------------------
+    // PÁGINAS INSTITUCIONAIS
+    // ------------------------------------------------------------------
+
+    @GetMapping("/quem-somos")
+    public String quemSomos() {
+        return "institucional-quem-somos";
+    }
+
+    @GetMapping("/politica-privacidade")
+    public String politicaPrivacidade() {
+        return "institucional-politica-privacidade";
+    }
+
+    @GetMapping("/trocas-devolucoes")
+    public String trocasDevolucoes() {
+        return "institucional-trocas-devolucoes";
     }
 
     // ------------------------------------------------------------------
@@ -107,16 +150,6 @@ public class ControllerIndex {
     public String carrinho(HttpSession session, Model model) {
         // Recupera o cliente logado da sessão
         Cliente logado = (Cliente) session.getAttribute("clienteLogado");
-
-        // Verifica se o usuário está logado
-        if (logado == null) {
-            // Salva a URL de redirecionamento para retornar após o login
-            session.setAttribute("redirectAfterLogin", "/carrinho");
-            // Indica que o modal de login deve ser aberto
-            model.addAttribute("loginRequired", true);
-            // Redireciona para index onde o modal será exibido
-            return "index";
-        }
 
         // Obtém o carrinho da sessão (lista de produtos)
         List<PedidoProduto> carrinho = obterCarrinho(session);
@@ -142,6 +175,10 @@ public class ControllerIndex {
     public String adicionarAoCarrinho(
             // Captura o ID do produto enviado pelo formulário
             @RequestParam("produtoId") Long produtoId,
+            // Quantidade solicitada (padrão 1)
+            @RequestParam(value = "quantidade", required = false, defaultValue = "1") int quantidade,
+            // Caminho opcional para redirecionamento após adicionar (ex: /checkout)
+            @RequestParam(value = "redirect", required = false) String redirectParam,
             // Captura o cabeçalho HTTP "Referer" para saber de qual página veio a requisição
             @RequestHeader(value = "Referer", required = false) String referer,
             // HttpSession para armazenar o carrinho
@@ -162,13 +199,13 @@ public class ControllerIndex {
             if (produto != null) {
                 // Verifica se o produto já está no carrinho
                 PedidoProduto existente = carrinho.stream()
-                        .filter(pp -> pp.getProduto().getId().equals(produtoId))
-                        .findFirst()
-                        .orElse(null);
+                    .filter(pp -> pp.getProduto().getId().equals(produtoId))
+                    .findFirst()
+                    .orElse(null);
                 
                 if (existente != null) {
-                    // Se já existe, apenas incrementa a quantidade
-                    existente.setQuantidade(existente.getQuantidade() + 1);
+                    // Se já existe, incrementa pela quantidade solicitada
+                    existente.setQuantidade(existente.getQuantidade() + Math.max(1, quantidade));
                 } else {
                     // Se não existe, cria um novo item no carrinho
                     // Obtém ou cria um pedido temporário (ainda não persistido no banco)
@@ -178,7 +215,7 @@ public class ControllerIndex {
                     PedidoProduto novoProduto = new PedidoProduto(
                         pedidoTemp,
                         produto,
-                        1,  // Quantidade inicial
+                        Math.max(1, quantidade),  // Quantidade inicial
                         BigDecimal.valueOf(produto.getPreco())
                     );
                     // Adiciona o novo item ao carrinho
@@ -200,9 +237,22 @@ public class ControllerIndex {
         // Atualiza o carrinho na sessão
         session.setAttribute("carrinho", carrinho);
         
-        // Redireciona para a página anterior (referer) ou para home se não houver
-        // Isso mantém o usuário navegando sem ser levado ao carrinho automaticamente
-        return "redirect:" + (referer != null ? referer : "/");
+        // Se destino for checkout e usuário não logado, força login na home
+        if (redirectParam != null && redirectParam.equals("/checkout") && session.getAttribute("clienteLogado") == null) {
+            session.setAttribute("loginRequired", true);
+            session.setAttribute("redirectAfterLogin", "/checkout");
+            return "redirect:/";
+        }
+
+        // Decide destino: redirect explícito, depois referer, senão home
+        String destino = "/";
+        if (redirectParam != null && !redirectParam.isBlank()) {
+            destino = redirectParam;
+        } else if (referer != null) {
+            destino = referer;
+        }
+
+        return "redirect:" + destino;
     }
 
     // Mapeia requisições POST para "/carrinho/remover" - remove produto do carrinho
@@ -299,13 +349,13 @@ public class ControllerIndex {
     public String checkout(HttpSession session, Model model){
         // Recupera o cliente logado da sessão
         Cliente logado = (Cliente) session.getAttribute("clienteLogado");
-        
-        // Verifica se o usuário está logado (obrigatório para finalizar compra)
+
+        // Se não estiver logado, força abrir modal de login na home antes de seguir
         if (logado == null) {
-            // Se não estiver logado, redireciona para home
+            session.setAttribute("loginRequired", true);
+            session.setAttribute("redirectAfterLogin", "/checkout");
             return "redirect:/";
         }
-
         // Obtém o carrinho da sessão
         List<PedidoProduto> carrinho = obterCarrinho(session);
         
@@ -386,9 +436,13 @@ public class ControllerIndex {
         return produtos.stream()
                 .filter(p -> {
                     String sexo = p.getSexo();
-                    if (sexo == null) return false;
-                    // Usa contains() para aceitar variações como "Masculino", "masculino", etc
-                    return sexo.toLowerCase().contains(alvo);
+                    String categoria = p.getCategoria();
+                    String sexoNorm = sexo != null ? sexo.toLowerCase() : "";
+                    String catNorm = categoria != null ? categoria.toLowerCase() : "";
+
+                    // Usa contains() para aceitar variações como "Masculino", "masc", "M", etc.
+                    // Também considera quando o dado veio preenchido na coluna Categoria.
+                    return sexoNorm.contains(alvo) || catNorm.contains(alvo);
                 })
                 .collect(Collectors.toList());
     }
@@ -417,6 +471,28 @@ public class ControllerIndex {
                     return cat.toLowerCase().contains(alvo);
                 })
                 .collect(Collectors.toList());
+    }
+
+    /**
+     * Carrega produtos de promoção, priorizando IDs específicos.
+     * Se a lista estiver vazia, cai no filtro por categoria "promocao".
+     */
+    private void carregarProdutosPromocao(Model model) {
+        try (Connection con = Conexao.conectar()) {
+            ProdutoDAO produtoDAO = new ProdutoDAO(con);
+
+            List<Produto> produtosPromo;
+            if (IDS_PROMO_CONFIG.isEmpty()) {
+                produtosPromo = filtrarPorCategoria(produtoDAO.listar(), "promocao");
+            } else {
+                produtosPromo = produtoDAO.listarPorIds(IDS_PROMO_CONFIG);
+            }
+
+            model.addAttribute("produtos", produtosPromo);
+        } catch (Exception e) {
+            model.addAttribute("erro", "Erro ao carregar promoções: " + e.getMessage());
+            model.addAttribute("produtos", List.of());
+        }
     }
 
     // ------------------------------------------------------------------
