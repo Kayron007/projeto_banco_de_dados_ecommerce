@@ -46,7 +46,26 @@
                 </form>
             </div>
             <p><strong>Preço:</strong> <span th:text="${#numbers.formatDecimal(item.produto.preco,1,'POINT',2,'COMMA')}">0,00</span></p>
-            <p><strong>Quantidade:</strong> <span th:text="${item.quantidade}">1</span></p>
+            <div class="carrinho-quantidade">
+                <strong>Quantidade:</strong>
+                <div style="display:inline-flex; align-items:center; gap:4px;">
+                    <form th:action="@{/carrinho/atualizar}" method="post" style="display:inline;">
+                        <input type="hidden" name="produtoId" th:value="${item.produto.id}">
+                        <input type="hidden" name="quantidade" th:value="${item.quantidade - 1}">
+                        <button type="submit" class="btn-outline-small">-</button>
+                    </form>
+                    <form th:action="@{/carrinho/atualizar}" method="post" style="display:inline-flex; align-items:center; gap:4px;">
+                        <input type="hidden" name="produtoId" th:value="${item.produto.id}">
+                        <input type="number" name="quantidade" th:value="${item.quantidade}" min="1" style="width:60px; text-align:center;">
+                        <button type="submit" class="btn-small">Atualizar</button>
+                    </form>
+                    <form th:action="@{/carrinho/atualizar}" method="post" style="display:inline;">
+                        <input type="hidden" name="produtoId" th:value="${item.produto.id}">
+                        <input type="hidden" name="quantidade" th:value="${item.quantidade + 1}">
+                        <button type="submit" class="btn-outline-small">+</button>
+                    </form>
+                </div>
+            </div>
             <p><strong>Subtotal:</strong> <span th:text="${#numbers.formatDecimal(item.produto.preco * item.quantidade,1,'POINT',2,'COMMA')}">0,00</span></p>
         </div>
     </div>
