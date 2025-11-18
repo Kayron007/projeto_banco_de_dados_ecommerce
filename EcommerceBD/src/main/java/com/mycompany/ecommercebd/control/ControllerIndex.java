@@ -331,6 +331,38 @@ public class ControllerIndex {
         return "checkout";
     }
 
+    // Mapeia requisições POST para "/processar-pedido" - finaliza a compra (versão temporária)
+    @PostMapping("/processar-pedido")
+    public String processarPedido(HttpSession session, Model model) {
+        // Recupera o cliente logado da sessão
+        Cliente logado = (Cliente) session.getAttribute("clienteLogado");
+        
+        // Verifica se o usuário está logado
+        if (logado == null) {
+            // Se não estiver logado, redireciona para home
+            return "redirect:/";
+        }
+        
+        // Obtém o carrinho da sessão
+        List<PedidoProduto> carrinho = obterCarrinho(session);
+        
+        // Verifica se o carrinho está vazio
+        if (carrinho.isEmpty()) {
+            model.addAttribute("erro", "Carrinho vazio!");
+            return "redirect:/carrinho";
+        }
+        
+        // Limpa o carrinho para simular compra finalizada
+        session.removeAttribute("carrinho");
+        session.removeAttribute("pedidoTemporario");
+        
+        // Adiciona mensagem de sucesso na sessão para exibir na próxima página
+        session.setAttribute("mensagemSucesso", "Pedido finalizado com sucesso!");
+        
+        // Redireciona para a página inicial
+        return "redirect:/";
+    }
+
     // ------------------------------------------------------------------
     // MÉTODOS AUXILIARES DE FILTRAGEM
     // ------------------------------------------------------------------

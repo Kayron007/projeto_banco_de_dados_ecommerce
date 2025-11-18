@@ -49,6 +49,21 @@
 
 <main>
 
+    <!-- ALERTA DE SUCESSO (Pedido Finalizado) -->
+    <div th:if="${session.mensagemSucesso}" 
+         class="alert alert-success" 
+         id="alertaSucesso"
+         style="margin: 20px auto; max-width: 1200px; padding: 20px; background: #d4edda; border: 1px solid #c3e6cb; border-radius: 8px; color: #155724; box-shadow: 0 2px 8px rgba(0,0,0,0.1);">
+        <div style="display: flex; align-items: center; gap: 12px;">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path>
+                <polyline points="22 4 12 14.01 9 11.01"></polyline>
+            </svg>
+            <p th:text="${session.mensagemSucesso}" style="margin: 0; font-size: 16px; font-weight: 500;">
+            </p>
+        </div>
+    </div>
+
     <!-- BANNER PRINCIPAL (slider apenas com CSS; sem JS) -->
     <section class="banner">
         <div class="banner-slider" aria-hidden="false">
@@ -238,5 +253,28 @@
        th:checked="${loginRequired}">
 
 <div th:replace="~{fragments/modal :: modalLogin}"></div>
+
+<!-- Script para remover alerta de sucesso automaticamente -->
+<script th:inline="javascript">
+    /*<![CDATA[*/
+    (function() {
+        const alerta = document.getElementById('alertaSucesso');
+        if (alerta) {
+            // Remove o alerta após 5 segundos
+            setTimeout(function() {
+                alerta.style.transition = 'opacity 0.5s ease-out, transform 0.5s ease-out';
+                alerta.style.opacity = '0';
+                alerta.style.transform = 'translateY(-20px)';
+                
+                // Remove do DOM após a animação
+                setTimeout(function() {
+                    alerta.remove();
+                }, 500);
+            }, 5000);
+        }
+    })();
+    /*]]>*/
+</script>
+
 </body>
 </html>
