@@ -188,7 +188,7 @@ public class NotaFiscalDAO extends EntidadeBaseDAO<NotaFiscal> {
                     p.setId(rs.getLong("ID_pedido"));
                     p.setData(rs.getTimestamp("Data_do_pedido").toLocalDateTime());
                     p.setStatus(rs.getString("Status"));
-                    p.setValorTotal(rs.getInt("Valor_total"));
+                    p.setValorTotal(rs.getBigDecimal("Valor_total"));
 
                     Long Idcliente = rs.getLong("fk_Cliente_id");
                     ClienteDAO cd = new ClienteDAO(connection);

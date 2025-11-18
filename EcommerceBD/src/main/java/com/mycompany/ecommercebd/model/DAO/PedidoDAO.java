@@ -9,6 +9,7 @@ import java.sql.Timestamp;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.math.BigDecimal;
 
 import com.mycompany.ecommercebd.model.Cliente;
 import com.mycompany.ecommercebd.model.Conexao;
@@ -48,7 +49,7 @@ public class PedidoDAO extends EntidadeBaseDAO<Pedido> {
             stmt.setLong(1, pedido.getId());
             stmt.setTimestamp(2, Timestamp.valueOf(pedido.getData())); // LocalDateTime → SQL datetime
             stmt.setString(3, pedido.getStatus());
-            stmt.setInt(4, pedido.getValorTotal());
+            stmt.setBigDecimal(4, pedido.getValorTotal());
             stmt.setLong(5, pedido.getId_cliente().getId());
             stmt.setLong(6, pedido.getId_pagamento().getId());
 
@@ -87,7 +88,7 @@ public class PedidoDAO extends EntidadeBaseDAO<Pedido> {
             try (PreparedStatement stmt = connection.prepareStatement(sql)) {
                 stmt.setTimestamp(1, Timestamp.valueOf(pedido.getData()));
                 stmt.setString(2, pedido.getStatus());
-                stmt.setLong(3, pedido.getValorTotal());
+                stmt.setBigDecimal(3, pedido.getValorTotal());
                 stmt.setLong(4, pedido.getId_cliente().getId());
                 stmt.setLong(5, pedido.getId_pagamento().getId());
                 stmt.setLong(6, pedido.getId());
@@ -104,7 +105,7 @@ public class PedidoDAO extends EntidadeBaseDAO<Pedido> {
         Long id = rs.getLong("ID_pedido");
         LocalDateTime dataDoPedido = rs.getTimestamp("Data_do_pedido").toLocalDateTime();
         String status = rs.getString("Status");
-        int valorTotal = rs.getInt("Valor_total");
+        BigDecimal valorTotal = rs.getBigDecimal("Valor_total");
 
         Long Idcliente = rs.getLong("fk_Cliente_id");
         ClienteDAO cd = new ClienteDAO(connection);
@@ -147,7 +148,7 @@ public List<Pedido> listar() {
             p.setId(rs.getLong("ID_pedido"));
             p.setData(rs.getTimestamp("Data_do_pedido").toLocalDateTime());
             p.setStatus(rs.getString("Status"));
-            p.setValorTotal(rs.getInt("Valor_total"));
+            p.setValorTotal(rs.getBigDecimal("Valor_total"));
 
             Long Idcliente = rs.getLong("fk_Cliente_id");
             ClienteDAO cd = new ClienteDAO(connection);
@@ -185,7 +186,7 @@ public List<Pedido> listarPorCliente(Long idCliente) {
                 p.setId(rs.getLong("ID_pedido"));
                 p.setData(rs.getTimestamp("Data_do_pedido").toLocalDateTime());
                 p.setStatus(rs.getString("Status"));
-                p.setValorTotal(rs.getInt("Valor_total"));
+                p.setValorTotal(rs.getBigDecimal("Valor_total"));
 
                 Long Idcliente = rs.getLong("fk_Cliente_id");
                 ClienteDAO cd = new ClienteDAO(connection);

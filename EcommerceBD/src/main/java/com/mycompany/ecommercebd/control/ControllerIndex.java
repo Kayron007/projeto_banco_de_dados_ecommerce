@@ -1,5 +1,6 @@
 package com.mycompany.ecommercebd.control;
 
+import java.math.BigDecimal;
 import java.sql.Connection;
 import java.util.ArrayList;
 import java.util.List;
@@ -12,10 +13,11 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
-import com.mycompany.ecommercebd.model.CarrinhoItem;
 import com.mycompany.ecommercebd.model.Cliente;
 import com.mycompany.ecommercebd.model.Conexao;
 import com.mycompany.ecommercebd.model.DAO.ProdutoDAO;
+import com.mycompany.ecommercebd.model.Pedido;
+import com.mycompany.ecommercebd.model.PedidoProduto;
 import com.mycompany.ecommercebd.model.Produto;
 
 import jakarta.servlet.http.HttpSession;
@@ -78,37 +80,60 @@ public class ControllerIndex {
             model.addAttribute("loginRequired", true);
             return "index";
         }
-        List<CarrinhoItem> carrinho = obterCarrinho(session);
-        double total = carrinho.stream().mapToDouble(ci -> ci.getProduto().getPreco() * ci.getQuantidade()).sum();
+
+        List<PedidoProduto> carrinho = obterCarrinho(session);
+        BigDecimal total = carrinho.stream()
+                .map(pp -> pp.getPrecoUnitario().multiply(BigDecimal.valueOf(pp.getQuantidade())))
+                .reduce(BigDecimal.ZERO, BigDecimal::add);
 
         model.addAttribute("clienteLogado", logado);
         model.addAttribute("carrinho", carrinho);
         model.addAttribute("totalCarrinho", total);
+        model.addAttribute("totalCarrinhoFormatado", String.format("%.2f", total));
         return "carrinho";
     }
 
     @PostMapping("/carrinho/adicionar")
-    public String adicionarAoCarrinho(@RequestParam("produtoId") Long produtoId, HttpSession session, Model model) {
-        List<CarrinhoItem> carrinho = obterCarrinho(session);
+    public String adicionarAoCarrinho(
+            @RequestParam("produtoId") Long produtoId,
+            HttpSession session, 
+            Model model) {
+        
+        List<PedidoProduto> carrinho = obterCarrinho(session);
 
         try (Connection con = Conexao.conectar()) {
             ProdutoDAO produtoDAO = new ProdutoDAO(con);
             Produto produto = produtoDAO.buscarPorId(produtoId);
+            
             if (produto != null) {
-                CarrinhoItem existente = carrinho.stream()
-                        .filter(ci -> ci.getProduto().getId().equals(produtoId))
+                // Verifica se o produto já está no carrinho
+                PedidoProduto existente = carrinho.stream()
+                        .filter(pp -> pp.getProduto().getId().equals(produtoId))
                         .findFirst()
                         .orElse(null);
+                
                 if (existente != null) {
+                    // Incrementa a quantidade
                     existente.setQuantidade(existente.getQuantidade() + 1);
                 } else {
-                    carrinho.add(new CarrinhoItem(produto, 1));
+                    // Cria pedido temporário sem cliente (será associado no checkout)
+                    Pedido pedidoTemp = obterPedidoTemporario(session);
+                    
+                    // Cria novo item no carrinho
+                    PedidoProduto novoProduto = new PedidoProduto(
+                        pedidoTemp,
+                        produto,
+                        1,
+                        BigDecimal.valueOf(produto.getPreco())
+                    );
+                    carrinho.add(novoProduto);
                 }
             } else {
                 model.addAttribute("erro", "Produto não encontrado.");
             }
         } catch (Exception e) {
             model.addAttribute("erro", "Erro ao adicionar produto: " + e.getMessage());
+            e.printStackTrace();
         }
 
         session.setAttribute("carrinho", carrinho);
@@ -117,13 +142,38 @@ public class ControllerIndex {
 
     @PostMapping("/carrinho/remover")
     public String removerDoCarrinho(@RequestParam("produtoId") Long produtoId, HttpSession session) {
-        List<CarrinhoItem> carrinho = obterCarrinho(session);
-        carrinho.removeIf(ci -> ci.getProduto().getId().equals(produtoId));
+        List<PedidoProduto> carrinho = obterCarrinho(session);
+        carrinho.removeIf(pp -> pp.getProduto().getId().equals(produtoId));
         session.setAttribute("carrinho", carrinho);
         return "redirect:/carrinho";
     }
 
-    @GetMapping("/produtos")
+    @PostMapping("/carrinho/atualizar")
+    public String atualizarQuantidade(
+            @RequestParam("produtoId") Long produtoId,
+            @RequestParam("quantidade") int quantidade,
+            HttpSession session) {
+        
+        List<PedidoProduto> carrinho = obterCarrinho(session);
+        
+        PedidoProduto item = carrinho.stream()
+                .filter(pp -> pp.getProduto().getId().equals(produtoId))
+                .findFirst()
+                .orElse(null);
+        
+        if (item != null) {
+            if (quantidade > 0) {
+                item.setQuantidade(quantidade);
+            } else {
+                carrinho.remove(item);
+            }
+        }
+        
+        session.setAttribute("carrinho", carrinho);
+        return "redirect:/carrinho";
+    }
+
+    @GetMapping("/produtos/todos")
     public String produtos(Model model){
         try (Connection con = Conexao.conectar()) {
             ProdutoDAO produtoDAO = new ProdutoDAO(con);
@@ -140,16 +190,32 @@ public class ControllerIndex {
     
     @GetMapping("/checkout")
     public String checkout(HttpSession session, Model model){
-        List<CarrinhoItem> carrinho = obterCarrinho(session);
-        double total = carrinho.stream().mapToDouble(ci -> ci.getProduto().getPreco() * ci.getQuantidade()).sum();
+        Cliente logado = (Cliente) session.getAttribute("clienteLogado");
+        
+        if (logado == null) {
+            return "redirect:/";
+        }
+
+        List<PedidoProduto> carrinho = obterCarrinho(session);
+        
+        if (carrinho.isEmpty()) {
+            model.addAttribute("erro", "Carrinho vazio!");
+            return "redirect:/carrinho";
+        }
+        
+        BigDecimal total = carrinho.stream()
+                .map(pp -> pp.getPrecoUnitario().multiply(BigDecimal.valueOf(pp.getQuantidade())))
+                .reduce(BigDecimal.ZERO, BigDecimal::add);
+        
+        model.addAttribute("clienteLogado", logado);
         model.addAttribute("carrinho", carrinho);
         model.addAttribute("totalCarrinho", total);
+        model.addAttribute("totalCarrinhoFormatado", String.format("%.2f", total));
         return "checkout";
     }
 
     /**
      * Filtra produtos pelo SEXO (case-insensitive)
-     * Aceita valores como "Masculino", "masculino", "Feminino", "feminino"
      */
     private List<Produto> filtrarPorSexo(List<Produto> produtos, String sexoAlvo) {
         if (produtos == null || sexoAlvo == null) return List.of();
@@ -166,7 +232,7 @@ public class ControllerIndex {
     }
 
     /**
-     * Filtra produtos pela CATEGORIA (acessorio, calcado, roupa, etc)
+     * Filtra produtos pela CATEGORIA
      */
     private List<Produto> filtrarPorCategoria(List<Produto> produtos, String categoriaAlvo) {
         if (produtos == null || categoriaAlvo == null) return List.of();
@@ -208,13 +274,36 @@ public class ControllerIndex {
         }
     }
 
-    private List<CarrinhoItem> obterCarrinho(HttpSession session) {
+    /**
+     * Obtém o carrinho da sessão (lista de PedidoProduto)
+     */
+    private List<PedidoProduto> obterCarrinho(HttpSession session) {
         @SuppressWarnings("unchecked")
-        List<CarrinhoItem> carrinho = (List<CarrinhoItem>) session.getAttribute("carrinho");
+        List<PedidoProduto> carrinho = (List<PedidoProduto>) session.getAttribute("carrinho");
         if (carrinho == null) {
             carrinho = new ArrayList<>();
             session.setAttribute("carrinho", carrinho);
         }
         return carrinho;
+    }
+
+    /**
+     * Cria pedido temporário para o carrinho
+     * O cliente será associado quando o usuário fizer login ou no checkout
+     */
+    private Pedido obterPedidoTemporario(HttpSession session) {
+        Pedido pedidoTemp = (Pedido) session.getAttribute("pedidoTemporario");
+        
+        if (pedidoTemp == null) {
+            pedidoTemp = new Pedido();
+            pedidoTemp.setId(-1L);
+            pedidoTemp.setStatus("CARRINHO");
+            pedidoTemp.setData(java.time.LocalDateTime.now());
+            pedidoTemp.setValorTotal(BigDecimal.ZERO);
+            // Cliente será definido no checkout
+            session.setAttribute("pedidoTemporario", pedidoTemp);
+        }
+        
+        return pedidoTemp;
     }
 }

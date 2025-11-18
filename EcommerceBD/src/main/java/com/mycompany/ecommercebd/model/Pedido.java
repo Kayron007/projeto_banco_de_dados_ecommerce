@@ -3,12 +3,13 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
 package com.mycompany.ecommercebd.model;
+import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
 public class Pedido extends EntidadeBase{
     private LocalDateTime data;
     private String status;
-    private int valorTotal;
+    private BigDecimal valorTotal;
     private Cliente id_cliente;
     private Pagamento id_pagamento;
 
@@ -25,7 +26,7 @@ public class Pedido extends EntidadeBase{
      * Utilizado para gerar um novo Pedido
      * O ID será gerado automáticamente pelo método gerarIdUnico;
      */
-    public Pedido(LocalDateTime data, String status, int valorTotal, Cliente id_cliente, Pagamento id_pagamento) {
+    public Pedido(LocalDateTime data, String status, BigDecimal valorTotal, Cliente id_cliente, Pagamento id_pagamento) {
         super();
         this.data = data;
         this.status = status;
@@ -37,7 +38,7 @@ public class Pedido extends EntidadeBase{
     /*
      * Construtor completo para pedido já existente;
      */
-    public Pedido(Long id, LocalDateTime data, String status, int valorTotal, Cliente id_cliente, Pagamento id_pagamento) {
+    public Pedido(Long id, LocalDateTime data, String status, BigDecimal valorTotal, Cliente id_cliente, Pagamento id_pagamento) {
         super(id);
         this.data = data;
         this.status = status;
@@ -82,8 +83,11 @@ public class Pedido extends EntidadeBase{
      * Valida se o valorTotal do pedido é zero ou negativo;
      */
     private void validarValorTotal() {
-        if(valorTotal <= 0) {
-            throw new IllegalArgumentException("ERRO: Não foi possível calcular o valor total do pedido. Tente novamente mais tarde.");
+        if(valorTotal == null) {
+            throw new IllegalArgumentException("ERRO: Valor total do pedido não foi definido.");
+        }
+        if(valorTotal.compareTo(BigDecimal.ZERO) <= 0) {
+            throw new IllegalArgumentException("ERRO: Valor total do pedido deve ser maior que zero.");
         }
     }
 
@@ -151,14 +155,14 @@ public class Pedido extends EntidadeBase{
     /**
      * @return the valorTotal
      */
-    public int getValorTotal() {
+    public BigDecimal getValorTotal() {
         return valorTotal;
     }
 
     /**
      * @param valorTotal the valorTotal to set
      */
-    public void setValorTotal(int valorTotal) {
+    public void setValorTotal(BigDecimal valorTotal) {
         this.valorTotal = valorTotal;
     }
 
