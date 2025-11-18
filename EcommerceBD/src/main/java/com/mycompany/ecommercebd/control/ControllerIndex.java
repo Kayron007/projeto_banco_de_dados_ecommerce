@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RequestHeader;
 
 import com.mycompany.ecommercebd.model.Cliente;
 import com.mycompany.ecommercebd.model.Conexao;
@@ -96,6 +97,7 @@ public class ControllerIndex {
     @PostMapping("/carrinho/adicionar")
     public String adicionarAoCarrinho(
             @RequestParam("produtoId") Long produtoId,
+            @RequestHeader(value = "Referer", required = false) String referer,
             HttpSession session, 
             Model model) {
         
@@ -116,7 +118,7 @@ public class ControllerIndex {
                     // Incrementa a quantidade
                     existente.setQuantidade(existente.getQuantidade() + 1);
                 } else {
-                    // Cria pedido temporário sem cliente (será associado no checkout)
+                    // Cria pedido temporário
                     Pedido pedidoTemp = obterPedidoTemporario(session);
                     
                     // Cria novo item no carrinho
@@ -128,6 +130,8 @@ public class ControllerIndex {
                     );
                     carrinho.add(novoProduto);
                 }
+                
+                session.setAttribute("mensagemSucesso", "Produto adicionado ao carrinho!");
             } else {
                 model.addAttribute("erro", "Produto não encontrado.");
             }
@@ -137,7 +141,9 @@ public class ControllerIndex {
         }
 
         session.setAttribute("carrinho", carrinho);
-        return "redirect:/carrinho";
+        
+        // Redireciona para a página anterior, ou para home se não houver referer
+        return "redirect:" + (referer != null ? referer : "/");
     }
 
     @PostMapping("/carrinho/remover")
@@ -289,7 +295,7 @@ public class ControllerIndex {
 
     /**
      * Cria pedido temporário para o carrinho
-     * O cliente será associado quando o usuário fizer login ou no checkout
+     * O pedido só existe na sessão e é perdido ao deslogar
      */
     private Pedido obterPedidoTemporario(HttpSession session) {
         Pedido pedidoTemp = (Pedido) session.getAttribute("pedidoTemporario");
@@ -300,7 +306,6 @@ public class ControllerIndex {
             pedidoTemp.setStatus("CARRINHO");
             pedidoTemp.setData(java.time.LocalDateTime.now());
             pedidoTemp.setValorTotal(BigDecimal.ZERO);
-            // Cliente será definido no checkout
             session.setAttribute("pedidoTemporario", pedidoTemp);
         }
         
