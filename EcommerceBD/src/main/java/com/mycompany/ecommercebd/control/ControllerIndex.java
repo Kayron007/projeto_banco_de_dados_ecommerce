@@ -175,6 +175,8 @@ public class ControllerIndex {
     public String adicionarAoCarrinho(
             // Captura o ID do produto enviado pelo formulário
             @RequestParam("produtoId") Long produtoId,
+            // Quantidade solicitada (padrão 1)
+            @RequestParam(value = "quantidade", required = false, defaultValue = "1") int quantidade,
             // Caminho opcional para redirecionamento após adicionar (ex: /checkout)
             @RequestParam(value = "redirect", required = false) String redirectParam,
             // Captura o cabeçalho HTTP "Referer" para saber de qual página veio a requisição
@@ -197,13 +199,13 @@ public class ControllerIndex {
             if (produto != null) {
                 // Verifica se o produto já está no carrinho
                 PedidoProduto existente = carrinho.stream()
-                        .filter(pp -> pp.getProduto().getId().equals(produtoId))
-                        .findFirst()
-                        .orElse(null);
+                    .filter(pp -> pp.getProduto().getId().equals(produtoId))
+                    .findFirst()
+                    .orElse(null);
                 
                 if (existente != null) {
-                    // Se já existe, apenas incrementa a quantidade
-                    existente.setQuantidade(existente.getQuantidade() + 1);
+                    // Se já existe, incrementa pela quantidade solicitada
+                    existente.setQuantidade(existente.getQuantidade() + Math.max(1, quantidade));
                 } else {
                     // Se não existe, cria um novo item no carrinho
                     // Obtém ou cria um pedido temporário (ainda não persistido no banco)
@@ -213,7 +215,7 @@ public class ControllerIndex {
                     PedidoProduto novoProduto = new PedidoProduto(
                         pedidoTemp,
                         produto,
-                        1,  // Quantidade inicial
+                        Math.max(1, quantidade),  // Quantidade inicial
                         BigDecimal.valueOf(produto.getPreco())
                     );
                     // Adiciona o novo item ao carrinho
