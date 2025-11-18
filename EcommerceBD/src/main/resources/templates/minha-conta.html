@@ -1,63 +1,121 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
-    <title>Minha conta</title>
-    <link rel="stylesheet" th:href="@{/css/style.css}">
+    <title>Minha conta | ROME</title>
+    <link rel="stylesheet" href="/css/base.css">
+    <link rel="stylesheet" href="/css/layout.css">
+    <link rel="stylesheet" href="/css/components.css">
+    <link rel="stylesheet" href="/css/auth.css">
 </head>
 <body>
 
 <header class="header">
-    <!-- você pode reaproveitar o mesmo header do index -->
+    <div class="container header__content">
+        <div class="logo">
+            <a th:href="@{/}">ROME</a>
+        </div>
+        <nav class="nav">
+            <a th:href="@{/}">Home</a>
+            <a th:href="@{/masculino}">Masculino</a>
+            <a th:href="@{/feminino}">Feminino</a>
+            <a th:href="@{/acessorios}">Acessorios</a>
+            <a th:href="@{/promocoes}">Promocoes</a>
+        </nav>
+        <div class="header__actions">
+            <span th:if="${cliente != null}">
+                Ola, <span th:text="${cliente.nome}">Cliente</span> |
+                <a th:href="@{/logout}" class="link">Sair</a>
+            </span>
+            <a th:href="@{/carrinho}" class="btn-small">Carrinho</a>
+        </div>
+    </div>
 </header>
 
 <main class="container conta-container">
 
-    <h1>Minha conta</h1>
+    <div class="account-hero">
+        <div>
+            <p class="account-kicker">Área do cliente</p>
+            <h1>Minha conta</h1>
+            <p class="account-subtitle">Gerencie seus dados e acompanhe seus pedidos</p>
+        </div>
+        <div class="account-summary">
+            <div>
+                <p class="muted">Nome</p>
+                <strong th:text="${cliente.nome}">Cliente</strong>
+            </div>
+            <div>
+                <p class="muted">E-mail</p>
+                <strong th:text="${cliente.email}">email@dominio.com</strong>
+            </div>
+            <div>
+                <p class="muted">Pedidos</p>
+                <strong th:text="${#lists.size(pedidos)}">0</strong>
+            </div>
+        </div>
+    </div>
 
     <nav class="account-menu">
         <a href="#dados">Meus dados</a>
         <a href="#pedidos">Meus pedidos</a>
     </nav>
 
-    <!-- 🔹 Seção Meus dados -->
-    <section id="dados" class="account-section">
-        <h2>Meus dados</h2>
+    <section id="dados" class="account-section card">
+        <div class="section__header">
+            <h2>Meus dados</h2>
+            <span class="muted">Atualize suas informações pessoais</span>
+        </div>
 
         <form th:action="@{/minha-conta/atualizar}" method="post" class="form-conta">
-            <label>Nome</label>
-            <input type="text" name="nome" th:value="${cliente.nome}" required>
+            <div class="form-grid">
+                <div class="form-group">
+                    <label>Nome</label>
+                    <input type="text" name="nome" th:value="${cliente.nome}" required>
+                </div>
+                <div class="form-group">
+                    <label>CEP</label>
+                    <input type="text" name="cep" th:value="${cliente.cep}">
+                </div>
+                <div class="form-group">
+                    <label>Cidade</label>
+                    <input type="text" name="cidade" th:value="${cliente.cidade}">
+                </div>
+                <div class="form-group">
+                    <label>Logradouro</label>
+                    <input type="text" name="logradouro" th:value="${cliente.logradouro}">
+                </div>
+                <div class="form-group">
+                    <label>Número</label>
+                    <input type="text" name="numero" th:value="${cliente.numero}">
+                </div>
+                <div class="form-group">
+                    <label>Bairro</label>
+                    <input type="text" name="bairro" th:value="${cliente.bairro}">
+                </div>
+                <div class="form-group">
+                    <label>Estado</label>
+                    <input type="text" name="estado" th:value="${cliente.estado}">
+                </div>
+            </div>
 
-            <label>CEP</label>
-            <input type="text" name="cep" th:value="${cliente.cep}">
-
-            <label>Cidade</label>
-            <input type="text" name="cidade" th:value="${cliente.cidade}">
-
-            <label>Logradouro</label>
-            <input type="text" name="logradouro" th:value="${cliente.logradouro}">
-
-            <label>Número</label>
-            <input type="text" name="numero" th:value="${cliente.numero}">
-
-            <label>Bairro</label>
-            <input type="text" name="bairro" th:value="${cliente.bairro}">
-
-            <label>Estado</label>
-            <input type="text" name="estado" th:value="${cliente.estado}">
-
-            <button type="submit" class="btn-primary">Salvar alterações</button>
+            <div class="form-actions">
+                <button type="submit" class="btn-primary">Salvar alterações</button>
+            </div>
         </form>
 
         <p th:if="${mensagemSucesso}" th:text="${mensagemSucesso}" class="mensagem-sucesso"></p>
         <p th:if="${erro}" th:text="${erro}" class="mensagem-erro"></p>
     </section>
 
-    <!-- 🔹 Seção Meus pedidos -->
-    <section id="pedidos" class="account-section">
-        <h2>Meus pedidos</h2>
+    <section id="pedidos" class="account-section card">
+        <div class="section__header">
+            <h2>Meus pedidos</h2>
+            <span class="muted">Histórico de compras</span>
+        </div>
 
-        <div th:if="${#lists.isEmpty(pedidos)}">
+        <div th:if="${#lists.isEmpty(pedidos)}" class="reviews-empty">
             <p>Você ainda não fez nenhum pedido.</p>
+            <small>Que tal começar agora?</small>
         </div>
 
         <table th:if="${!#lists.isEmpty(pedidos)}" class="tabela-pedidos">
@@ -77,7 +135,7 @@
                     <td th:text="${pedido.status}">Finalizado</td>
                     <td th:text="${pedido.valorTotal}">199.90</td>
                     <td>
-                        <a th:href="@{'/minha-conta/pedidos/' + ${pedido.id}}">Ver detalhes</a>
+                        <a th:href="@{'/minha-conta/pedidos/' + ${pedido.id}}" class="link">Ver detalhes</a>
                     </td>
                 </tr>
             </tbody>
@@ -88,4 +146,3 @@
 
 </body>
 </html>
-
