@@ -33,25 +33,6 @@
 
 <main class="container conta-container">
 
-    <!-- ALERTA DE SUCESSO (Pedido Finalizado) -->
-    <div th:if="${session.mensagemSucesso}"
-         class="toast-notice"
-         id="alertaSucesso">
-        <div class="toast-icon" aria-hidden="true">
-            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path>
-                <polyline points="22 4 12 14.01 9 11.01"></polyline>
-            </svg>
-        </div>
-        <p th:text="${session.mensagemSucesso}" class="toast-text"></p>
-    </div>
-    <script th:if="${session.mensagemSucesso}">
-        setTimeout(() => {
-            const toast = document.getElementById('alertaSucesso');
-            if (toast) toast.classList.add('toast-hide');
-        }, 3500);
-    </script>
-
     <div class="account-hero">
         <div>
             <p class="account-kicker">Área do cliente</p>
