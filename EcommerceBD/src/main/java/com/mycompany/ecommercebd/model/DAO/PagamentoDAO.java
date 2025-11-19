@@ -8,11 +8,20 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.mycompany.ecommercebd.model.Conexao;
 import com.mycompany.ecommercebd.model.Pagamento;
 
 public class PagamentoDAO extends EntidadeBaseDAO<Pagamento> {
 
     private Connection connection;
+
+    public PagamentoDAO() {
+        this.connection = Conexao.conectar();
+    }
+
+    public PagamentoDAO(Connection connection) {
+        this.connection = connection;
+    }
 
     @Override
     public void inserir(Pagamento pagamento) throws SQLException {

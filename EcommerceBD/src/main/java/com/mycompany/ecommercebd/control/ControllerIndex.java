@@ -2,6 +2,8 @@ package com.mycompany.ecommercebd.control;
 
 import java.math.BigDecimal;
 import java.sql.Connection;
+import java.time.LocalDateTime;
+import java.math.RoundingMode;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -16,8 +18,14 @@ import org.springframework.web.bind.annotation.RequestHeader;
 
 import com.mycompany.ecommercebd.model.Cliente;
 import com.mycompany.ecommercebd.model.Conexao;
+import com.mycompany.ecommercebd.model.DAO.NotaFiscalDAO;
+import com.mycompany.ecommercebd.model.DAO.PagamentoDAO;
+import com.mycompany.ecommercebd.model.DAO.PedidoDAO;
+import com.mycompany.ecommercebd.model.DAO.PedidoProdutoDAO;
 import com.mycompany.ecommercebd.model.DAO.ProdutoDAO;
 import com.mycompany.ecommercebd.service.EventoService;
+import com.mycompany.ecommercebd.model.NotaFiscal;
+import com.mycompany.ecommercebd.model.Pagamento;
 import com.mycompany.ecommercebd.model.Pedido;
 import com.mycompany.ecommercebd.model.PedidoProduto;
 import com.mycompany.ecommercebd.model.Produto;
@@ -408,36 +416,76 @@ public class ControllerIndex {
         .map(pp -> pp.getPrecoUnitario().multiply(BigDecimal.valueOf(pp.getQuantidade())))
         .reduce(BigDecimal.ZERO, BigDecimal::add);
 
-        Long pedidoId = -1L; // Temporário
-        
-        //Registra evento no MongoDB
-        try {
-            Document payload = new Document()
-                .append("valor", total.doubleValue())
-                .append("itens", carrinho.size())
-                .append("canal", "web");
-            
-            EventoService.registrarEvento(
-                pedidoId,
-                logado.getId(),
-                "pedido_criado",
-                "checkout",
-                payload
-            );
+        try (Connection con = Conexao.conectar()) {
+            PagamentoDAO pagamentoDAO = new PagamentoDAO(con);
+            PedidoDAO pedidoDAO = new PedidoDAO(con);
+            PedidoProdutoDAO pedidoProdutoDAO = new PedidoProdutoDAO(con);
+            NotaFiscalDAO notaFiscalDAO = new NotaFiscalDAO(con);
+
+            // Cria pagamento mock/aprovado
+            Pagamento pagamento = new Pagamento("Cartao", "Aprovado");
+            pagamentoDAO.inserir(pagamento);
+
+            // Cria pedido com status permitido pelo enum do banco
+            Pedido pedido = new Pedido(LocalDateTime.now(), "pagamento efetuado", total, logado, pagamento);
+            pedidoDAO.inserir(pedido);
+
+            // Persiste itens vinculando ao pedido salvo
+            for (PedidoProduto item : carrinho) {
+                item.setPedido(pedido);
+                pedidoProdutoDAO.inserir(item);
+            }
+
+            // Tenta gerar nota fiscal (não bloqueia o pedido se falhar)
+            try {
+                NotaFiscal nf = new NotaFiscal(
+                        LocalDateTime.now(),
+                        total.setScale(0, RoundingMode.HALF_UP).intValue(),
+                        0,
+                        "NF" + String.format("%044d", pedido.getId()),
+                        pedido
+                );
+                notaFiscalDAO.inserir(nf);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+
+            // Registra evento no MongoDB (se disponível)
+            try {
+                Document payload = new Document()
+                    .append("valor", total.doubleValue())
+                    .append("itens", carrinho.size())
+                    .append("canal", "web")
+                    .append("pedidoId", pedido.getId());
+                
+                EventoService.registrarEvento(
+                    pedido.getId(),
+                    logado.getId(),
+                    "pedido_criado",
+                    "checkout",
+                    payload
+                );
+            } catch (Exception e) {
+                // Apenas loga, não interrompe
+                e.printStackTrace();
+            }
+
+            // Limpa o carrinho após finalizar
+            session.removeAttribute("carrinho");
+            session.removeAttribute("pedidoTemporario");
+
+            // Mensagem de sucesso
+            session.setAttribute("mensagemSucesso", "Pedido #" + pedido.getId() + " finalizado com sucesso!");
+
         } catch (Exception e) {
-            // Não quebra o checkout se MongoDB falhar
             e.printStackTrace();
+            session.setAttribute("mensagemSucesso", null);
+            model.addAttribute("erro", "Erro ao finalizar pedido: " + e.getMessage());
+            return "redirect:/checkout";
         }
-        
-        // Limpa o carrinho para simular compra finalizada
-        session.removeAttribute("carrinho");
-        session.removeAttribute("pedidoTemporario");
-        
-        // Adiciona mensagem de sucesso na sessão para exibir na próxima página
-        session.setAttribute("mensagemSucesso", "Pedido finalizado com sucesso!");
-        
-        // Redireciona para a página inicial
-        return "redirect:/";
+
+        // Vai para Minha Conta ver histórico
+        return "redirect:/minha-conta";
     }
 
     // ------------------------------------------------------------------
