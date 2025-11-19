@@ -19,18 +19,11 @@ public class PedidoProdutoDAO extends EntidadeBaseDAO<PedidoProduto> {
 
     @Override
     public void inserir(PedidoProduto pedidoProduto) throws SQLException {
-        try {
-            Long novoId = gerarIdUnico("cliente", "id");
-            pedidoProduto.setId(novoId);
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
-        }
-        
         String sql = "INSERT INTO pedido_produto (fk_ID_pedido, fk_ID_produto, Quantidade, preco_unitario) VALUES (?, ?, ?, ?)";
 
         try (PreparedStatement stmt = connection.prepareStatement(sql)) {
-            stmt.setLong(1, pedidoProduto.getProduto().getId());
-            stmt.setLong(2, pedidoProduto.getPedido().getId());
+            stmt.setLong(1, pedidoProduto.getPedido().getId());
+            stmt.setLong(2, pedidoProduto.getProduto().getId());
             stmt.setInt(3, pedidoProduto.getQuantidade());
             stmt.setBigDecimal(4, pedidoProduto.getPrecoUnitario());
 
@@ -49,8 +42,8 @@ public class PedidoProdutoDAO extends EntidadeBaseDAO<PedidoProduto> {
         String sql = "DELETE FROM pedido_produto WHERE fk_ID_pedido = ? AND fk_ID_produto = ?";
 
         try (PreparedStatement stmt = connection.prepareStatement(sql)) {
-            stmt.setLong(1, pedidoProduto.getProduto().getId());
-            stmt.setLong(2, pedidoProduto.getPedido().getId());
+            stmt.setLong(1, pedidoProduto.getPedido().getId());
+            stmt.setLong(2, pedidoProduto.getProduto().getId());
             stmt.executeUpdate();
             System.out.println("[DAO] PedidoProduto deletado com sucesso!");
         } catch (Exception e) {
@@ -65,8 +58,8 @@ public class PedidoProdutoDAO extends EntidadeBaseDAO<PedidoProduto> {
         try (PreparedStatement stmt = connection.prepareStatement(sql)) {
             stmt.setInt(1, pedidoProduto.getQuantidade());
             stmt.setBigDecimal(2, pedidoProduto.getPrecoUnitario());
-            stmt.setLong(3, pedidoProduto.getProduto().getId());
-            stmt.setLong(4, pedidoProduto.getPedido().getId());
+            stmt.setLong(3, pedidoProduto.getPedido().getId());
+            stmt.setLong(4, pedidoProduto.getProduto().getId());
             stmt.executeUpdate();
 
             System.out.println("[DAO] PedidoProduto alterado com sucesso!");
