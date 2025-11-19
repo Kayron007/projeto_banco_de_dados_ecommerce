@@ -1,0 +1,18 @@
+
+Olá Professor.
+
+Aqui vai um link para uma apresentação mais formal do nosso trabalho, hospedada no Drive. 
+Nela demonstramos as funcionalidades previstas e alguns pontos que não conseguimos apresentar durante a avaliação, 
+devido ao último commit que, por um equívoco, deixou de ser realizado na madrugada anterior. Isso acabou gerando 
+alguns erros no momento da apresentação.
+
+A gravação possui aproximadamente 4 minutos e 58 segundos e mostra como a aplicação deveria ter funcionado corretamente, 
+já com os ajustes realizados. Se possível, solicitamos gentilmente que assista ao vídeo apenas para fins de compreensão 
+do que foi desenvolvido. Não se trata de um pedido de reconsideração da nota, mas sim de uma postura ética de nossa parte 
+ao demonstrar o funcionamento completo da aplicação.
+
+Agradecemos pela atenção e pela oportunidade.
+
+Atenciosamente, Kayron Gabriel. Grupo 9.
+
+Link para o video: https://drive.google.com/file/d/1CYg8sMcOLW7_jCFsECQr42XDP04L6lrF/view?usp=sharing
