@@ -57,11 +57,30 @@
             <p class="product-detail__desc" th:text="${produto.descricao}">Descricao do produto</p>
             <p class="product-detail__meta"><strong>Categoria:</strong> <span th:text="${produto.categoria}">Categoria</span></p>
             <p class="product-detail__price"><strong>Preço:</strong> <span th:text="${#numbers.formatDecimal(produto.preco, 1, 'POINT', 2, 'COMMA')}">0,00</span></p>
+            <div class="product-options">
+                <div class="size-selector">
+                    <span class="size-selector__label">Tamanho</span>
+                    <div class="size-selector__grid" data-size-selector th:attr="data-default-size=${produto.tamanho}">
+                        <button type="button" class="size-chip" data-size="P">P</button>
+                        <button type="button" class="size-chip" data-size="M">M</button>
+                        <button type="button" class="size-chip" data-size="G">G</button>
+                        <button type="button" class="size-chip" data-size="GG">GG</button>
+                        <button type="button" class="size-chip" data-size="XGG">XGG</button>
+                        <button type="button" class="size-chip" data-size="XGGG">XGGG</button>
+                        <button type="button" class="size-chip" data-size="2G">2G</button>
+                        <button type="button" class="size-chip" data-size="3G">3G</button>
+                    </div>
+                </div>
+            </div>
 
             <div class="product-card__actions">
-                <div class="quantity-selector">
+                <div class="quantity-selector" data-quantity>
                     <label for="quantidade">Quantidade</label>
-                    <input type="number" id="quantidade" name="quantidade" min="1" value="1">
+                    <div class="quantity-control">
+                        <button type="button" class="quantity-btn" data-action="minus" aria-label="Diminuir quantidade">-</button>
+                        <input type="number" id="quantidade" name="quantidade" min="1" value="1">
+                        <button type="button" class="quantity-btn" data-action="plus" aria-label="Aumentar quantidade">+</button>
+                    </div>
                 </div>
 
                 <form th:action="@{/carrinho/adicionar}"
@@ -70,6 +89,7 @@
                       th:onsubmit="|document.getElementById('quantidadeAdd').value=document.getElementById('quantidade').value;|">
                     <input type="hidden" name="produtoId" th:value="${produto.id}">
                     <input type="hidden" name="quantidade" id="quantidadeAdd" value="1">
+                    <input type="hidden" name="tamanhoSelecionado" class="tamanho-hidden" value="P">
                     <button type="submit" class="btn-primary">Adicionar ao carrinho</button>
                 </form>
                 <form th:action="@{/carrinho/adicionar}"
@@ -79,6 +99,7 @@
                     <input type="hidden" name="produtoId" th:value="${produto.id}">
                     <input type="hidden" name="quantidade" id="quantidadeBuy" value="1">
                     <input type="hidden" name="redirect" value="/checkout">
+                    <input type="hidden" name="tamanhoSelecionado" class="tamanho-hidden" value="P">
                     <button type="submit" class="btn-secondary">Comprar agora</button>
                 </form>
             </div>
@@ -125,6 +146,45 @@
     <a th:href="@{/produtos/todos}" class="link">Voltar para lista de produtos</a>
 </main>
 
+
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+    const qtyContainer = document.querySelector('[data-quantity]');
+    const qtyInput = document.getElementById('quantidade');
+    if (qtyContainer && qtyInput) {
+        qtyContainer.querySelectorAll('.quantity-btn').forEach(btn => {
+            btn.addEventListener('click', () => {
+                const action = btn.dataset.action;
+                const current = parseInt(qtyInput.value || '1', 10);
+                if (action === 'minus') {
+                    qtyInput.value = Math.max(1, current - 1);
+                } else if (action === 'plus') {
+                    qtyInput.value = current + 1;
+                }
+            });
+        });
+    }
+
+    const sizeSelector = document.querySelector('[data-size-selector]');
+    const sizeHiddenInputs = document.querySelectorAll('.tamanho-hidden');
+    if (sizeSelector) {
+        const defaultSize = (sizeSelector.dataset.defaultSize || '').toUpperCase();
+        const chips = Array.from(sizeSelector.querySelectorAll('.size-chip'));
+
+        function selectSize(value) {
+            chips.forEach(chip => chip.classList.toggle('is-active', chip.dataset.size === value));
+            sizeHiddenInputs.forEach(input => input.value = value);
+        }
+
+        chips.forEach(chip => {
+            chip.addEventListener('click', () => selectSize(chip.dataset.size));
+        });
+
+        const initial = chips.some(chip => chip.dataset.size === defaultSize) ? defaultSize : 'P';
+        selectSize(initial);
+    }
+});
+</script>
 
 </body>
 </html>

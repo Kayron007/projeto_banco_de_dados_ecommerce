@@ -247,13 +247,6 @@ public class ControllerIndex {
         // Atualiza o carrinho na sessão
         session.setAttribute("carrinho", carrinho);
         
-        // Se destino for checkout e usuário não logado, força login na home
-        if (redirectParam != null && redirectParam.equals("/checkout") && session.getAttribute("clienteLogado") == null) {
-            session.setAttribute("loginRequired", true);
-            session.setAttribute("redirectAfterLogin", "/checkout");
-            return "redirect:/";
-        }
-
         // Decide destino: redirect explícito, depois referer, senão home
         String destino = "/";
         if (redirectParam != null && !redirectParam.isBlank()) {
@@ -357,15 +350,8 @@ public class ControllerIndex {
     // Mapeia requisições GET para "/checkout" - página de finalização de compra
     @GetMapping("/checkout")
     public String checkout(HttpSession session, Model model){
-        // Recupera o cliente logado da sessão
+        // Recupera o cliente logado da sessão (pode ser nulo)
         Cliente logado = (Cliente) session.getAttribute("clienteLogado");
-
-        // Se não estiver logado, força abrir modal de login na home antes de seguir
-        if (logado == null) {
-            session.setAttribute("loginRequired", true);
-            session.setAttribute("redirectAfterLogin", "/checkout");
-            return "redirect:/";
-        }
         // Obtém o carrinho da sessão
         List<PedidoProduto> carrinho = obterCarrinho(session);
         
@@ -386,6 +372,13 @@ public class ControllerIndex {
         model.addAttribute("carrinho", carrinho);
         model.addAttribute("totalCarrinho", total);
         model.addAttribute("totalCarrinhoFormatado", String.format("%.2f", total));
+
+        // Exibe mensagens temporárias (ex: exigir login ao finalizar)
+        String erroCheckout = (String) session.getAttribute("erroCheckout");
+        if (erroCheckout != null) {
+            model.addAttribute("erroCheckout", erroCheckout);
+            session.removeAttribute("erroCheckout");
+        }
         
         // Retorna o template de checkout
         return "checkout";
@@ -399,8 +392,9 @@ public class ControllerIndex {
         
         // Verifica se o usuário está logado
         if (logado == null) {
-            // Se não estiver logado, redireciona para home
-            return "redirect:/";
+            session.setAttribute("erroCheckout", "Faça login ou crie uma conta para concluir sua compra.");
+            session.setAttribute("redirectAfterLogin", "/checkout");
+            return "redirect:/checkout";
         }
         
         // Obtém o carrinho da sessão

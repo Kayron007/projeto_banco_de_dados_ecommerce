@@ -8,8 +8,8 @@
     <link rel="stylesheet" href="/css/layout.css">
     <link rel="stylesheet" href="/css/components.css">
     <link rel="stylesheet" href="/css/checkout.css">
-
-
+    <link rel="stylesheet" href="/css/auth.css">
+</head>
 <body>
 
 <header class="header">
@@ -24,6 +24,17 @@
             <a th:href="@{/acessorios}">Acessórios</a>
             <a th:href="@{/promocoes}">Promoções</a>
         </nav>
+        <div class="header__actions">
+            <span th:if="${clienteLogado != null}">
+                Olá, <span th:text="${clienteLogado.nome}">Cliente</span> |
+                <a th:href="@{/minha-conta}" class="link">Minha Conta</a> |
+                <a th:href="@{/logout}" class="link">Sair</a>
+            </span>
+            <span th:if="${clienteLogado == null}">
+                <label for="modal-login-toggle" class="link" style="cursor:pointer;">Minha Conta</label>
+            </span>
+            <a th:href="@{/carrinho}" class="btn-small">Carrinho</a>
+        </div>
     </div>
 </header>
 
@@ -35,6 +46,16 @@
     
     <!-- Formulário de Dados Pessoais e Entrega -->
     <form class="checkout-form" action="/processar-pedido" method="post">
+
+        <div class="checkout-alert checkout-alert--info" th:if="${clienteLogado == null}">
+            <strong>Compra rápida:</strong>
+            <span>Vamos solicitar o login apenas ao concluir o pedido.</span>
+        </div>
+
+        <div class="checkout-alert checkout-alert--error" th:if="${erroCheckout}">
+            <strong>Ops!</strong>
+            <span th:text="${erroCheckout}">Faça login para finalizar.</span>
+        </div>
         
         <fieldset class="checkout-fieldset">
             <legend>Dados Pessoais</legend>
@@ -115,12 +136,33 @@
                     <label for="estado">Estado:</label>
                     <select id="estado" name="estado" required>
                         <option value="">Selecione</option>
-                        <option value="SP">SP</option>
-                        <option value="RJ">RJ</option>
-                        <option value="MG">MG</option>
-                        <option value="BA">BA</option>
-                        <option value="RS">RS</option>
-                        <option value="RS">GO</option>
+                        <option value="AC">AC - Acre</option>
+                        <option value="AL">AL - Alagoas</option>
+                        <option value="AP">AP - Amapá</option>
+                        <option value="AM">AM - Amazonas</option>
+                        <option value="BA">BA - Bahia</option>
+                        <option value="CE">CE - Ceará</option>
+                        <option value="DF">DF - Distrito Federal</option>
+                        <option value="ES">ES - Espírito Santo</option>
+                        <option value="GO">GO - Goiás</option>
+                        <option value="MA">MA - Maranhão</option>
+                        <option value="MT">MT - Mato Grosso</option>
+                        <option value="MS">MS - Mato Grosso do Sul</option>
+                        <option value="MG">MG - Minas Gerais</option>
+                        <option value="PA">PA - Pará</option>
+                        <option value="PB">PB - Paraíba</option>
+                        <option value="PR">PR - Paraná</option>
+                        <option value="PE">PE - Pernambuco</option>
+                        <option value="PI">PI - Piauí</option>
+                        <option value="RJ">RJ - Rio de Janeiro</option>
+                        <option value="RN">RN - Rio Grande do Norte</option>
+                        <option value="RS">RS - Rio Grande do Sul</option>
+                        <option value="RO">RO - Rondônia</option>
+                        <option value="RR">RR - Roraima</option>
+                        <option value="SC">SC - Santa Catarina</option>
+                        <option value="SP">SP - São Paulo</option>
+                        <option value="SE">SE - Sergipe</option>
+                        <option value="TO">TO - Tocantins</option>
                     </select>
                 </div>
             </div>
@@ -128,37 +170,27 @@
 
         <fieldset class="checkout-fieldset">
             <legend>Método de Pagamento</legend>
-            
-            <div class="form-group radio-group">
-                <label>
+            <div class="payment-options">
+                <label class="payment-option">
                     <input type="radio" name="pagamento" value="credito" required>
-                    Cartão de Crédito
+                    <span>Cartão de Crédito</span>
                 </label>
-            </div>
-            
-            <div class="form-group radio-group">
-                <label>
+                <label class="payment-option">
                     <input type="radio" name="pagamento" value="debito" required>
-                    Cartão de Débito
+                    <span>Cartão de Débito</span>
                 </label>
-            </div>
-            
-            <div class="form-group radio-group">
-                <label>
+                <label class="payment-option">
                     <input type="radio" name="pagamento" value="boleto" required>
-                    Boleto Bancário
+                    <span>Boleto Bancário</span>
                 </label>
-            </div>
-            
-            <div class="form-group radio-group">
-                <label>
+                <label class="payment-option">
                     <input type="radio" name="pagamento" value="pix" required>
-                    PIX
+                    <span>PIX</span>
                 </label>
             </div>
         </fieldset>
 
-        <fieldset class="checkout-fieldset">
+        <fieldset class="checkout-fieldset checkout-card-fields" data-card-fields>
             <legend>Dados do Cartão (se aplicável)</legend>
             
             <div class="form-group">
@@ -261,6 +293,20 @@
         inputCnpj && inputCnpj.addEventListener('input', () => apenasNumeros(inputCnpj));
         radios.forEach(r => r.addEventListener('change', toggleDocs));
         toggleDocs();
+
+        const paymentRadios = document.querySelectorAll('input[name="pagamento"]');
+        const cardFields = document.querySelector('[data-card-fields]');
+        const cardTriggers = ['credito', 'debito'];
+
+        function toggleCardFields() {
+            if (!cardFields) return;
+            const selecionado = document.querySelector('input[name="pagamento"]:checked');
+            const deveMostrar = selecionado && cardTriggers.includes(selecionado.value);
+            cardFields.style.display = deveMostrar ? '' : 'none';
+        }
+
+        paymentRadios.forEach(r => r.addEventListener('change', toggleCardFields));
+        toggleCardFields();
     })();
 </script>
 

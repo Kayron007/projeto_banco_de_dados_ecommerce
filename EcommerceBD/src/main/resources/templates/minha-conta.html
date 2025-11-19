@@ -73,12 +73,12 @@
         </div>
     </div>
 
-    <nav class="account-menu">
-        <a href="#dados">Meus dados</a>
-        <a href="#pedidos">Meus pedidos</a>
+    <nav class="account-menu account-tabs" data-account-tabs>
+        <button type="button" class="account-tab is-active" data-target="dados">Meus dados</button>
+        <button type="button" class="account-tab" data-target="pedidos">Meus pedidos</button>
     </nav>
 
-    <section id="dados" class="account-section card">
+    <section id="dados" class="account-section card account-panel is-active" data-tab-panel="dados">
         <div class="section__header">
             <h2>Meus dados</h2>
             <span class="muted">Atualize suas informações pessoais</span>
@@ -125,7 +125,7 @@
         <p th:if="${erro}" th:text="${erro}" class="mensagem-erro"></p>
     </section>
 
-    <section id="pedidos" class="account-section card">
+    <section id="pedidos" class="account-section card account-panel" data-tab-panel="pedidos">
         <div class="section__header">
             <h2>Meus pedidos</h2>
             <span class="muted">Histórico de compras</span>
@@ -161,6 +161,34 @@
     </section>
 
 </main>
+
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+    const tabsWrapper = document.querySelector('[data-account-tabs]');
+    const panels = document.querySelectorAll('[data-tab-panel]');
+    if (!tabsWrapper || panels.length === 0) return;
+
+    const contaContainer = document.querySelector('.conta-container');
+    if (contaContainer) {
+        contaContainer.classList.add('tabs-enabled');
+    }
+
+    function selecionarPainel(target) {
+        tabsWrapper.querySelectorAll('.account-tab').forEach(btn => {
+            btn.classList.toggle('is-active', btn.dataset.target === target);
+        });
+        panels.forEach(panel => {
+            panel.classList.toggle('is-active', panel.dataset.tabPanel === target);
+        });
+    }
+
+    tabsWrapper.querySelectorAll('.account-tab').forEach(btn => {
+        btn.addEventListener('click', () => selecionarPainel(btn.dataset.target));
+    });
+
+    selecionarPainel('dados');
+});
+</script>
 
 </body>
 </html>
