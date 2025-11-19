@@ -484,7 +484,7 @@ public class ControllerIndex {
             return "redirect:/checkout";
         }
 
-        // Vai para Minha Conta ver histórico
+        // Redireciona para Minha Conta (histórico) exibindo toast de sucesso
         return "redirect:/minha-conta";
     }
 
